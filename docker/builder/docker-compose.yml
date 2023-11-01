@@ -1,0 +1,46 @@
+version: '3.2'
+
+services:
+
+  flockpocket:
+    container_name: flockpocket
+    build:
+      context: ../../
+      dockerfile: docker/builder/Dockerfile.flockpocket
+    command: ./docker/start.sh
+    env_file:
+      - .flockpocket.conf
+    volumes:
+      - static:/opt/flockpocket/static/
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .postgres.conf
+
+  redis:
+    image: redis
+
+  nginx:
+    container_name: nginx
+    build:
+      context: ../../
+      dockerfile: docker/builder/Dockerfile.nginx
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    volumes:
+      - static:/opt/flockpocket/static/
+    depends_on:
+      - flockpocket
+
+volumes:
+  postgres_data:
+  static:

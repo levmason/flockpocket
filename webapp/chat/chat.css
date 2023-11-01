@@ -1,0 +1,168 @@
+/*
+ * Chat Menu
+ */
+
+div#content div.thread_label {
+    font-size: 20px;
+    cursor: pointer;
+    padding: 10px 20px;
+    margin: 4px;
+    border-radius: 5px;
+    background: var(--shade1);
+}
+
+/*
+ * Chat Thread
+ */
+
+div#content div#thread {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+    height: 84vh;
+}
+div#content div#thread div#thread {
+    display: flex;
+    flex-flow: column-reverse;
+    flex-grow : 1;
+    width: calc(100% - 40px);
+    border: 1px solid var(--shade2);
+    border-radius: 20px;
+    padding: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+div#content div#thread img.threadpic {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    top: 10px;
+    left: 0px;
+}
+
+/*
+ * Chat input
+ */
+div#content div#thread div#thread_input_wrapper {
+    position: relative;
+    width: 100%;
+    height: fit-content;
+}
+div#content div#thread div#thread_input {
+    font-family: "EB Garamond";
+    font-size: 16px;
+    color: var(--text_color);
+    width: calc(100% - 90px);
+    cursor: text;
+    white-space: pre-wrap;
+    display: inline-block;
+    background: var(--shade1);
+    border: 1px solid var(--shade1);
+    border-radius: 20px;
+    outline: inherit;
+    padding: 10px 20px;
+    margin: 10px 0 0 50px;
+}
+div#content div#thread div#thread_input_wrapper div#emoji {
+    position: absolute;
+    right: 10px;
+    top: 16px;
+    cursor: pointer;
+}
+div#content div#thread div#thread_input_wrapper div#emoji img {
+    width: 30px;
+    height: 30px;
+    opacity: 0.1;
+}
+div#content div#thread div#thread_input_wrapper div#emoji img:hover {
+    width: 30px;
+    height: 30px;
+    opacity: 0.2;
+}
+
+em-emoji-picker {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    z-index: 1;
+}
+
+/* message */
+div#content div#thread div.message_wrapper {
+    width: calc(100% - 20px);
+    position: relative;
+    padding: 10px;
+    border-radius: 20px;
+    margin: 0px 20px;
+    right: 20px;
+}
+div#content div#thread div.message_wrapper div.message {
+    margin-left: 60px;
+    padding: 1px 4px;
+    border-radius: 8px;
+    position: relative;
+}
+div#content div#thread div.message_wrapper div.message:hover {
+    background: var(--shade1);
+}
+
+div#content div#thread div.message_wrapper div.name {
+    margin-left: 64px;
+    font-size: 18px;
+    font-weight: bold;
+    display: inline-block;
+}
+div#content div#thread div.message_wrapper img.threadpic {
+    left: 10px;
+}
+div#content div#thread div.message_wrapper div.timestamp {
+    font-family: sans-serif;
+    font-size: 12px;
+    background: var(--shade1);
+    border-radius: 8px;
+    color: var(--text_color_light);
+    display: inline-block;
+    text-align: right;
+    position: absolute;
+    padding: 5px;
+    right: 0;
+    top: 0;
+    display: none;
+}
+div#content div#thread div.message_wrapper div.message:hover div.timestamp {
+    display: inline-block;
+}
+
+
+
+/* label */
+div#content div#thread div#label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+div#content div#thread div#label span {
+    position: absolute;
+    padding: 4px 20px;
+    font-size: 20px;
+    background: var(--background);
+    border-radius: 10px;
+    z-index: 100;
+}
+/* divider */
+div#content div#thread div.divider {
+    margin: 12px 6px;
+    width: calc(100% - 16px);
+    height: 8px;
+    border-bottom: 1px solid var(--shade4);
+    text-align: center;
+}
+div#content div#thread div.divider span {
+    font-family: sans-serif;
+    font-size: 12px;
+    color: var(--shade4);
+    background: var(--background);
+    padding: 0 16px;
+}

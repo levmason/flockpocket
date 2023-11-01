@@ -1,0 +1,11 @@
+epel-release
+centos-release-scl-rh
+make
+ntp
+nginx
+openssl-devel
+perl-devel
+gcc
+rcs
+redis
+wget

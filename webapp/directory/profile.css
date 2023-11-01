@@ -1,0 +1,24 @@
+div.profile {
+    width: 100%;
+}
+div.profile div.card {
+    background: var(--shade1);
+    border-radius: 6px;
+    padding: 10px 20px;
+    margin: 20px;
+    width: calc(100% - 80px);
+}
+div.profile div.card div.label {
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+    padding: 4px 10px 10px;
+}
+div.profile div.card div.text {
+    text-align: center;
+    font-size: 16px;
+    padding: 4px 10px 10px;
+}
+div.profile div.card.family {
+    text-align: center;
+}

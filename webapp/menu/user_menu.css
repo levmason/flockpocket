@@ -1,0 +1,46 @@
+/* user menu */
+div#user_menu {
+    float: right;
+    display: inline-block;
+    position: relative;
+}
+div#user_menu img {
+    width: 50px;
+    margin: 5px 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0.75;
+}
+div#user_menu img:hover {
+    opacity: 1;
+}
+div#user_menu div#user_menu_items {
+    position: absolute;
+    right: 0;
+    border-bottom-left-radius: 10px;
+    border: 1px solid var(--shade3);
+    border-top: 0;
+    border-right: 0;
+    width: fit-content;
+    font-size: 20px;
+    background: var(--bar_color);
+    color: var(--text_color);
+    display: none;
+}
+div#user_menu div.menu_item {
+    margin: 1px 2px;
+    padding: 7px 20px;
+    white-space: nowrap;
+    cursor: pointer;
+    width: fit-content;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    float: right;
+}
+div#user_menu div.menu_item.selected {
+    background: var(--shade2);
+}
+
+div#user_menu div.menu_item:hover {
+    background: var(--shade2);
+}

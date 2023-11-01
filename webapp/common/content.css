@@ -1,0 +1,10 @@
+div#content {
+    text-align: left;
+    position: absolute;
+    width: calc(100% - 640px);
+    min-width: 460px;
+    left: 50%;
+    top: 40px;
+    transform: translate(-50%);
+    padding: 40px 20px 20px;
+}

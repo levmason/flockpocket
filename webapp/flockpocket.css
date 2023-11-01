@@ -1,0 +1,90 @@
+:root {
+    --link_color: inherit;
+    --bar_width: 15vw;
+    --bar_min_width: 190px;
+    --bar_max_width: 220px;
+    --top_menu_width: 60px;
+    --font: "EB Garamond";
+}
+body.light {
+    --text_color: #222;
+    --text_color_light: var(--shade5);
+    --text_color_form: #698eb5;
+    --background: #fff;
+    --shade1: #f8f7f7;
+    --shade2: #ede9e9;
+    --shade3: #ddd9d9;
+    --shade4: #bab3b3;
+    --shade5: #818283;
+    --shade6: #4a4848;
+    --shade7: #2a2b2c;
+    --button_color: #c5b89b;
+    --button_hover_color: #cfc4a9;
+    --bar_color: var(--shade1);
+    --top_menu_bg: var(--shade6);
+    --disabled_color: var(--shade3);
+}
+body.dark {
+    --text_color: #ddd;
+    --background: #111213;
+    --shade1: #1d1e1f;
+    --shade2: #2a2b2c;
+    --shade3: #818283;
+    --shade4: #ede9e9;
+    --shade5: #f8f7f7;
+    --bar_color: var(--shade1);
+    --top_menu_bg: var(--shade5);
+}
+
+body {
+    font-family: var(--font);
+    background: var(--background);
+    color: var(--text_color);
+}
+
+a {
+    color: var(--link_color);
+    font-size: inherit;
+}
+
+h1 {
+    font-size: 30px;
+    font-weight: lighter;
+    width: 100%;
+    text-align: center;
+}
+label.button input[type="file"] {
+    display: none;
+}
+button, label.button {
+    font-family: var(--font);
+    font-size: 16px;
+    color: var(--text_color);
+    background: var(--button_color);
+    border: 0;
+    border-radius: 20px;
+    width: fit-content;
+    padding: 4px 16px;
+    cursor: pointer;
+    margin: 10px 5px 0;
+}
+button.big {
+    font-size: 20px;
+    padding: 6px 50px;
+    margin: 20px 5px;
+}
+button:hover, label.button:hover {
+    background: var(--button_hover_color);
+}
+button:disabled {
+    color: var(--disabled_color);
+    background: var(--shade2);
+    cursor: auto;
+}
+button:disabled:hover {
+    background: var(--shade2);
+}
+
+.hidden {
+    display: none;
+}

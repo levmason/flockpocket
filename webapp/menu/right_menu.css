@@ -1,0 +1,17 @@
+div#rightbar {
+    width: var(--bar_width);
+    min-width: var(--bar_min_width);
+    max-width: var(--bar_max_width);
+    height: 100%;
+    position: fixed;
+    top: var(--top_menu_width);
+    right: 0;
+    color: #ccc;
+    background: var(--bar_color);
+    z-index: 100;
+}
+
+div#rightbar div{
+    white-space: nowrap;
+}
+

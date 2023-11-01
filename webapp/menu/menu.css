@@ -1,0 +1,20 @@
+div#menu {
+    font-size: 20px;
+    color: var(--text_color);
+}
+div#menu div.menu_item {
+    margin: 1px 2px;
+    padding: 7px 40px;
+    padding-left: 25%;
+    cursor: pointer;
+    width: fit-content;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+div#menu div.menu_item.selected {
+    background: var(--shade2);
+}
+
+div#menu div.menu_item:hover {
+    background: var(--shade2);
+}

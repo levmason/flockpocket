@@ -1,0 +1,18 @@
+#left_menu {
+    float:left;
+    width: var(--bar_width);
+    min-width: var(--bar_min_width);
+    max-width: var(--bar_max_width);
+    height: 100%;
+    position: fixed;
+    top: var(--top_menu_width);
+    left: 0;
+    color: #ccc;
+    background: var(--bar_color);
+    z-index: 100;
+    padding-top: 20px;
+}
+
+#left_menu div{
+    white-space: nowrap;
+}

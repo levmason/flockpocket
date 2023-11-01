@@ -1,0 +1,812 @@
+input,
+select,
+div.form div.textarea {
+    font-family: "EB Garamond";
+    font-size: 18px;
+    color: var(--text_color_form);
+    width: 100%;
+}
+/* Change the white to any color */
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus,
+select:-webkit-autofill:active,
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: var(--text_color_form);
+}
+input::placeholder {
+    color: var(--shade3);
+}
+input:focus,
+select:focus,
+div.form div.textarea {
+    outline: inherit;
+}
+input.error, select.error {
+    border-color: red ! important;
+}
+
+label {
+    color: var(--text_color_light);
+    display: inline-block;
+}
+
+div.form {
+    width: 100%;
+    text-align: center;
+}
+div.form input,
+div.form select,
+div.form div.textarea {
+    border: none;
+    border-bottom: 1px solid #aaa;
+}
+div.form select {
+    width: 100%;
+}
+
+div.form label.form {
+    text-align: left;
+    padding: 4px 4px;
+    color: var(--text_color_light);
+}
+
+div.form .form {
+    margin: 10px;
+}
+
+/* profile picture */
+div.prof_pic_uploader {
+    padding: 10px;
+}
+div.prof_pic_uploader img {
+    width: 120px;
+    height: 120px;
+    display: block;
+    margin: auto;
+    padding: 10px 0;
+}
+
+div#cropper {
+    width: 310px;
+    height: 310px;
+    padding: 20px 20px 60px;
+}
+div.form div.textarea {
+    cursor: text;
+    white-space: pre-wrap;
+    display: inline-block;
+}
+
+/* submitted message */
+div.form_submitted {
+    width: 80%;
+    margin: auto;
+    margin-top: 100px;
+    text-align: center;
+    font-size: 32px;
+}
+
+
+/* help card */
+div.form div.card {
+    padding: 10px 20px;
+    margin: 0 20px 10px;
+    width: calc(100% - 80px);
+}
+
+/* family */
+div.form table.form {
+    width: calc(100% - 28px);
+    border-collapse: collapse;
+    margin-top: 30px;
+}
+div.form table.form select {
+    width: 125px;
+    margin: 8px 2px;
+    padding: 2px 4px;
+}
+div.form table.form input {
+    width: calc(100% - 2px);
+    margin: 8px 2px;
+    padding: 3px 8px;
+}
+div.form table.form td div.results {
+    display: none;
+    position: absolute;
+}
+div.form table.form tr td:last-child {
+    width: 1%;
+    white-space: nowrap;
+}
+div.form table.form thead {
+    background: var(--shade1);
+    color: var(--shade6);
+    border-bottom: 1px solid var(--shade3);
+}
+div.form table.form th {
+    text-align: left;
+    white-space: nowrap;
+    padding: 2px 10px;
+}
+
+
+/* divider */
+div.form div.form.divider {
+    margin: 50px 6px 20px;
+    width: calc(100% - 16px);
+    height: 16px;
+    border-bottom: 1px solid var(--shade5);
+}
+div.form div.form.divider span {
+    font-size: 20px;
+    background: var(--background);
+    font-weight: bold;
+    padding: 0 8px;
+}
+/*
+ * Chat Menu
+ */
+
+div#content div.thread_label {
+    font-size: 20px;
+    cursor: pointer;
+    padding: 10px 20px;
+    margin: 4px;
+    border-radius: 5px;
+    background: var(--shade1);
+}
+
+/*
+ * Chat Thread
+ */
+
+div#content div#thread {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+    height: 84vh;
+}
+div#content div#thread div#thread {
+    display: flex;
+    flex-flow: column-reverse;
+    flex-grow : 1;
+    width: calc(100% - 40px);
+    border: 1px solid var(--shade2);
+    border-radius: 20px;
+    padding: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+div#content div#thread img.threadpic {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+    top: 10px;
+    left: 0px;
+}
+
+/*
+ * Chat input
+ */
+div#content div#thread div#thread_input_wrapper {
+    position: relative;
+    width: 100%;
+    height: fit-content;
+}
+div#content div#thread div#thread_input {
+    font-family: "EB Garamond";
+    font-size: 16px;
+    color: var(--text_color);
+    width: calc(100% - 90px);
+    cursor: text;
+    white-space: pre-wrap;
+    display: inline-block;
+    background: var(--shade1);
+    border: 1px solid var(--shade1);
+    border-radius: 20px;
+    outline: inherit;
+    padding: 10px 20px;
+    margin: 10px 0 0 50px;
+}
+div#content div#thread div#thread_input_wrapper div#emoji {
+    position: absolute;
+    right: 10px;
+    top: 16px;
+    cursor: pointer;
+}
+div#content div#thread div#thread_input_wrapper div#emoji img {
+    width: 30px;
+    height: 30px;
+    opacity: 0.1;
+}
+div#content div#thread div#thread_input_wrapper div#emoji img:hover {
+    width: 30px;
+    height: 30px;
+    opacity: 0.2;
+}
+
+em-emoji-picker {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    z-index: 1;
+}
+
+/* message */
+div#content div#thread div.message_wrapper {
+    width: calc(100% - 20px);
+    position: relative;
+    padding: 10px;
+    border-radius: 20px;
+    margin: 0px 20px;
+    right: 20px;
+}
+div#content div#thread div.message_wrapper div.message {
+    margin-left: 60px;
+    padding: 1px 4px;
+    border-radius: 8px;
+    position: relative;
+}
+div#content div#thread div.message_wrapper div.message:hover {
+    background: var(--shade1);
+}
+
+div#content div#thread div.message_wrapper div.name {
+    margin-left: 64px;
+    font-size: 18px;
+    font-weight: bold;
+    display: inline-block;
+}
+div#content div#thread div.message_wrapper img.threadpic {
+    left: 10px;
+}
+div#content div#thread div.message_wrapper div.timestamp {
+    font-family: sans-serif;
+    font-size: 12px;
+    background: var(--shade1);
+    border-radius: 8px;
+    color: var(--text_color_light);
+    display: inline-block;
+    text-align: right;
+    position: absolute;
+    padding: 5px;
+    right: 0;
+    top: 0;
+    display: none;
+}
+div#content div#thread div.message_wrapper div.message:hover div.timestamp {
+    display: inline-block;
+}
+
+
+
+/* label */
+div#content div#thread div#label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+div#content div#thread div#label span {
+    position: absolute;
+    padding: 4px 20px;
+    font-size: 20px;
+    background: var(--background);
+    border-radius: 10px;
+    z-index: 100;
+}
+/* divider */
+div#content div#thread div.divider {
+    margin: 12px 6px;
+    width: calc(100% - 16px);
+    height: 8px;
+    border-bottom: 1px solid var(--shade4);
+    text-align: center;
+}
+div#content div#thread div.divider span {
+    font-family: sans-serif;
+    font-size: 12px;
+    color: var(--shade4);
+    background: var(--background);
+    padding: 0 16px;
+}
+body.login {
+    background: var(--shade1);
+}
+body.login div#login-box {
+    background: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px 30px 20px;
+    width: 300px;
+}
+body.login div#login-box input {
+    padding: 4px;
+    margin: 8px 0;
+}
+body.login div#login-box button {
+    margin-top: 40px;
+    width: 200px;
+}
+body.login form {
+    margin-block-end: 0;
+}
+body.login div#logo {
+    padding: 0 20px;
+    margin-bottom: 30px;
+}
+div.badge {
+    height: fit-content;
+    background: var(--shade1);
+    padding: 10px;
+    text-align: left;
+    display: flex;
+}
+div.badge:not(.nolink) {
+    cursor: pointer;
+}
+div.badge.search:hover {
+    background: var(--shade2);
+}
+div.badge.search {
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 20px auto;
+    min-width: fit-content;
+}
+
+div.badge img.pic {
+    border-radius: 50%;
+    width: 112px;
+    height: 112px;
+    padding: 4px 20px;
+}
+
+div.badge div.details {
+    font-size: 18px;
+    padding: 10px 20px 10px 0;
+}
+
+div.badge.search span.name {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+div.badge span.type {
+    font-style: italic;
+}
+
+div.badge span.email a {
+    text-decoration: none;
+}
+
+/* small */
+div.badge.small {
+    height: fit-content;
+    text-align: center;
+    border-radius: 20px;
+    display: inline-block;
+    padding: 10px 0 0;
+}
+div.badge.small img.pic {
+    padding: 0 12px 6px;
+    width: 80px;
+    height: 80px;
+}
+div.badge.small span.name {
+    font-size: 18px;
+    padding: 10px;
+}
+div.badge.small span.label {
+    font-size: 14px;
+    font-weight: light;
+    font-style: italic;
+    padding: 10px;
+}
+
+/* profile */
+div.badge.profile {
+    background: inherit;
+    cursor: inherit;
+}
+
+div.badge.profile img.pic {
+    width: 160px;
+    height: 160px;
+}
+div.badge.profile span.name {
+    font-size: 24px;
+    font-weight: bold;
+}
+div.badge.profile div.details {
+    padding: 20px 40px 20px 0;
+    font-size: 18px;
+}
+div.badge.profile button.chat_me {
+    margin-left: 0;
+}
+div.badge.profile button.chat_me img {
+    width: 16px;
+    height: 16px;
+    position: relative;
+    left: 6px;
+    top: 3px;
+}
+
+/* family */
+div.badge.family:hover {
+    background: var(--shade2);
+}
+div.badge.family img.pic {
+    padding: 4px 10px;
+    width: 40px;
+    height: 40px;
+}
+div#directory {
+    text-align: center;
+    width: 100%;
+}
+div#directory input {
+    padding: 4px 10px;
+    margin: 10px;
+    width: 300px;
+    height: 40px;
+    font-size: 22px;
+    color: var(--text_color_light);
+    border: 1px solid #aaa;
+    border-radius: 3px;
+}
+div#directory div#results {
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%);
+    width: 100%;
+    max-width: 660px;
+}
+div.profile {
+    width: 100%;
+}
+div.profile div.card {
+    background: var(--shade1);
+    border-radius: 6px;
+    padding: 10px 20px;
+    margin: 20px;
+    width: calc(100% - 80px);
+}
+div.profile div.card div.label {
+    text-align: center;
+    font-weight: bold;
+    font-size: 24px;
+    padding: 4px 10px 10px;
+}
+div.profile div.card div.text {
+    text-align: center;
+    font-size: 16px;
+    padding: 4px 10px 10px;
+}
+div.profile div.card.family {
+    text-align: center;
+}
+div#content {
+    text-align: left;
+    position: absolute;
+    width: calc(100% - 640px);
+    min-width: 460px;
+    left: 50%;
+    top: 40px;
+    transform: translate(-50%);
+    padding: 40px 20px 20px;
+}
+div.modal {
+    width: auto;
+    max-width: 90vw;
+    height: auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 6px;
+    text-align: center;
+    z-index: 10001;
+}
+
+div.modal-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    left: 0;
+    z-index: 10000;
+}
+
+/* modify the widget css for modal */
+div.modal div#widget_popup div.widget {
+    padding: 0;
+}
+div.modal div#widget_popup table#button_wrapper_inner {
+    display: none;
+}
+.popup_table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-left:auto;
+    margin-right:auto;
+    //clear:both;
+}
+
+.popup_table tr.hover:not(.hdr):hover {
+  background: rgba(0, 40, 86, 0.15);
+}
+.popup_table:not(.borderless) td {
+   border: 1px solid #ccc;
+}
+
+.popup_table td {
+    padding: 3px 10px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.popup_table th.label1 {
+    font-family: "Franklin Gothic Medium", "Franklin Gothic", "ITC Franklin Gothic", Arial, sans-serif;
+    font-size: 18px;
+    padding: 5px;
+    background-color: #424242;
+    color: #ccc;
+    border-style: solid;
+    border-color: #ccc;
+    border-width: 0 1px 0 1px;
+}
+
+.popup_table th.label2 {
+    font-family: "Franklin Gothic Medium", "Franklin Gothic", "ITC Franklin Gothic", Arial, sans-serif;
+    background-color: gray;
+    color: #eee;
+    font-size: 16px;
+    padding: 2px 5px;
+    border-style: solid;
+    border-color: #ccc;
+    border-width: 0 1px 0 1px;
+}
+
+.popup_table th {
+    font-family: "Consolas", Monaco, monospace;
+    padding: 0 5px;
+    white-space: nowrap;
+    font-weight: normal;
+    border: 1px solid #eee;
+    background: rgba(0, 0, 0, 0.2);
+    color: black;
+}
+
+.popup_table th.row-hdr {
+    text-align: right;
+    width: 1px;
+}
+
+.popup_table th.col-hdr {
+    min-width: 60px;
+}
+
+div#top_menu {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: var(--top_menu_width);
+    width: 100%;
+    background: var(--top_menu_bg);
+    z-index: 200;
+}
+
+/* logo */
+div#top_menu div#logo {
+    padding: 10px 0 10px 20px;
+    width: fit-content;
+    display: inline-block;
+}
+div#top_menu div#logo img {
+    width: 230px;
+    height: 40px;
+}
+
+/* user menu */
+div#user_menu {
+    float: right;
+    display: inline-block;
+    position: relative;
+}
+div#user_menu img {
+    width: 50px;
+    margin: 5px 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0.75;
+}
+div#user_menu img:hover {
+    opacity: 1;
+}
+div#user_menu div#user_menu_items {
+    position: absolute;
+    right: 0;
+    border-bottom-left-radius: 10px;
+    border: 1px solid var(--shade3);
+    border-top: 0;
+    border-right: 0;
+    width: fit-content;
+    font-size: 20px;
+    background: var(--bar_color);
+    color: var(--text_color);
+    display: none;
+}
+div#user_menu div.menu_item {
+    margin: 1px 2px;
+    padding: 7px 20px;
+    white-space: nowrap;
+    cursor: pointer;
+    width: fit-content;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    float: right;
+}
+div#user_menu div.menu_item.selected {
+    background: var(--shade2);
+}
+
+div#user_menu div.menu_item:hover {
+    background: var(--shade2);
+}
+#left_menu {
+    float:left;
+    width: var(--bar_width);
+    min-width: var(--bar_min_width);
+    max-width: var(--bar_max_width);
+    height: 100%;
+    position: fixed;
+    top: var(--top_menu_width);
+    left: 0;
+    color: #ccc;
+    background: var(--bar_color);
+    z-index: 100;
+    padding-top: 20px;
+}
+
+#left_menu div{
+    white-space: nowrap;
+}
+div#rightbar {
+    width: var(--bar_width);
+    min-width: var(--bar_min_width);
+    max-width: var(--bar_max_width);
+    height: 100%;
+    position: fixed;
+    top: var(--top_menu_width);
+    right: 0;
+    color: #ccc;
+    background: var(--bar_color);
+    z-index: 100;
+}
+
+div#rightbar div{
+    white-space: nowrap;
+}
+
+div#menu {
+    font-size: 20px;
+    color: var(--text_color);
+}
+div#menu div.menu_item {
+    margin: 1px 2px;
+    padding: 7px 40px;
+    padding-left: 25%;
+    cursor: pointer;
+    width: fit-content;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+div#menu div.menu_item.selected {
+    background: var(--shade2);
+}
+
+div#menu div.menu_item:hover {
+    background: var(--shade2);
+}
+:root {
+    --link_color: inherit;
+    --bar_width: 15vw;
+    --bar_min_width: 190px;
+    --bar_max_width: 220px;
+    --top_menu_width: 60px;
+    --font: "EB Garamond";
+}
+body.light {
+    --text_color: #222;
+    --text_color_light: var(--shade5);
+    --text_color_form: #698eb5;
+    --background: #fff;
+    --shade1: #f8f7f7;
+    --shade2: #ede9e9;
+    --shade3: #ddd9d9;
+    --shade4: #bab3b3;
+    --shade5: #818283;
+    --shade6: #4a4848;
+    --shade7: #2a2b2c;
+    --button_color: #c5b89b;
+    --button_hover_color: #cfc4a9;
+    --bar_color: var(--shade1);
+    --top_menu_bg: var(--shade6);
+    --disabled_color: var(--shade3);
+}
+body.dark {
+    --text_color: #ddd;
+    --background: #111213;
+    --shade1: #1d1e1f;
+    --shade2: #2a2b2c;
+    --shade3: #818283;
+    --shade4: #ede9e9;
+    --shade5: #f8f7f7;
+    --bar_color: var(--shade1);
+    --top_menu_bg: var(--shade5);
+}
+
+body {
+    font-family: var(--font);
+    background: var(--background);
+    color: var(--text_color);
+}
+
+a {
+    color: var(--link_color);
+    font-size: inherit;
+}
+
+h1 {
+    font-size: 30px;
+    font-weight: lighter;
+    width: 100%;
+    text-align: center;
+}
+label.button input[type="file"] {
+    display: none;
+}
+button, label.button {
+    font-family: var(--font);
+    font-size: 16px;
+    color: var(--text_color);
+    background: var(--button_color);
+    border: 0;
+    border-radius: 20px;
+    width: fit-content;
+    padding: 4px 16px;
+    cursor: pointer;
+    margin: 10px 5px 0;
+}
+button.big {
+    font-size: 20px;
+    padding: 6px 50px;
+    margin: 20px 5px;
+}
+button:hover, label.button:hover {
+    background: var(--button_hover_color);
+}
+button:disabled {
+    color: var(--disabled_color);
+    background: var(--shade2);
+    cursor: auto;
+}
+button:disabled:hover {
+    background: var(--shade2);
+}
+
+.hidden {
+    display: none;
+}

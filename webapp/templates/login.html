@@ -1,0 +1,28 @@
+{% load static %}
+<head>
+  <title>flockpocket</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Language" content="en" />
+  <meta name="language" content="en" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Levi Mason" />
+
+  <link rel="stylesheet" type="text/css" href="{% static "css/flockpocket.min.css" %}">
+</head>
+
+<body class="light login">
+  <div class="form" id="login-box" style="text-align:center;">
+    <div id="logo">
+      <img src="{% static "/img/logo_b.svg" %}" />
+    </div>
+    {% if invalid %}
+    <span style="color:red">Invalid</span>
+    {% endif %}
+    <form name="login" action="?" method="post" autocomplete="off">
+      {% csrf_token %}
+      <input name="username" placeholder="Email" required><br>
+      <input type="password" name="password" placeholder="Password" required><br>
+      <button class="big" value='login'>Log In</button>
+    </form>
+  </div>
+</body>

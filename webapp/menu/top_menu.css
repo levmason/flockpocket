@@ -1,0 +1,21 @@
+div#top_menu {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: var(--top_menu_width);
+    width: 100%;
+    background: var(--top_menu_bg);
+    z-index: 200;
+}
+
+/* logo */
+div#top_menu div#logo {
+    padding: 10px 0 10px 20px;
+    width: fit-content;
+    display: inline-block;
+}
+div#top_menu div#logo img {
+    width: 230px;
+    height: 40px;
+}
+

@@ -1,0 +1,10 @@
+git
+htop
+procps
+python3-psycopg2
+nginx
+redis-server
+curl
+unzip
+sudo
+ntp

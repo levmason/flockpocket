@@ -1,0 +1,27 @@
+body.login {
+    background: var(--shade1);
+}
+body.login div#login-box {
+    background: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px 30px 20px;
+    width: 300px;
+}
+body.login div#login-box input {
+    padding: 4px;
+    margin: 8px 0;
+}
+body.login div#login-box button {
+    margin-top: 40px;
+    width: 200px;
+}
+body.login form {
+    margin-block-end: 0;
+}
+body.login div#logo {
+    padding: 0 20px;
+    margin-bottom: 30px;
+}

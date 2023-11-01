@@ -1,0 +1,107 @@
+div.badge {
+    height: fit-content;
+    background: var(--shade1);
+    padding: 10px;
+    text-align: left;
+    display: flex;
+}
+div.badge:not(.nolink) {
+    cursor: pointer;
+}
+div.badge.search:hover {
+    background: var(--shade2);
+}
+div.badge.search {
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 20px auto;
+    min-width: fit-content;
+}
+
+div.badge img.pic {
+    border-radius: 50%;
+    width: 112px;
+    height: 112px;
+    padding: 4px 20px;
+}
+
+div.badge div.details {
+    font-size: 18px;
+    padding: 10px 20px 10px 0;
+}
+
+div.badge.search span.name {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+div.badge span.type {
+    font-style: italic;
+}
+
+div.badge span.email a {
+    text-decoration: none;
+}
+
+/* small */
+div.badge.small {
+    height: fit-content;
+    text-align: center;
+    border-radius: 20px;
+    display: inline-block;
+    padding: 10px 0 0;
+}
+div.badge.small img.pic {
+    padding: 0 12px 6px;
+    width: 80px;
+    height: 80px;
+}
+div.badge.small span.name {
+    font-size: 18px;
+    padding: 10px;
+}
+div.badge.small span.label {
+    font-size: 14px;
+    font-weight: light;
+    font-style: italic;
+    padding: 10px;
+}
+
+/* profile */
+div.badge.profile {
+    background: inherit;
+    cursor: inherit;
+}
+
+div.badge.profile img.pic {
+    width: 160px;
+    height: 160px;
+}
+div.badge.profile span.name {
+    font-size: 24px;
+    font-weight: bold;
+}
+div.badge.profile div.details {
+    padding: 20px 40px 20px 0;
+    font-size: 18px;
+}
+div.badge.profile button.chat_me {
+    margin-left: 0;
+}
+div.badge.profile button.chat_me img {
+    width: 16px;
+    height: 16px;
+    position: relative;
+    left: 6px;
+    top: 3px;
+}
+
+/* family */
+div.badge.family:hover {
+    background: var(--shade2);
+}
+div.badge.family img.pic {
+    padding: 4px 10px;
+    width: 40px;
+    height: 40px;
+}

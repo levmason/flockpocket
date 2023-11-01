@@ -1,0 +1,11 @@
+Django
+aiofiles
+aioredis[hiredis]
+asgiref
+channels
+daphne
+lockfile
+psycopg[binary]
+pyyaml
+typing_extensions
+urllib3
