@@ -68,6 +68,7 @@ if $FULL; then
 
     # set the binary symlink
     ln -sf $PRJ_DIR/flockpocket.py /usr/local/bin/flockpocket
+    ln -sf $PRJ_DIR/flockpocket.py /usr/local/bin/fp
 fi
 
 # set the ssl certificates
