@@ -7,5 +7,6 @@ daphne
 lockfile
 psycopg[binary]
 pyyaml
+pytz
 typing_extensions
 urllib3

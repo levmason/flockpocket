@@ -1,5 +1,4 @@
 import uuid
-import architect
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -61,18 +60,3 @@ class ChatThread (models.Model):
 
     class Meta:
         db_table = 'fp_thread'
-
-@architect.install('partition', type='range', subtype='date', constraint='day', column='timestamp')
-class Message (models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    timestamp = models.DateTimeField(db_index=True)
-    thread = models.ForeignKey(ChatThread, db_index=False, on_delete=models.CASCADE)
-    messages = models.JSONField(null=True)
-
-    def __unicode__(self):
-        return self.thread, self.timestamp
-
-    class Meta:
-        db_table = 'fp_message'
-        index_together = [["thread", "timestamp"]]
-
