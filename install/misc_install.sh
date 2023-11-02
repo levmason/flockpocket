@@ -1,6 +1,7 @@
 #!/bin/bash
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 PRJ_DIR=`dirname "$DIR"`
+CERT_DIR=$PRJ_DIR/server/certs/
 CFG_DIR=/etc/flockpocket/
 LOG_DIR=/var/log/flockpocket/
 PID_DIR=/run/flockpocket/
@@ -68,4 +69,12 @@ if $FULL; then
     # set the binary symlink
     ln -sf $PRJ_DIR/flockpocket.py /usr/local/bin/flockpocket
 fi
+
+# set the ssl certificates
+if ! test -f $CERT_DIR/app.key; then
+    echo -e "\n\n\n\n\n\n\n" | openssl req -nodes -newkey rsa:2048 -x509 -days 1825 -keyout $CERT_DIR/app.key -out $CERT_DIR/app.pem 2> /dev/null
+fi
+
+
 exit 0
+
