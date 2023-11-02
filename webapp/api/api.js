@@ -89,19 +89,14 @@ function API (fp) {
 
     /* default handlers */
     self.ui_config = function (data) {
-        console.log(data);
-
         fp.user_d = data.user_d || {};
         fp.thread_d = data.thread_d || {};
 
         // set the picture urls
         for (let id in fp.user_d) {
             let user = fp.user_d[id];
-            if (user.pic) {
-                user.pic_url = utility.static_url('profile_pics/'+user.pic);
-            } else {
-                user.pic_url = utility.static_url('profile_pics/avatar.svg');
-            }
+	    user.pic = user.pic || "avatar.svg";
+            user.pic_url = utility.static_url('profile_pics/'+user.pic);
         }
         fp.user = fp.user_d[data.user_id];
 

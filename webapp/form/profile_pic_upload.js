@@ -3,11 +3,7 @@ function profile_pic_uploader (container, config, append = true) {
     form_el.call(self, container, config, append);
 
     // init config
-    if (self.value) {
-        self.avatar = utility.static_url('profile_pics/'+self.value);
-    } else {
-        self.avatar = utility.static_url('profile_pics/avatar.svg');
-    }
+    self.avatar = utility.static_url('profile_pics/' + (self.value || "avatar.svg"));
 
     // initialize the element
     self.init = function () {

@@ -6,19 +6,13 @@ function badge (container, user, type, append = false, label = null) {
     self.link_class = Boolean(user.id && !["profile"].includes(type)) ? "" : "nolink";
     self.chat_icon = utility.static_url('img/chat.svg');
 
-    if (user.pic) {
-        self.pic_url = utility.static_url('profile_pics/'+user.pic);
-    } else {
-        self.pic_url = utility.static_url('profile_pics/avatar.svg');
-    }
-
     // initialize the badge
     self.init = function () {
         self.html = `<div id=${user.id} class="badge ${type} ${self.link_class}" >`;
         switch (type) {
         case "small":
             self.html += `
-                <img class="pic" src="${self.pic_url}"><br>
+                <img class="pic" src="${user.pic_url}"><br>
                 <span class="name">${user.full_name}</span>`;
             if (label) {
                 self.html += `<br><span class="label">${label}</span>`;
@@ -26,7 +20,7 @@ function badge (container, user, type, append = false, label = null) {
             break;
         case "search":
             self.html += `
-                <img class="pic" src="${self.pic_url}">
+                <img class="pic" src="${user.pic_url}">
                 <div class="details">
                   <span class="name">${user.full_name}</span><br>
                   <span class="type">${user.membership_status}</span><br>
@@ -36,14 +30,14 @@ function badge (container, user, type, append = false, label = null) {
             break;
         case "family":
             self.html += `
-                <img class="pic" src="${self.pic_url}">
+                <img class="pic" src="${user.pic_url}">
                 <div class="details">
                   <span class="name">${user.full_name}</span> | <span class="email">${user.email}</span>
                 </div>`;
             break;
         case "profile":
             self.html += `
-                <img class="pic" src="${self.pic_url}">
+                <img class="pic" src="${user.pic_url}">
                 <div class="details">
                   <span class="name">${user.full_name}</span><br>
                   <span class="type">${user.membership_status}</span><br>
