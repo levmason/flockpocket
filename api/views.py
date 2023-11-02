@@ -1,4 +1,5 @@
 import time
+import uuid
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import user_passes_test
@@ -89,13 +90,15 @@ async def invite_user (request):
             )
 
         # LEVY: send the email
-
+        log.debug(type(user.id))
         log.debug(user.id)
         return HttpResponse(status=201)
 
 async def update_user (request, user_id):
     try:
         if request.method == "POST":
+            user_id = uuid.UUID(user_id)
+
             user = await User.objects.aget(pk=user_id)
 
             # extract the user parameters
@@ -153,6 +156,9 @@ async def update_user (request, user_id):
             # log in the new user
             if password:
                 await user_login(request, user.email, password)
+
+            # update or add the user (send to all active websockets)
+            await cfg.update_user(user)
 
             return HttpResponse(status=201)
     except Exception as e:

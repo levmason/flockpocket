@@ -1,14 +1,18 @@
 from common.models import ChatThread as ChatThread_db
 from chat.ChatThread import ChatThread
+from common import aio
 from common import logger as log
 
 class User:
     fields = ['id', 'email', 'first_name', 'last_name', 'is_active', 'details']
 
     def __init__(self, db_entry):
-        self.db_entry = db_entry
         self.socket_l = []
         self.thread_d = {}
+        self.update(db_entry)
+
+    def update (self, db_entry):
+        self.db_entry = db_entry
 
         for field in self.fields:
             val = getattr(db_entry, field)
@@ -26,8 +30,11 @@ class User:
         return ret
 
     async def push (self, msg):
+        task_l = []
         for socket in self.socket_l:
-            await socket.respond(msg)
+            task_l.append(socket.respond(msg))
+
+        await aio.gather(task_l)
 
     async def get_threads (self):
         self.thread_d = {}
@@ -48,10 +55,20 @@ class User:
             "label": label
         }
 
-    async def add_message (self, message):
+    #
+    # Websockets push functions
+    async def push_message (self, message):
         await self.push(
             {
                 "name": "message",
                 "options": message
+            }
+        )
+
+    async def push_user (self, user):
+        await self.push(
+            {
+                "name": "user",
+                "options": user
             }
         )

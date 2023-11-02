@@ -38,7 +38,7 @@ class ChatThread:
         self.timestamp = message['timestamp']
 
         for user in self.user_l:
-            await user.add_message(message)
+            await user.push_message(message)
 
     #
     # Interface to the datastore

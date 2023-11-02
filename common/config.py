@@ -18,6 +18,7 @@ from . import linux
 from . import root_config as root
 from . import logger as log
 from . import utility
+from . import aio
 
 # Globals (from root)
 tool_name = root.tool_name
@@ -82,6 +83,18 @@ async def init_user_d ():
         log.debug("WS Users took: %s" % (t2-t1))
 
     return user_d
+
+async def update_user (user_db):
+    # see if the user already exists
+    user = user_d[user_db.id]
+    user.update(user_db)
+    user_dict = user.as_dict()
+
+    task_l = []
+    for usr_id, usr in user_d.items():
+        task_l.append(usr.push_user(user_dict))
+
+    await aio.gather(task_l)
 
 async def get_user (user_id, user_db = None):
     if isinstance(user_id, str):
