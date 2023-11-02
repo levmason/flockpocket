@@ -34,7 +34,7 @@ class DatastoreDaemon():
         # initialize the chat handler
         self.chat = ChatHandler()
         # subscribe to data
-        self.sub = await cfg.redis.psubscribe(['%s*' % self.name])
+        self.sub = await cfg.redis.psubscribe('%s*' % self.name)
         # start the message handler
         await self.handler()
         # gracefully stop the chat handlers
