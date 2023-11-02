@@ -71,9 +71,8 @@ async def init_user_d ():
     fields = ['id', 'email', 'first_name', 'last_name', 'is_active', 'details']
     user_d = {}
     async for user_db in User_db.objects.all():
-        if user_db.is_active:
-            user = User(user_db)
-            user_d[user_db.id] = user
+        user = User(user_db)
+        user_d[user_db.id] = user
 
     for user in user_d.values():
         await user.get_threads()
@@ -86,7 +85,7 @@ async def init_user_d ():
 
 async def update_user (user_db):
     # see if the user already exists
-    user = user_d[user_db.id]
+    user = await get_user(user_db.id)
     user.update(user_db)
     user_dict = user.as_dict()
 

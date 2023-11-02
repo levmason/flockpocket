@@ -16,12 +16,12 @@ function profile (container, user) {
         self.badge = new badge(self.el, user, "profile");
 
         // family
-        if (user.family) {
+        if (user.family && user.family.length) {
             new familycard(self.el, user.family);
         }
 
         // skills
-        if (user.skills) {
+        if (user.skills && user.skills.length) {
             let text = "";
             for (var skill of user.skills) {
                 text += skill + '<br>';

@@ -52,14 +52,23 @@ function flockpocket () {
     }
 
     window.onhashchange = function(e) {
+	// get the page hash
         self.hash = window.location.hash.substring(1);
         let [page, id] = self.hash.split("/");
+
+	// remove selected menu item
+        $('div.menu_item').removeClass("selected");
+	if (page) {
+	    $(`div.menu_item#${page}`).addClass("selected");
+	}
+
         switch(page) {
-        case "profile":
-            new profile($('#content'), self.user_d[id]);
-            break;
         case "directory":
-            new directory($("#content"));
+	    if (id) {
+		new profile($('#content'), self.user_d[id]);
+	    } else {
+		new directory($("#content"));
+	    }
             break
         case "settings":
             new settings($("#content"));
@@ -100,11 +109,6 @@ $(document).ready(function(){
 
     fp = new flockpocket();
     fp.init();
-    new Notification('Hi, How are you?');
-
-    new Notification('Notification title', {
-        body: 'Hey there! You\'ve been notified!',
-    });
 });
 
 

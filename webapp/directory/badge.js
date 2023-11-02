@@ -63,7 +63,7 @@ function badge (container, user, type, append = false, label = null) {
 
         if (self.link) {
             self.el.on("click", function (e) {
-                document.location.hash = 'profile/' + user.id;
+                document.location.hash = 'directory/' + user.id;
             })
         } else {
             self.el.on("click", "button.chat_me", function (e) {

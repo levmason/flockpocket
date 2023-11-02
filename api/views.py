@@ -1,5 +1,6 @@
 import time
 import uuid
+import traceback
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import user_passes_test
@@ -90,7 +91,6 @@ async def invite_user (request):
             )
 
         # LEVY: send the email
-        log.debug(type(user.id))
         log.debug(user.id)
         return HttpResponse(status=201)
 

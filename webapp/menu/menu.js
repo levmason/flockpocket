@@ -29,9 +29,6 @@ function menu (container) {
     // initialize handlers
     self.init_handlers = function () {
         self.el.on("click", "div.menu_item", function (e) {
-            $('div.menu_item').removeClass("selected");
-            $(this).addClass("selected");
-
             let id = $(this).attr("id")
             document.location.hash = id;
         })
