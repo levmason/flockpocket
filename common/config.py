@@ -32,6 +32,10 @@ get_pidfile = root.get_pidfile
 get_sockfile = root.get_sockfile
 profile_pic_dir = "%s/static/profile_pics/" % proj_dir
 
+# make the directories
+if not os.path.exists(chat_dir):
+    os.makedirs(chat_dir)
+
 services = [
     'daphne',
     'datastore',

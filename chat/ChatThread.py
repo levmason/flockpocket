@@ -1,8 +1,5 @@
 import time
-import uuid
-import aiofiles
 from common import config as cfg
-from common import crypto
 from common import logger as log
 
 class ChatThread:
@@ -10,10 +7,8 @@ class ChatThread:
         self.db_entry = db_entry
         self.id = db_entry.id
         self.label = db_entry.label
-        self.path = f"{cfg.chat_dir}/{self.id}"
         self.timestamp = 0
         self.user_l = []
-        self.message_l = None
 
     async def set_users (self):
         async for user_db in self.db_entry.members.all():
@@ -47,67 +42,22 @@ class ChatThread:
 
     #
     # Interface to the datastore
-    #
     async def push_to_datastore (self, message):
+        """ push message to the datastore """
+
         await cfg.redis.ds_push({
-            "name": "store_message",
-            "options": {
+            "store_message": {
                 'thread_id': str(self.id),
                 'message': message
             }
         })
 
     async def read_from_datastore (self):
+        """ read message history from datastore """
+
         query = {
-            'name': 'get_thread_history',
-            'options': {
+            'get_thread_history': {
                 'thread_id': str(self.id)
             }
         }
         return await cfg.redis.ds_query(query)
-
-    #
-    # Datastore functions
-    #
-    async def add_message (self, message):
-        """ add a message to the history cache """
-
-        if self.message_l is None:
-            await self.read()
-
-        self.message_l.append(message)
-
-    async def get_history (self):
-        """ get the chat history (disk or cache) """
-
-        if self.message_l is None:
-            await self.read()
-
-        return self.message_l
-
-    async def write (self):
-        """ write the chat history to the disk """
-
-        data = crypto.encode(self.message_l)
-        async with aiofiles.open(self.path, "wb") as f:
-            await f.write(data)
-
-    async def read (self):
-        """ read the chat history from the disk """
-
-        self.message_l = []
-
-        t1 = time.time()
-        try:
-            async with aiofiles.open(self.path, "rb") as f:
-                data = await f.read()
-        except FileNotFoundError:
-            return
-
-        t2 = time.time()
-        if (t2-t1) > 1:
-            log.debug("thread get took: %s" % (t2-t1))
-
-        # decode the data
-        data = crypto.decode(data)
-        self.message_l = data

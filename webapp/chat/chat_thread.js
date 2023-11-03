@@ -87,10 +87,6 @@ function chat_thread (container, id) {
         });
 
         self.el.on("keypress", "div#thread_input", function(e) {
-
-        })
-
-        self.el.on("keypress", "div#thread_input", function(e) {
             if (e.which == 13) {
                 e.preventDefault();
                 let msg = $(this).text();
@@ -135,18 +131,25 @@ function chat_thread (container, id) {
             }
         })
 
+        /* message received */
         fp.api.handlers.message = function (options) {
             if (options.thread == self.thread_id) {
+                // remove the typing notification
+                let user_id = options.message.user;
+                self.typing_d[user_id].remove();
+                // insert the message to the thread
                 self.add_message(options.message);
             }
         }
+
+        /* typing notification received */
         fp.api.handlers.typing = function (options) {
             if (options.thread == self.thread_id) {
                 let user = fp.user_d[options.user];
                 let name = user.full_name;
                 if (options.clear) {
                     self.typing_d[user.id].remove();
-                } else {
+                } else if (!(user.id in self.typing_d)) {
                     self.thread_el.prepend(`<div class="divider">`+
                                            `<span>${name} is typing...</span>`+
                                            `</div>`);

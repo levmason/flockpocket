@@ -61,15 +61,3 @@ class ChatHandler:
             return thread
         except Exception as e:
             log.debug(e)
-
-    async def read_thread (self, thread_id):
-        thread = await self.get_thread(thread_id)
-        return await thread.get_history()
-
-    async def stop (self):
-        for thread_id, thread in self.thread_d.items():
-            await thread.write()
-
-    #
-    # Websocket handler functions
-    #

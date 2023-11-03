@@ -4,11 +4,9 @@ import uuid
 from common import config as cfg
 from common import logger as log
 from common import aio
-from chat.ChatHandler import ChatHandler
+from .ChatDatastore import ChatDatastore
 
 class DatastoreDaemon():
-    chat = ChatHandler()
-
     def __init__(self):
         self.name = "datastore"
         self.stdin_path = '/dev/null'
@@ -32,7 +30,7 @@ class DatastoreDaemon():
         #await ChatThread_db.objects.all().adelete();
 
         # initialize the chat handler
-        self.chat = ChatHandler()
+        self.chat = ChatDatastore()
         # subscribe to data
         self.sub = await cfg.redis.psubscribe('%s*' % self.name)
         # start the message handler
@@ -50,22 +48,18 @@ class DatastoreDaemon():
                 log.debug(traceback.format_exc())
 
     async def process_query (self, channel, query):
-        # get the query type
-        query_type = query.get('name').lower()
 
-        # find the query handler
-        try:
-            fn = getattr(self, query_type)
-            t1 = time.time()
-            response = await fn(query.get('options', {}))
-            t2 = time.time()
-            #log.debug("Query/%s took: %sms" % (query_type, int(1000*(t2-t1))))
+        for name, options in query.items():
+            # find the query handler
+            try:
+                fn = getattr(self, name)
+                response = await fn(**options)
 
-            if not channel.endswith(self.name):
-                await self.respond(channel, response)
-        except Exception as e:
-            log.debug("Can't process query: %s\n%s" % (query_type, e))
-            log.debug(traceback.format_exc())
+                if not channel.endswith(self.name):
+                    await self.respond(channel, response)
+            except Exception as e:
+                log.debug("Can't process query: %s\n%s" % (name, e))
+                log.debug(traceback.format_exc())
 
     async def respond (self, channel, response):
         await cfg.redis.respond(channel, response)
@@ -73,14 +67,10 @@ class DatastoreDaemon():
     #
     # Chat Threads
     #
-    async def get_thread_history (self, opt):
-        thread_id = uuid.UUID(opt['thread_id'])
-        return await self.chat.read_thread(thread_id)
+    async def get_thread_history (self, thread_id = None):
+        thread_id = uuid.UUID(thread_id)
+        return await self.chat.get_history(thread_id)
 
-    async def store_message (self, opt):
-        thread_id = uuid.UUID(opt['thread_id'])
-        thread = await self.chat.get_thread(thread_id)
-        if thread:
-            await thread.add_message(opt['message'])
-        else:
-            log.debug(f"Can't find thread {thread_id}")
+    async def store_message (self, thread_id = None, message = None):
+        thread_id = uuid.UUID(thread_id)
+        await self.chat.add_message(thread_id, message)
