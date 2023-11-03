@@ -61,8 +61,7 @@ class User:
         if user is not self:
             await self.push(
                 {
-                    "name": "typing",
-                    "options": {
+                    "typing": {
                         "thread": str(thread.id),
                         "user": str(user.id),
                         "clear": clear,
@@ -73,8 +72,7 @@ class User:
     async def push_message (self, thread, message):
         await self.push(
             {
-                "name": "message",
-                "options": {
+                "message": {
                     'message': message,
                     'thread': str(thread.id)
                 }
@@ -84,7 +82,6 @@ class User:
     async def push_user (self, user):
         await self.push(
             {
-                "name": "user",
-                "options": user
+                "user": user
             }
         )

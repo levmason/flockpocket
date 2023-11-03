@@ -52,10 +52,7 @@ class FlockConsumer(AsyncWebsocketConsumer):
         # Formats the message
         message = json.loads(text_data)
         if isinstance(message, str):
-            message = {
-                'name': message,
-                'options': {}
-                }
+            message = {message: {}}
 
         # Starts a new task to handle the message
         aio.create_task(self.handle_message(message))
@@ -63,49 +60,45 @@ class FlockConsumer(AsyncWebsocketConsumer):
     async def handle_message (self, message):
         """Handles the message"""
 
-        # Finds the correct API handler function
-        api_fn_name = message["name"]
-        api_fn = getattr(self, api_fn_name)
+        # find all tasks
+        task_l = []
+        for name, options in message.items():
+            # Finds the correct API handler function
+            if '.' in name:
+                module_name, fn_name = name.split(".")
+                module = getattr(self, module)
+                fn = getattr(module, fn_name)
+            else:
+                fn = getattr(self, name)
 
-        # Extracts the options from the query
-        options = message.get("options", {})
+            # queue the handler function (the ** converts the dictionary into keyword arguments)
+            task_l.append(fn(**options))
 
-        try:
-            # Run the API handler function (the ** converts the dictionary into keyword arguments)
-            response = await api_fn(**options)
+        # execute tasks
+        results = await aio.gather(task_l)
 
-            # If there's a response, then send it to the browser
-            if response:
-                await self.respond(response)
-
-        except Exception as e:
-            log.debug(traceback.format_exc())
-            await self.error(str(e))
+        # handle responses
+        for r in results:
+            # if there's an error, report it
+            if isinstance(r, Exception):
+                await self.error(str(r))
+                # debug the error
+                try:
+                    raise r
+                except:
+                    log.debug("Error in handler:\n%s" % traceback.format_exc())
+            elif r:
+                # If there's a response, then send it to the browser
+                await self.respond(r)
 
     async def ui_config (self):
         return {
-            'name': 'ui_config',
-            'options': {
+            'ui_config': {
                 'user_id': str(self.user.id),
                 'user_d': {str(x):y.as_dict() for x,y in cfg.user_d.items() if y.is_active},
                 'thread_d': self.user.thread_d,
             }
         }
-
-    async def threads (self):
-        thread_d = {}
-        async for thread in ChatThread_db.objects.filter(members__id=self.user.id):
-            label = thread.label
-            if label == "{user}":
-                for member in thread.members.all():
-                    if member.id != self.user.id:
-                        label = f"{member.first_name} {member.last_name}"
-
-            thread_d[str(thread.id)] = {
-                "label": label
-            }
-
-        return thread_d
 
     async def typing (self, thread_id = None, clear = False):
         thread = await self.chat.get_thread(thread_id)
@@ -143,7 +136,4 @@ class FlockConsumer(AsyncWebsocketConsumer):
             history = []
 
         if thread:
-            return {
-                "name": "thread",
-                "options": history,
-            }
+            return {"thread": history}

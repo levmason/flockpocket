@@ -52,8 +52,7 @@ class ChatHandler:
                 user.add_thread(thread)
                 entry = user.thread_d[str(thread.id)]
                 await user.push({
-                    "name": "new_thread",
-                    "options": {
+                    "new_thread": {
                         "id": str(thread.id),
                         "label": entry['label'],
                     }

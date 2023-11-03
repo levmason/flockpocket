@@ -52,8 +52,7 @@ function chat_thread (container, id) {
 
         // get the thread history
         fp.api.query({
-            name: "thread",
-            options: {
+            thread: {
                 thread_id: self.thread_id,
                 user_id: self.user_id
             }
@@ -97,8 +96,7 @@ function chat_thread (container, id) {
                 let msg = $(this).text();
                 if (msg) {
                     let query = {
-                        name: 'message',
-                        options: {
+                        message: {
                             thread_id: self.thread_id,
                             to_user_id: self.user_id,
                             text: msg,
@@ -118,8 +116,7 @@ function chat_thread (container, id) {
                 } else {
                     // typing notifications
                     fp.api.query({
-                        name: 'typing',
-                        options: {
+                        typing: {
                             thread_id: self.thread_id,
                         }
                     });
@@ -128,8 +125,7 @@ function chat_thread (container, id) {
                 self.typing_timer = setTimeout(() => {
                     // typing notifications
                     fp.api.query({
-                        name: 'typing',
-                        options: {
+                        typing: {
                             clear: true,
                             thread_id: self.thread_id,
                         }

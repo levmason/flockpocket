@@ -71,34 +71,38 @@ function API (fp) {
             return;
         }
 
-        let handler = self[data.name];
-        let view_handler = self.handlers[data.name];
-        if (!(handler || view_handler)) {
-            modal.alert(`No api handler for ${data.name}`);
-        } else {
-            // run the default handler
-            if (handler) {
-                handler(data.options);
-            }
-            // run the view-specific handler
-            if (view_handler) {
-                view_handler(data.options);
+        for (let name in data) {
+            let options = data[name];
+            let handler = self[name];
+            let view_handler = self.handlers[name];
+
+            if (!(handler || view_handler)) {
+                modal.alert(`No api handler for ${name}`);
+            } else {
+                // run the default handler
+                if (handler) {
+                    handler(options);
+                }
+                // run the view-specific handler
+                if (view_handler) {
+                    view_handler(options);
+                }
             }
         }
     }
 
     /* default handlers */
-    self.ui_config = function (data) {
-	console.log(data);
-        fp.user_d = data.user_d || {};
-        fp.thread_d = data.thread_d || {};
+    self.ui_config = function (opt) {
+	console.log(opt);
+        fp.user_d = opt.user_d || {};
+        fp.thread_d = opt.thread_d || {};
 
         // set the picture urls
         for (let id in fp.user_d) {
             let user = fp.user_d[id];
             user.pic_url = utility.static_url('profile_pics/'+ (user.pic || "avatar.svg"));
         }
-        fp.user = fp.user_d[data.user_id];
+        fp.user = fp.user_d[opt.user_id];
 
         fp.init_ui();
         window.onhashchange();
