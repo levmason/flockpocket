@@ -50,6 +50,9 @@ class User (AbstractUser):
 
     objects = UserManager()
 
+    class Meta:
+        db_table = 'fp_user'
+
 class ChatThread (models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     label = models.TextField()

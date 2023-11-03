@@ -1,7 +1,8 @@
 #!/bin/bash
 
-pip install Django --upgrade
-
+# make the migrations
+/opt/flockpocket/manage.py makemigrations
+# apply the migrations
 while ! /opt/flockpocket/manage.py migrate; do
     echo "Database Initialization Failed!"
     sleep 5
