@@ -38,7 +38,12 @@ class ChatThread:
         self.timestamp = message['timestamp']
 
         for user in self.user_l:
-            await user.push_message(message)
+            await user.push_message(self, message)
+
+    async def typing (self, typing_user, clear):
+        """ send <user> typing notifications to users """
+        for user in self.user_l:
+            await user.push_typing(self, typing_user, clear)
 
     #
     # Interface to the datastore

@@ -107,6 +107,11 @@ class FlockConsumer(AsyncWebsocketConsumer):
 
         return thread_d
 
+    async def typing (self, thread_id = None, clear = False):
+        thread = await self.chat.get_thread(thread_id)
+        if thread:
+            await thread.typing(self.user, clear)
+
     async def message (self, thread_id = None, to_user_id = None, text = None):
         if to_user_id:
             to_user = await cfg.get_user(to_user_id)

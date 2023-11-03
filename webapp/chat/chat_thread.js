@@ -3,6 +3,9 @@ function chat_thread (container, id) {
     el.call(self, container);
     self.message_l = [];
     self.last_user = null;
+    self.typing_timeout = 5000;
+    self.typing_timer = null;
+    self.typing_d = {};
 
     if (id.includes("=")) {
         self.user = fp.user_d[id.split("=")[1]];
@@ -85,6 +88,10 @@ function chat_thread (container, id) {
         });
 
         self.el.on("keypress", "div#thread_input", function(e) {
+
+        })
+
+        self.el.on("keypress", "div#thread_input", function(e) {
             if (e.which == 13) {
                 e.preventDefault();
                 let msg = $(this).text();
@@ -104,11 +111,52 @@ function chat_thread (container, id) {
                     $(this).empty();
                 }
                 return false;
+            } else {
+                // clear typing timeout
+                if (self.typing_timer) {
+                    clearTimeout(self.typing_timer);
+                } else {
+                    // typing notifications
+                    fp.api.query({
+                        name: 'typing',
+                        options: {
+                            thread_id: self.thread_id,
+                        }
+                    });
+                }
+
+                self.typing_timer = setTimeout(() => {
+                    // typing notifications
+                    fp.api.query({
+                        name: 'typing',
+                        options: {
+                            clear: true,
+                            thread_id: self.thread_id,
+                        }
+                    });
+                    self.typing_timer = null;
+                }, self.typing_timeout);
             }
         })
 
         fp.api.handlers.message = function (options) {
-            self.add_message(options);
+            if (options.thread == self.thread_id) {
+                self.add_message(options.message);
+            }
+        }
+        fp.api.handlers.typing = function (options) {
+            if (options.thread == self.thread_id) {
+                let user = fp.user_d[options.user];
+                let name = user.full_name;
+                if (options.clear) {
+                    self.typing_d[user.id].remove();
+                } else {
+                    self.thread_el.prepend(`<div class="divider">`+
+                                           `<span>${name} is typing...</span>`+
+                                           `</div>`);
+                    self.typing_d[user.id] = self.thread_el.children().first();
+                }
+            }
         }
     }
 
@@ -117,7 +165,7 @@ function chat_thread (container, id) {
 
         if (date != self.last_date) {
             self.last_user = null;
-            self.thread_el.prepend(`<div class="divider"><span>${date}</span></div>`);
+            self.thread_el.prepend(`<div class="divider timestamp"><span>${date}</span></div>`);
         }
         if (msg.user == self.last_user) {
             let latest = self.message_l.last();

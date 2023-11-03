@@ -57,11 +57,27 @@ class User:
 
     #
     # Websockets push functions
-    async def push_message (self, message):
+    async def push_typing (self, thread, user, clear):
+        if user is not self:
+            await self.push(
+                {
+                    "name": "typing",
+                    "options": {
+                        "thread": str(thread.id),
+                        "user": str(user.id),
+                        "clear": clear,
+                    }
+                }
+            )
+
+    async def push_message (self, thread, message):
         await self.push(
             {
                 "name": "message",
-                "options": message
+                "options": {
+                    'message': message,
+                    'thread': str(thread.id)
+                }
             }
         )
 

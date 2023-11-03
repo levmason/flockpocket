@@ -52,7 +52,7 @@ div#content div#thread div#thread_input {
     font-family: "EB Garamond";
     font-size: 16px;
     color: var(--text_color);
-    width: calc(100% - 90px);
+    width: calc(100% - 120px);
     cursor: text;
     white-space: pre-wrap;
     display: inline-block;
@@ -60,13 +60,13 @@ div#content div#thread div#thread_input {
     border: 1px solid var(--shade1);
     border-radius: 20px;
     outline: inherit;
-    padding: 10px 20px;
+    padding: 10px 50px 10px 20px;
     margin: 10px 0 0 50px;
 }
 div#content div#thread div#thread_input_wrapper div#emoji {
     position: absolute;
     right: 10px;
-    top: 16px;
+    bottom: 6px;
     cursor: pointer;
 }
 div#content div#thread div#thread_input_wrapper div#emoji img {
@@ -156,8 +156,10 @@ div#content div#thread div.divider {
     margin: 12px 6px;
     width: calc(100% - 16px);
     height: 8px;
-    border-bottom: 1px solid var(--shade4);
     text-align: center;
+}
+div#content div#thread div.divider.timestamp {
+    border-bottom: 1px solid var(--shade4);
 }
 div#content div#thread div.divider span {
     font-family: sans-serif;

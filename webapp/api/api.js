@@ -107,9 +107,10 @@ function API (fp) {
 
     /* chat */
     self.message = function (options) {
-        if (options.user != fp.user.id) {
-            let icon = fp.user_d[options.user].pic_url;
-            utility.notify("New Message!", options.text, icon, 'chat');
+        let message = options.message;
+        if (message.user != fp.user.id) {
+            let icon = fp.user_d[message.user].pic_url;
+            utility.notify("New Message!", message.text, icon, 'chat');
         }
     }
 

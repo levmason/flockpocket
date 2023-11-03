@@ -70,3 +70,7 @@ class ChatHandler:
     async def stop (self):
         for thread_id, thread in self.thread_d.items():
             await thread.write()
+
+    #
+    # Websocket handler functions
+    #

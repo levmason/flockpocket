@@ -26,11 +26,13 @@ function flockpocket () {
 
     self.filter_users = function(search, include_me, gender) {
         let filtered_user_d = {};
+        search = '^' + search;
 
         for (let id in self.user_d) {
             let user = self.user_d[id];
+            let regex = new RegExp(search, "i");
             if ((include_me || id != fp.user.id) &&
-                (user.full_name.search(new RegExp(search, "i")) >= 0) &&
+                (user.first_name.search(regex) >= 0 || user.last_name.search(regex) >= 0) &&
                 (!gender || user.gender == gender)) {
                 filtered_user_d[id] = user;
             }
