@@ -486,13 +486,24 @@ div#content div#thread div.message_wrapper {
     margin: 0px 20px;
     right: 20px;
 }
+div#content div#thread div.message_wrapper div.me_bar {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    top: 28px;
+    left: -4px;
+    border-radius: 50%;
+    background: var(--shade3);
+}
+
 div#content div#thread div.message_wrapper div.message {
     margin-left: 60px;
     padding: 1px 4px;
-    border-radius: 8px;
     position: relative;
+    border-bottom: 1px solid var(--shade1);
 }
 div#content div#thread div.message_wrapper div.message:hover {
+    border-radius: 8px;
     background: var(--shade1);
 }
 
@@ -512,8 +523,8 @@ div#content div#thread div.message_wrapper div.message div.heart {
     display: inline-block;
     text-align: right;
     position: absolute;
-    right: -30px;
-    top: 1px;
+    right: 8px;
+    top: 2px;
     display: none;
 }
 div#content div#thread div.message_wrapper div.message:hover div.heart {
@@ -521,8 +532,8 @@ div#content div#thread div.message_wrapper div.message:hover div.heart {
 }
 div#content div#thread div.message_wrapper div.heart img {
     padding: 2px;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     cursor: pointer;
 }
 div#content div#thread div.message_wrapper div.message div.timestamp {
@@ -535,7 +546,7 @@ div#content div#thread div.message_wrapper div.message div.timestamp {
     display: inline-block;
     text-align: center;
     position: absolute;
-    padding: 5px 12px;
+    padding: 5px 10px;
     right: 0;
     top: -20px;
     display: none;

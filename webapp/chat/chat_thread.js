@@ -26,7 +26,6 @@ function chat_thread (container, id) {
             <div id="label"><span>${self.label}</span></div>
             <div id="thread"></div>
             <div id="thread_input_wrapper">
-              <img class="threadpic" src="${fp.user.pic_url}">
               <div id="thread_input" class="textarea" contenteditable>
               </div>
               <div id="emoji">
