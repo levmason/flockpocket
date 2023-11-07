@@ -19,7 +19,8 @@ div#content div#thread {
     display: flex;
     flex-flow: column;
     width: 100%;
-    height: 84vh;
+    height: 82vh;
+    margin-top: 10px;
 }
 div#content div#thread div#thread {
     display: flex;
@@ -52,7 +53,7 @@ div#content div#thread div#thread_input {
     font-family: "EB Garamond";
     font-size: 16px;
     color: var(--text_color);
-    width: calc(100% - 120px);
+    width: calc(100% - 70px);
     cursor: text;
     white-space: pre-wrap;
     display: inline-block;
@@ -61,7 +62,7 @@ div#content div#thread div#thread_input {
     border-radius: 20px;
     outline: inherit;
     padding: 10px 50px 10px 20px;
-    margin: 10px 0 0 50px;
+    margin-top: 10px;
 }
 div#content div#thread div#thread_input_wrapper div#emoji {
     position: absolute;
@@ -135,15 +136,21 @@ div#content div#thread div.message_wrapper div.message div.heart {
     position: absolute;
     right: 8px;
     top: 2px;
-    display: none;
+    display: inline-block;
+    visibility: hidden;
+}
+div#content div#thread div.message_wrapper div.message div.heart.show {
+    visibility: visible;
 }
 div#content div#thread div.message_wrapper div.message:hover div.heart {
-    display: inline-block;
+    visibility: visible;
 }
 div#content div#thread div.message_wrapper div.heart img {
     padding: 2px;
     width: 16px;
     height: 16px;
+}
+div#content div#thread div.message_wrapper div.heart:not(.noclick) img {
     cursor: pointer;
 }
 div#content div#thread div.message_wrapper div.message div.timestamp {
@@ -176,12 +183,20 @@ div#content div#thread div#label {
 
 }
 div#content div#thread div#label span {
-    position: absolute;
-    padding: 4px 20px;
+    padding: 4px 20px 4px 70px;
     font-size: 20px;
     background: var(--background);
     border-radius: 10px;
     z-index: 100;
+    position: absolute;
+    top: -9px;
+}
+div#content div#thread div#label span img{
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 20px;
+    top: -1px;
 }
 /* divider */
 div#content div#thread div.divider {
@@ -199,4 +214,20 @@ div#content div#thread div.divider span {
     color: var(--shade4);
     background: var(--background);
     padding: 0 16px;
+}
+
+/* chat recent label */
+div#chat div.header {
+    padding: 10px;
+    color: var(--shade5);
+    font-size: 30px;
+    text-align: center;
+}
+div#chat input {
+    color: var(--text_color_light);
+    border: 1px solid #aaa;
+    border-radius: 10px;
+    width: calc(100% - 20px);
+    padding: 4px 10px;
+    margin: 0px 10px 5px;
 }

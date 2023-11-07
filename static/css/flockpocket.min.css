@@ -2,7 +2,8 @@
     --link_color: inherit;
     --bar_width: 15vw;
     --bar_min_width: 190px;
-    --bar_max_width: 220px;
+    --bar_max_width: 250px;
+    --hidden_bar_width: 30px;
     --top_menu_width: 60px;
     --font: "EB Garamond";
 }
@@ -89,11 +90,50 @@ button:disabled:hover {
 .hidden {
     display: none;
 }
+
+div#content {
+    text-align: left;
+    position: absolute;
+    width: calc(100% - 640px);
+    min-width: 460px;
+    left: 50%;
+    top: 40px;
+    transform: translate(-50%);
+    padding: 40px 20px 20px;
+}
+
+@media only screen and (max-width: 1000px) {
+    div#content {
+        width: calc(100% - 120px);
+    }
+    div#rightbar, div#left_menu {
+        width: var(--hidden_bar_width) ! important;
+        min-width: var(--hidden_bar_width) ! important;
+    }
+    div#rightbar:hover {
+        min-width: var(--bar_min_width) ! important;
+    }
+    div#left_menu:hover {
+        min-width: var(--bar_min_width) ! important;
+    }
+    div#left_menu:hover * {
+        visibility: visible;
+    }
+    div#left_menu * {
+        visibility: hidden;
+    }
+    div#rightbar:hover > * {
+        visibility: visible;
+    }
+    div#rightbar > * {
+        visibility: hidden;
+    }
+}
 #left_menu {
     float:left;
     width: var(--bar_width);
-    min-width: var(--bar_min_width);
     max-width: var(--bar_max_width);
+    min-width: var(--bar_min_width);
     height: 100%;
     position: fixed;
     top: var(--top_menu_width);
@@ -409,7 +449,8 @@ div#content div#thread {
     display: flex;
     flex-flow: column;
     width: 100%;
-    height: 84vh;
+    height: 82vh;
+    margin-top: 10px;
 }
 div#content div#thread div#thread {
     display: flex;
@@ -442,7 +483,7 @@ div#content div#thread div#thread_input {
     font-family: "EB Garamond";
     font-size: 16px;
     color: var(--text_color);
-    width: calc(100% - 120px);
+    width: calc(100% - 70px);
     cursor: text;
     white-space: pre-wrap;
     display: inline-block;
@@ -451,7 +492,7 @@ div#content div#thread div#thread_input {
     border-radius: 20px;
     outline: inherit;
     padding: 10px 50px 10px 20px;
-    margin: 10px 0 0 50px;
+    margin-top: 10px;
 }
 div#content div#thread div#thread_input_wrapper div#emoji {
     position: absolute;
@@ -525,15 +566,21 @@ div#content div#thread div.message_wrapper div.message div.heart {
     position: absolute;
     right: 8px;
     top: 2px;
-    display: none;
+    display: inline-block;
+    visibility: hidden;
+}
+div#content div#thread div.message_wrapper div.message div.heart.show {
+    visibility: visible;
 }
 div#content div#thread div.message_wrapper div.message:hover div.heart {
-    display: inline-block;
+    visibility: visible;
 }
 div#content div#thread div.message_wrapper div.heart img {
     padding: 2px;
     width: 16px;
     height: 16px;
+}
+div#content div#thread div.message_wrapper div.heart:not(.noclick) img {
     cursor: pointer;
 }
 div#content div#thread div.message_wrapper div.message div.timestamp {
@@ -566,12 +613,20 @@ div#content div#thread div#label {
 
 }
 div#content div#thread div#label span {
-    position: absolute;
-    padding: 4px 20px;
+    padding: 4px 20px 4px 70px;
     font-size: 20px;
     background: var(--background);
     border-radius: 10px;
     z-index: 100;
+    position: absolute;
+    top: -9px;
+}
+div#content div#thread div#label span img{
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 20px;
+    top: -1px;
 }
 /* divider */
 div#content div#thread div.divider {
@@ -589,6 +644,22 @@ div#content div#thread div.divider span {
     color: var(--shade4);
     background: var(--background);
     padding: 0 16px;
+}
+
+/* chat recent label */
+div#chat div.header {
+    padding: 10px;
+    color: var(--shade5);
+    font-size: 30px;
+    text-align: center;
+}
+div#chat input {
+    color: var(--text_color_light);
+    border: 1px solid #aaa;
+    border-radius: 10px;
+    width: calc(100% - 20px);
+    padding: 4px 10px;
+    margin: 0px 10px 5px;
 }
 div.modal {
     width: auto;
@@ -683,16 +754,6 @@ div.modal div#widget_popup table#button_wrapper_inner {
     min-width: 60px;
 }
 
-div#content {
-    text-align: left;
-    position: absolute;
-    width: calc(100% - 640px);
-    min-width: 460px;
-    left: 50%;
-    top: 40px;
-    transform: translate(-50%);
-    padding: 40px 20px 20px;
-}
 div.badge {
     height: fit-content;
     background: var(--shade1);
@@ -797,6 +858,20 @@ div.badge.family:hover {
 }
 div.badge.family img.pic {
     padding: 4px 10px;
+    width: 40px;
+    height: 40px;
+}
+
+/* thread */
+div.badge.thread {
+    color: var(--text_color);
+    padding: 4px;
+}
+div.badge.thread:hover {
+    background: var(--shade2);
+}
+div.badge.thread img.pic {
+    padding: 3px 10px;
     width: 40px;
     height: 40px;
 }

@@ -26,8 +26,8 @@ class DatastoreDaemon():
     async def initialize (self):
         # Levy: delete all the threads in the DB
         #log.debug("removing threads...")
-        #from common.models import ChatThread as ChatThread_db
-        #await ChatThread_db.objects.all().adelete();
+        from common.models import ChatThread as ChatThread_db
+        await ChatThread_db.objects.all().adelete();
 
         # initialize the chat handler
         self.chat = ChatDatastore()
@@ -74,3 +74,7 @@ class DatastoreDaemon():
     async def store_message (self, thread_id = None, message = None):
         thread_id = uuid.UUID(thread_id)
         await self.chat.add_message(thread_id, message)
+
+    async def like_message (self, thread_id = None, user_id = None, message_idx = None):
+        thread_id = uuid.UUID(thread_id)
+        await self.chat.like_message(thread_id, user_id, message_idx)

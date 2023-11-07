@@ -2,6 +2,7 @@ from common.models import ChatThread as ChatThread_db
 from chat.ChatThread import ChatThread
 from common import aio
 from common import logger as log
+from common import config as cfg
 
 class User:
     fields = ['id', 'email', 'first_name', 'last_name', 'is_active', 'details']
@@ -36,24 +37,33 @@ class User:
 
         await aio.gather(task_l)
 
-    async def get_threads (self):
-        self.thread_d = {}
-        async for thread_db in ChatThread_db.objects.filter(members__id=self.id):
-            thread = ChatThread(thread_db)
-            await thread.set_users()
-            self.add_thread(thread)
-
-    def add_thread (self, thread):
-        label = thread.label
-        if label == "{user}":
-            for user in thread.user_l:
+    async def add_thread (self, thread, push=True):
+        user_id = None
+        if thread.db_entry.type == 0:
+            for user in thread.user_s:
                 if user is not self:
-                    label = f"{user.first_name} {user.last_name}"
+                    user_id = str(user.id)
+                    break
 
-        self.thread_d[str(thread.id)] = {
+        entry = {
             "id": str(thread.id),
-            "label": label
+            "user": user_id,
+            "label": thread.label,
         }
+
+        # add to our dict
+        self.thread_d[str(thread.id)] = entry
+
+    def get_threads (self):
+        for id, entry in self.thread_d.items():
+            entry['timestamp'] = cfg.get_thread(id).timestamp;
+
+        return self.thread_d
+
+    async def push_thread (self, thread):
+        await self.push({
+            "new_thread": self.thread_d[str(thread.id)]
+        })
 
     #
     # Websockets push functions
@@ -68,6 +78,17 @@ class User:
                     }
                 }
             )
+
+    async def push_like (self, thread, user, message_idx):
+        await self.push(
+            {
+                "like": {
+                    "thread": str(thread.id),
+                    "user": str(user.id),
+                    "message_idx": message_idx,
+                }
+            }
+        )
 
     async def push_message (self, thread, message):
         await self.push(

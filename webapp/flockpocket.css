@@ -2,7 +2,8 @@
     --link_color: inherit;
     --bar_width: 15vw;
     --bar_min_width: 190px;
-    --bar_max_width: 220px;
+    --bar_max_width: 250px;
+    --hidden_bar_width: 30px;
     --top_menu_width: 60px;
     --font: "EB Garamond";
 }
@@ -88,4 +89,43 @@ button:disabled:hover {
 
 .hidden {
     display: none;
+}
+
+div#content {
+    text-align: left;
+    position: absolute;
+    width: calc(100% - 640px);
+    min-width: 460px;
+    left: 50%;
+    top: 40px;
+    transform: translate(-50%);
+    padding: 40px 20px 20px;
+}
+
+@media only screen and (max-width: 1000px) {
+    div#content {
+        width: calc(100% - 120px);
+    }
+    div#rightbar, div#left_menu {
+        width: var(--hidden_bar_width) ! important;
+        min-width: var(--hidden_bar_width) ! important;
+    }
+    div#rightbar:hover {
+        min-width: var(--bar_min_width) ! important;
+    }
+    div#left_menu:hover {
+        min-width: var(--bar_min_width) ! important;
+    }
+    div#left_menu:hover * {
+        visibility: visible;
+    }
+    div#left_menu * {
+        visibility: hidden;
+    }
+    div#rightbar:hover > * {
+        visibility: visible;
+    }
+    div#rightbar > * {
+        visibility: hidden;
+    }
 }

@@ -5,7 +5,7 @@ function menu (container) {
     self.menu_d = {
         Home: "home",
         Calendar: "calendar",
-        Chat: "chat",
+//        Chat: "chat",
         Directory: "directory",
         Community: "community",
     }

@@ -22,6 +22,18 @@ class ChatDatastore:
 
         thread.append(message)
 
+    async def like_message (self, thread_id, user_id, message_idx):
+        thread = self.thread_d.get(thread_id)
+        message = thread[message_idx]
+
+        if 'like_l' not in message:
+            message['like_l'] = []
+
+        if user_id in message['like_l']:
+            message['like_l'].remove(user_id);
+        else:
+            message['like_l'].append(user_id);
+
     async def get_history (self, thread_id):
         """ get the chat history (disk or cache) """
 

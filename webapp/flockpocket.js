@@ -22,6 +22,7 @@ function flockpocket () {
     self.init_ui = function () {
         self.menu = new menu($("#left_menu"));
         self.top_menu = new top_menu($("#top_menu"));
+        self.chat = new chat($("#rightbar"));
     }
 
     self.filter_users = function(search, include_me, gender) {
@@ -31,14 +32,37 @@ function flockpocket () {
         for (let id in self.user_d) {
             let user = self.user_d[id];
             let regex = new RegExp(search, "i");
+            let labels = user.full_name.split(/[\s\/]+/);
             if ((include_me || id != fp.user.id) &&
-                (user.first_name.search(regex) >= 0 || user.last_name.search(regex) >= 0) &&
                 (!gender || user.gender == gender)) {
-                filtered_user_d[id] = user;
+                for (var lbl of labels) {
+                    if (lbl.search(regex) >= 0) {
+                        filtered_user_d[id] = user;
+                    }
+                }
             }
         }
 
         return filtered_user_d;
+    }
+
+    self.filter_threads = function(search) {
+        let filtered_thread_d = {};
+        search = '^' + search;
+
+        for (let id in self.thread_d) {
+            let thread = self.thread_d[id];
+            let regex = new RegExp(search, "i");
+            let labels = (thread.label || thread.user.full_name).split(/[\s\/]+/);
+            for (var lbl of labels) {
+                if (lbl.search(regex) >= 0) {
+                    filtered_thread_d[id] = thread;
+                    break;
+                }
+            }
+        }
+
+        return filtered_thread_d;
     }
 
     self.set_connected = function () {
@@ -53,7 +77,14 @@ function flockpocket () {
         self.connected = false;
     }
 
+    self.set_hash = function(path) {
+        document.location.hash = path;
+    }
+
     window.onhashchange = function(e) {
+        // clear the api handlers
+        self.api.handlers = {};
+
 	// get the page hash
         self.hash = window.location.hash.substring(1);
         let [page, id] = self.hash.split("/");
@@ -84,8 +115,6 @@ function flockpocket () {
         case "chat":
             if (id) {
                 new chat_thread($("#content"), id);
-            } else {
-                new chat($("#content"));
             }
             break;
         case "logout":

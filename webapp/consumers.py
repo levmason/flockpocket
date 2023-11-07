@@ -15,8 +15,6 @@ from user import utility as user_utility
 from chat.ChatHandler import ChatHandler
 
 class FlockConsumer(AsyncWebsocketConsumer):
-    chat = ChatHandler()
-
     async def connect (self):
         """ What to run when a new connection is received """
 
@@ -26,6 +24,7 @@ class FlockConsumer(AsyncWebsocketConsumer):
             await self.accept()
             self.user = await cfg.get_user(user_db.id, user_db = user_db)
             self.user.socket_l.append(self)
+            self.chat = ChatHandler(self.user)
 
     async def disconnect (self, close_code):
         """ What to run when a connection is lost """
@@ -66,7 +65,7 @@ class FlockConsumer(AsyncWebsocketConsumer):
             # Finds the correct API handler function
             if '.' in name:
                 module_name, fn_name = name.split(".")
-                module = getattr(self, module)
+                module = getattr(self, module_name)
                 fn = getattr(module, fn_name)
             else:
                 fn = getattr(self, name)
@@ -96,44 +95,7 @@ class FlockConsumer(AsyncWebsocketConsumer):
             'ui_config': {
                 'user_id': str(self.user.id),
                 'user_d': {str(x):y.as_dict() for x,y in cfg.user_d.items() if y.is_active},
-                'thread_d': self.user.thread_d,
+                'thread_d': self.user.get_threads(),
             }
         }
 
-    async def typing (self, thread_id = None, clear = False):
-        thread = await self.chat.get_thread(thread_id)
-        if thread:
-            await thread.typing(self.user, clear)
-
-    async def message (self, thread_id = None, to_user_id = None, text = None):
-        if to_user_id:
-            to_user = await cfg.get_user(to_user_id)
-            thread_id = user_utility.merge_uuid(self.user.id, to_user.id)
-        else:
-            thread_id = uuid.UUID(thread_id)
-            to_user = None
-
-        thread = await self.chat.get_thread(thread_id)
-
-        if not thread and to_user:
-            label = "{user}"
-            members = [self.user.db_entry, to_user.db_entry]
-            thread = await self.chat.create_thread(label, members, thread_id)
-
-        if thread:
-            await thread.send_message(self.user, text)
-
-    async def thread (self, thread_id = None, user_id = None):
-        if user_id:
-            thread_id = user_utility.merge_uuid(self.user.id, user_id)
-        else:
-            thread_id = uuid.UUID(thread_id)
-
-        thread = await self.chat.get_thread(thread_id)
-        if thread:
-            history = await thread.read_from_datastore()
-        else:
-            history = []
-
-        if thread:
-            return {"thread": history}

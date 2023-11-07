@@ -53,10 +53,16 @@ class User (AbstractUser):
     class Meta:
         db_table = 'fp_user'
 
+thread_type_map = {
+    0: 'user',
+    1: 'group',
+    2: 'event',
+}
 class ChatThread (models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     label = models.TextField()
     members = models.ManyToManyField(User)
+    type = models.SmallIntegerField(default=0)
 
     def __unicode__(self):
         return self.label

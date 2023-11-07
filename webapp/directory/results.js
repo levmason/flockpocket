@@ -1,14 +1,13 @@
 function results (container, search) {
     var self = this;
-    self.container = container;
-    self.el = null;
-    self.html = "";
+    el.call(self, container);
+
     self.search = search.toLowerCase();
 
     // initialize
     self.init = function () {
-        self.container.html('<div id="results"></div>');
-        self.el = self.container.children().first();
+        self.html = '<div id="results"></div>';
+        self.add_to_page();
 
         let filtered_user_d = fp.filter_users(self.search, true);
 

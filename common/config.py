@@ -12,6 +12,8 @@ import uuid
 
 from .RedisWrapper import aioRedisWrapper
 from common.models import User as User_db
+from common.models import ChatThread as ChatThread_db
+from chat.ChatThread import ChatThread
 from user.User import User
 
 from . import linux
@@ -49,6 +51,7 @@ distro = linux.distro()
 release = linux.release()[0]
 config = {}
 user_d = {}
+thread_d = {}
 log_dir = "/var/log/flockpocket/"
 
 def init_config ():
@@ -65,21 +68,20 @@ async def init ():
 
         try:
             user_d = await init_user_d()
+            thread_d = await init_thread_d()
         except Exception as e:
             log.debug(traceback.format_exc())
 
+#
+# User
 async def init_user_d ():
     global user_d
 
     t1 = time.time()
-    fields = ['id', 'email', 'first_name', 'last_name', 'is_active', 'details']
     user_d = {}
     async for user_db in User_db.objects.all():
         user = User(user_db)
         user_d[user_db.id] = user
-
-    for user in user_d.values():
-        await user.get_threads()
 
     t2 = time.time()
     if (t2-t1) > 1:
@@ -111,6 +113,26 @@ async def get_user (user_id, user_db = None):
         user_d[user_id] = user = User(user_db)
 
     return user
+#
+# Thread
+async def init_thread_d ():
+    global thread_d
+
+    thread_d = {}
+    async for thread_db in ChatThread_db.objects.all():
+        thread = ChatThread(thread_db)
+        await thread.set_users()
+        thread_d[thread.id] = thread
+
+    return thread_d
+
+def get_thread (id, thread_db = None):
+    if isinstance(id, str):
+        id = uuid.UUID(id)
+
+    thread = thread_d.get(id)
+
+    return thread
 
 # interface to redis
 async def init_redis ():

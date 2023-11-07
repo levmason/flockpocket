@@ -76,9 +76,7 @@ function API (fp) {
             let handler = self[name];
             let view_handler = self.handlers[name];
 
-            if (!(handler || view_handler)) {
-                modal.alert(`No api handler for ${name}`);
-            } else {
+            if (handler || view_handler) {
                 // run the default handler
                 if (handler) {
                     handler(options);
@@ -103,6 +101,14 @@ function API (fp) {
             user.pic_url = utility.static_url('profile_pics/'+ (user.pic || "avatar.svg"));
         }
         fp.user = fp.user_d[opt.user_id];
+
+        // initialize the threads
+        for (let id in fp.thread_d) {
+            let thread = fp.thread_d[id];
+            if (thread.user) {
+                thread.user = fp.user_d[thread.user];
+            }
+        }
 
         fp.init_ui();
         window.onhashchange();

@@ -1,6 +1,7 @@
 function chat_thread (container, id) {
     var self = this;
     el.call(self, container);
+
     self.message_l = [];
     self.last_user = null;
     self.typing_timeout = 5000;
@@ -9,21 +10,32 @@ function chat_thread (container, id) {
 
     if (id.includes("=")) {
         self.user = fp.user_d[id.split("=")[1]];
+        self.pic_url = self.user.pic_url;
         self.label = self.user.full_name;
         self.user_id = self.user.id;
-        self.thread_id = null;
+        self.id = null;
     } else {
         self.thread = fp.thread_d[id];
-        self.label = self.thread.label;
+        if (self.thread.user) {
+            let user = fp.user_d[self.thread.user];
+            self.label = user.full_name;
+        } else {
+            self.label = self.thread.label;
+        }
         self.user_id = null;
-        self.thread_id = id;
+        self.id = id;
     }
 
     // initialize the thread
     self.init = function () {
         self.html = `
           <div id="thread">
-            <div id="label"><span>${self.label}</span></div>
+            <div id="label">
+              <span>
+                <img class="pic" src="${self.pic_url}">
+                ${self.label}
+              </span>
+            </div>
             <div id="thread"></div>
             <div id="thread_input_wrapper">
               <div id="thread_input" class="textarea" contenteditable>
@@ -40,24 +52,112 @@ function chat_thread (container, id) {
         self.init_handlers();
     }
 
+    // initialize event handlers
     self.init_handlers = function () {
 
         // add handler for incoming thread history
-        fp.api.thread = function (message_l) {
-            for (let msg of message_l) {
+        fp.api.handlers.thread = function (opt) {
+            self.id = opt.id;
+            for (let msg of opt.message_l) {
                 self.add_message(msg);
+            }
+        }
+
+        // If we don't have a thread ID, we'll want to wait for one
+        if (!self.id) {
+            fp.api.handlers.new_thread = function (opt) {
+                if (self.user_id == opt.user) {
+                    self.id = opt.id
+                }
+            }
+        }
+
+        /* message received */
+        fp.api.handlers.message = function (options) {
+            if (options.thread == self.id) {
+                let user_id = options.message.user;
+                // remove the typing indicator
+                self.remove_typing(user_id);
+                // insert the message to the thread
+                self.add_message(options.message);
+            }
+        }
+
+        /* typing notification received */
+        fp.api.handlers.typing = function (options) {
+            let user_id = options.user;
+            if (options.thread == self.id) {
+                // add or remove typing indicator
+                if (options.clear) {
+                    self.remove_typing(user_id);
+                } else {
+                    self.add_typing(user_id);
+                }
+            }
+        }
+
+        fp.api.handlers.like = function (options) {
+            if (options.thread == self.id) {
+                let message = self.message_l[options.message_idx];
+                message.add_like(options);
             }
         }
 
         // get the thread history
         fp.api.query({
-            thread: {
-                thread_id: self.thread_id,
+            'chat.get_thread_history': {
+                thread_id: self.id,
                 user_id: self.user_id
             }
         });
 
-        // emoji popup
+        /* typing in the input */
+        self.el.on("keypress", "div#thread_input", function(e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                let msg = $(this).text();
+                if (msg) {
+                    let query = {
+                        'chat.send_message': {
+                            thread_id: self.id,
+                            user_id: self.user_id,
+                            text: msg,
+                        }
+                    }
+
+                    // send the query
+                    fp.api.query(query);
+
+                    $(this).empty();
+                }
+                return false;
+            } else {
+                // clear typing timeout
+                if (self.typing_timer) {
+                    clearTimeout(self.typing_timer);
+                } else {
+                    // typing notifications
+                    fp.api.query({
+                        'chat.send_typing': {
+                            thread_id: self.id,
+                        }
+                    });
+                }
+
+                self.typing_timer = setTimeout(() => {
+                    // typing notifications
+                    fp.api.query({
+                        'chat.send_typing': {
+                            clear: true,
+                            thread_id: self.id,
+                        }
+                    });
+                    self.typing_timer = null;
+                }, self.typing_timeout);
+            }
+        })
+
+        /* emoji popup */
         self.el.on("click", "div#emoji", function (e) {
             var emoji_btn = $(this);
             let pickerOptions = {
@@ -84,80 +184,30 @@ function chat_thread (container, id) {
             self.el.find("div#thread_input").append(picker);
             return false;
         });
+    }
 
-        self.el.on("keypress", "div#thread_input", function(e) {
-            if (e.which == 13) {
-                e.preventDefault();
-                let msg = $(this).text();
-                if (msg) {
-                    let query = {
-                        message: {
-                            thread_id: self.thread_id,
-                            to_user_id: self.user_id,
-                            text: msg,
-                        }
-                    }
-
-                    // send the query
-                    fp.api.query(query);
-
-                    $(this).empty();
-                }
-                return false;
-            } else {
-                // clear typing timeout
-                if (self.typing_timer) {
-                    clearTimeout(self.typing_timer);
-                } else {
-                    // typing notifications
-                    fp.api.query({
-                        typing: {
-                            thread_id: self.thread_id,
-                        }
-                    });
-                }
-
-                self.typing_timer = setTimeout(() => {
-                    // typing notifications
-                    fp.api.query({
-                        typing: {
-                            clear: true,
-                            thread_id: self.thread_id,
-                        }
-                    });
-                    self.typing_timer = null;
-                }, self.typing_timeout);
-            }
-        })
-
-        /* message received */
-        fp.api.handlers.message = function (options) {
-            if (options.thread == self.thread_id) {
-                // remove the typing notification
-                let user_id = options.message.user;
-                self.typing_d[user_id].remove();
-                // insert the message to the thread
-                self.add_message(options.message);
-            }
-        }
-
-        /* typing notification received */
-        fp.api.handlers.typing = function (options) {
-            if (options.thread == self.thread_id) {
-                let user = fp.user_d[options.user];
-                let name = user.full_name;
-                if (options.clear) {
-                    self.typing_d[user.id].remove();
-                } else if (!(user.id in self.typing_d)) {
-                    self.thread_el.prepend(`<div class="divider">`+
-                                           `<span>${name} is typing...</span>`+
-                                           `</div>`);
-                    self.typing_d[user.id] = self.thread_el.children().first();
-                }
-            }
+    // add a typing indicator
+    self.add_typing = function (user_id) {
+        if (!(user_id in self.typing_d)) {
+            let user = fp.user_d[user_id];
+            let name = user.full_name;
+            self.thread_el.prepend(`<div class="divider">`+
+                                   `<span>${name} is typing...</span>`+
+                                   `</div>`);
+            self.scroll_to_end();
+            self.typing_d[user_id] = self.thread_el.children().first();
         }
     }
 
+    // remove a typing indicator
+    self.remove_typing = function (user_id) {
+        if (user_id in self.typing_d) {
+            self.typing_d[user_id].remove();
+            delete self.typing_d[user_id];
+        }
+    }
+
+    // add a mesage
     self.add_message = function (msg) {
         date = utility.getDateString(msg.timestamp);
 
@@ -166,14 +216,18 @@ function chat_thread (container, id) {
             self.thread_el.prepend(`<div class="divider timestamp"><span>${date}</span></div>`);
         }
         if (msg.user == self.last_user) {
-            let latest = self.message_l.last();
-            latest.update(msg);
+            self.latest.update(msg);
         } else {
-            self.message_l.push(new message (self.thread_el, msg));
+            self.message_l.push(new message (self.thread_el, self, msg, self.message_l.length));
+            self.last_user = msg.user;
+            self.latest = self.message_l.last();
         }
-        self.thread_el.scrollTop(self.thread_el.prop("scrollHeight"));
-        self.last_user = msg.user;
+        self.scroll_to_end();
         self.last_date = utility.getDateString(msg.timestamp);
+    }
+
+    self.scroll_to_end = function () {
+        self.thread_el.scrollTop(self.thread_el.prop("scrollHeight"));
     }
 
     self.init();

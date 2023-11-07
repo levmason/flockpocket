@@ -105,3 +105,17 @@ div.badge.family img.pic {
     width: 40px;
     height: 40px;
 }
+
+/* thread */
+div.badge.thread {
+    color: var(--text_color);
+    padding: 4px;
+}
+div.badge.thread:hover {
+    background: var(--shade2);
+}
+div.badge.thread img.pic {
+    padding: 3px 10px;
+    width: 40px;
+    height: 40px;
+}
