@@ -216,7 +216,7 @@ function chat_thread (container, id) {
             self.thread_el.prepend(`<div class="divider timestamp"><span>${date}</span></div>`);
         }
         if (msg.user == self.last_user) {
-            self.latest.update(msg);
+            self.message_l.push(new message (self.latest.el, self, msg, self.message_l.length, true));
         } else {
             self.message_l.push(new message (self.thread_el, self, msg, self.message_l.length));
             self.last_user = msg.user;

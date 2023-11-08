@@ -572,7 +572,7 @@ div#content div#thread div.message_wrapper div.message div.heart {
 div#content div#thread div.message_wrapper div.message div.heart.show {
     visibility: visible;
 }
-div#content div#thread div.message_wrapper div.message:hover div.heart {
+div#content div#thread div.message_wrapper div.message:hover div.heart:not(.noclick) {
     visibility: visible;
 }
 div#content div#thread div.message_wrapper div.heart img {

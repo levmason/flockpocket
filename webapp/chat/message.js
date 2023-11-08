@@ -1,6 +1,7 @@
-function message (container, thread, config, idx) {
+function message (container, thread, config, idx, nest = false) {
     var self = this;
-    el.call(self, container, "prepend");
+    let append = nest ? "append":"prepend";
+    el.call(self, container, append);
 
     self.idx = idx;
     self.thread = thread;
@@ -14,23 +15,21 @@ function message (container, thread, config, idx) {
     self.heart_full_img = utility.static_url("img/heart.svg");
 
     self.init = function () {
-        self.html = `
-          <div class="message_wrapper">`;
-        if (self.me) {
-            self.html += `<div class="me_bar"></div>`;
-        }
-        self.html += `
-            <img class="threadpic" src="${self.user.pic_url}">
-            <div class="name">${self.user.full_name}</div>
-            <div class="message">
-              ${self.text}
-              <div class="timestamp">${self.timestamp}</div>
-              <div class="heart ${self.me ? "noclick":""}">
-                <img src="${self.heart_img}" />
-              </div>
-            </div>
-          </div>`;
+        if (nest) {
+            self.html = self.get_text_html();
+        } else {
+            self.html = `
+                <div class="message_wrapper">`;
+            if (self.me) {
+                self.html += `<div class="me_bar"></div>`;
+            }
+            self.html += `
+                  <img class="threadpic" src="${self.user.pic_url}">
+                  <div class="name">${self.user.full_name}</div>`;
+            self.html += self.get_text_html();
+            self.html += `</div>`;
 
+        }
         self.add_to_page();
 
         self.heart_el = self.el.find('div.heart');
@@ -40,14 +39,15 @@ function message (container, thread, config, idx) {
         self.init_handlers();
     }
 
-    self.update = function (msg) {
-        let timestamp = utility.getTimeString(msg.timestamp);
-        let text = utility.emoticon_replace(msg.text);
-        self.el.append(`<div class="message">`+
-                       `${text}<div class="timestamp">${timestamp}</div>`+
-                       `<div class="heart ${self.me ? "noclick":""}">`+
-                       `<img src="${self.heart_img}" /></div>`+
-                       `</div>`);
+    self.get_text_html = function (text) {
+        return `
+            <div class="message">
+              ${self.text}
+              <div class="timestamp">${self.timestamp}</div>
+              <div class="heart ${self.me ? "noclick":""}">
+                <img src="${self.heart_img}" />
+              </div>
+            </div>`;
     }
 
     self.update_like = function () {
@@ -86,6 +86,7 @@ function message (container, thread, config, idx) {
                         message_idx: self.idx,
                     }
                 });
+                return false;
             });
         }
     }
