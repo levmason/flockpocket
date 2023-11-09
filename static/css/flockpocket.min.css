@@ -94,7 +94,7 @@ button:disabled:hover {
 div#content {
     text-align: left;
     position: absolute;
-    width: calc(100% - 640px);
+    width: calc(70vw - 90px);
     min-width: 460px;
     left: 50%;
     top: 40px;
@@ -106,20 +106,20 @@ div#content {
     div#content {
         width: calc(100% - 120px);
     }
-    div#rightbar, div#left_menu {
+    div#rightbar, div#leftbar {
         width: var(--hidden_bar_width) ! important;
         min-width: var(--hidden_bar_width) ! important;
     }
     div#rightbar:hover {
         min-width: var(--bar_min_width) ! important;
     }
-    div#left_menu:hover {
+    div#leftbar:hover {
         min-width: var(--bar_min_width) ! important;
     }
-    div#left_menu:hover * {
+    div#leftbar:hover * {
         visibility: visible;
     }
-    div#left_menu * {
+    div#leftbar * {
         visibility: hidden;
     }
     div#rightbar:hover > * {
@@ -128,44 +128,6 @@ div#content {
     div#rightbar > * {
         visibility: hidden;
     }
-}
-#left_menu {
-    float:left;
-    width: var(--bar_width);
-    max-width: var(--bar_max_width);
-    min-width: var(--bar_min_width);
-    height: 100%;
-    position: fixed;
-    top: var(--top_menu_width);
-    left: 0;
-    color: #ccc;
-    background: var(--bar_color);
-    z-index: 100;
-    padding-top: 20px;
-}
-
-#left_menu div{
-    white-space: nowrap;
-}
-div#menu {
-    font-size: 20px;
-    color: var(--text_color);
-}
-div#menu div.menu_item {
-    margin: 1px 2px;
-    padding: 7px 40px;
-    padding-left: 25%;
-    cursor: pointer;
-    width: fit-content;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-}
-div#menu div.menu_item.selected {
-    background: var(--shade2);
-}
-
-div#menu div.menu_item:hover {
-    background: var(--shade2);
 }
 div#top_menu {
     position: fixed;
@@ -232,6 +194,44 @@ div#user_menu div.menu_item.selected {
 }
 
 div#user_menu div.menu_item:hover {
+    background: var(--shade2);
+}
+#leftbar {
+    float:left;
+    width: var(--bar_width);
+    max-width: var(--bar_max_width);
+    min-width: var(--bar_min_width);
+    height: 100%;
+    position: fixed;
+    top: var(--top_menu_width);
+    left: 0;
+    color: #ccc;
+    background: var(--bar_color);
+    z-index: 100;
+    padding-top: 20px;
+}
+
+#leftbar div{
+    white-space: nowrap;
+}
+div#menu {
+    font-size: 20px;
+    color: var(--text_color);
+}
+div#menu div.menu_item {
+    margin: 1px 2px;
+    padding: 7px 40px;
+    padding-left: 25%;
+    cursor: pointer;
+    width: fit-content;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+div#menu div.menu_item.selected {
+    background: var(--shade2);
+}
+
+div#menu div.menu_item:hover {
     background: var(--shade2);
 }
 div#rightbar {
@@ -456,13 +456,18 @@ div#content div#thread div#thread {
     display: flex;
     flex-flow: column-reverse;
     flex-grow : 1;
-    width: calc(100% - 40px);
+    width: calc(100% - 28px);
     border: 1px solid var(--shade2);
     border-radius: 20px;
     padding: 20px;
-    overflow-y: auto;
+    padding-right: 8px;
+    overflow-y: scroll;
     overflow-x: hidden;
 }
+/* div#content div#thread div#thread:hover::-webkit-scrollbar-thumb { */
+/*     transition: all 1s ease-out; */
+/*     background-color: var(--shade4); */
+/* } */
 div#content div#thread img.threadpic {
     position: absolute;
     width: 42px;
@@ -752,6 +757,28 @@ div.modal div#widget_popup table#button_wrapper_inner {
 
 .popup_table th.col-hdr {
     min-width: 60px;
+}
+
+body.windows *::-webkit-scrollbar {
+    width: 12px;
+}
+body.windows *::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 14px 0px;
+}
+body.windows *::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 16px;
+    border: 4px solid #fff;
+}
+body.windows .scrolling::-webkit-scrollbar-thumb {
+    background: var(--shade4);
+}
+body.windows *::-webkit-scrollbar-thumb:hover {
+  background: var(--shade4);
+}
+body.windows *::-webkit-scrollbar-button {
+    display:none;
 }
 
 div.badge {

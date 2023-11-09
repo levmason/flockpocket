@@ -20,7 +20,7 @@ function flockpocket () {
     }
 
     self.init_ui = function () {
-        self.menu = new menu($("#left_menu"));
+        self.menu = new menu($("#leftbar"));
         self.top_menu = new top_menu($("#top_menu"));
         self.chat = new chat($("#rightbar"));
     }
@@ -115,6 +115,8 @@ function flockpocket () {
         case "chat":
             if (id) {
                 new chat_thread($("#content"), id);
+            } else {
+                //self.chat = new chat($("#content"));
             }
             break;
         case "logout":
@@ -137,6 +139,11 @@ $(document).ready(function(){
             }
         }
     });
+
+    os = navigator.platform;
+    if (!(os.startsWith("Mac"))) {
+        $('body').addClass('windows');
+    }
 
     fp = new flockpocket();
     fp.init();

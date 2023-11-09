@@ -1,0 +1,22 @@
+body.windows *::-webkit-scrollbar {
+    width: 12px;
+}
+body.windows *::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 14px 0px;
+}
+body.windows *::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 16px;
+    border: 4px solid #fff;
+}
+body.windows .scrolling::-webkit-scrollbar-thumb {
+    background: var(--shade4);
+}
+body.windows *::-webkit-scrollbar-thumb:hover {
+  background: var(--shade4);
+}
+body.windows *::-webkit-scrollbar-button {
+    display:none;
+}
+

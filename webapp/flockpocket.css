@@ -94,7 +94,7 @@ button:disabled:hover {
 div#content {
     text-align: left;
     position: absolute;
-    width: calc(100% - 640px);
+    width: calc(70vw - 90px);
     min-width: 460px;
     left: 50%;
     top: 40px;
@@ -106,20 +106,20 @@ div#content {
     div#content {
         width: calc(100% - 120px);
     }
-    div#rightbar, div#left_menu {
+    div#rightbar, div#leftbar {
         width: var(--hidden_bar_width) ! important;
         min-width: var(--hidden_bar_width) ! important;
     }
     div#rightbar:hover {
         min-width: var(--bar_min_width) ! important;
     }
-    div#left_menu:hover {
+    div#leftbar:hover {
         min-width: var(--bar_min_width) ! important;
     }
-    div#left_menu:hover * {
+    div#leftbar:hover * {
         visibility: visible;
     }
-    div#left_menu * {
+    div#leftbar * {
         visibility: hidden;
     }
     div#rightbar:hover > * {

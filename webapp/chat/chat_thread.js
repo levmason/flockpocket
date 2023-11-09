@@ -79,7 +79,7 @@ function chat_thread (container, id) {
                 // remove the typing indicator
                 self.remove_typing(user_id);
                 // insert the message to the thread
-                self.add_message(options.message);
+                self.add_message(options.message, update=true);
             }
         }
 
@@ -184,6 +184,9 @@ function chat_thread (container, id) {
             self.el.find("div#thread_input").append(picker);
             return false;
         });
+
+        /* autohide the scroll bar */
+        scroll_autohide(self, self.thread_el);
     }
 
     // add a typing indicator
@@ -208,7 +211,7 @@ function chat_thread (container, id) {
     }
 
     // add a mesage
-    self.add_message = function (msg) {
+    self.add_message = function (msg, update = false) {
         date = utility.getDateString(msg.timestamp);
 
         if (date != self.last_date) {
@@ -222,7 +225,9 @@ function chat_thread (container, id) {
             self.last_user = msg.user;
             self.latest = self.message_l.last();
         }
-        self.scroll_to_end();
+        if (update) {
+            self.scroll_to_end();
+        }
         self.last_date = utility.getDateString(msg.timestamp);
     }
 

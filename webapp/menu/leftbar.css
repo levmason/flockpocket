@@ -1,4 +1,4 @@
-#left_menu {
+#leftbar {
     float:left;
     width: var(--bar_width);
     max-width: var(--bar_max_width);
@@ -13,7 +13,7 @@
     padding-top: 20px;
 }
 
-#left_menu div{
+#leftbar div{
     white-space: nowrap;
 }
 div#menu {

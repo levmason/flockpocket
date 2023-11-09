@@ -20,6 +20,7 @@ files=(
     moment/moment.min.js \
     moment/moment-timezone-with-data.js \
     croppie/croppie.min.js \
+    underscore/underscore-umd-min.js \
     )
 cat ${files[@]} > js/flockpocket.dep.min.js
 

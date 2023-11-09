@@ -26,13 +26,18 @@ div#content div#thread div#thread {
     display: flex;
     flex-flow: column-reverse;
     flex-grow : 1;
-    width: calc(100% - 40px);
+    width: calc(100% - 28px);
     border: 1px solid var(--shade2);
     border-radius: 20px;
     padding: 20px;
-    overflow-y: auto;
+    padding-right: 8px;
+    overflow-y: scroll;
     overflow-x: hidden;
 }
+/* div#content div#thread div#thread:hover::-webkit-scrollbar-thumb { */
+/*     transition: all 1s ease-out; */
+/*     background-color: var(--shade4); */
+/* } */
 div#content div#thread img.threadpic {
     position: absolute;
     width: 42px;
