@@ -16,7 +16,7 @@ function family_row (container, config = {}, index, taken,  append = true) {
 
     self.disabled = self.name ? "":"disabled";
     self.index = index;
-    self.value = config.value || "";    self.value = null;
+    self.value = config.value || "";
 
     self.rel_d = {
         'Husband': {
@@ -160,6 +160,7 @@ function family_row (container, config = {}, index, taken,  append = true) {
 
             // store the results
             self.input_el.val(`${self.user.full_name} (${self.user.email})`);
+            $(this).trigger("input");
 
             // we're done with the search
             self.results_el.hide();
