@@ -13,9 +13,6 @@ body.windows *::-webkit-scrollbar-thumb {
 body.windows .scrolling::-webkit-scrollbar-thumb {
     background: var(--shade4);
 }
-body.windows *::-webkit-scrollbar-thumb:hover {
-  background: var(--shade4);
-}
 body.windows *::-webkit-scrollbar-button {
     display:none;
 }
