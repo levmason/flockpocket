@@ -43,38 +43,43 @@ class DatastoreDaemon():
             try:
                 channel, data = await cfg.redis.get_message(self.sub)
                 if data is not None:
-                    aio.create_task(self.process_query(channel, data))
+                    aio.create_task(self.handle_message(channel, data))
             except Exception as e:
                 log.debug(traceback.format_exc())
 
-    async def process_query (self, channel, query):
+    async def handle_message (self, channel, message):
+        """Handles the message"""
 
-        for name, options in query.items():
-            # find the query handler
-            try:
+        # find all tasks
+        task_l = []
+        for name, options in message.items():
+            # Finds the correct API handler function
+            if '.' in name:
+                module_name, fn_name = name.split(".")
+                module = getattr(self, module_name)
+                fn = getattr(module, fn_name)
+            else:
                 fn = getattr(self, name)
-                response = await fn(**options)
 
-                if not channel.endswith(self.name):
-                    await self.respond(channel, response)
-            except Exception as e:
-                log.debug("Can't process query: %s\n%s" % (name, e))
-                log.debug(traceback.format_exc())
+            # queue the handler function (the ** converts the dictionary into keyword arguments)
+            task_l.append(fn(**options))
+
+        # execute tasks
+        results = await aio.gather(task_l)
+
+        # handle responses
+        for r in results:
+            # if there's an error, raise it
+            if isinstance(r, Exception):
+                await self.error(str(r))
+                # debug the error
+                try:
+                    raise r
+                except:
+                    log.debug("Error in handler:\n%s" % traceback.format_exc())
+            elif r and not channel.endswith(self.name):
+                # If there's a response, then send it to the browser
+                await self.respond(channel, r)
 
     async def respond (self, channel, response):
         await cfg.redis.respond(channel, response)
-
-    #
-    # Chat Threads
-    #
-    async def get_thread_history (self, thread_id = None):
-        thread_id = uuid.UUID(thread_id)
-        return await self.chat.get_history(thread_id)
-
-    async def store_message (self, thread_id = None, message = None):
-        thread_id = uuid.UUID(thread_id)
-        await self.chat.add_message(thread_id, message)
-
-    async def like_message (self, thread_id = None, user_id = None, message_idx = None):
-        thread_id = uuid.UUID(thread_id)
-        await self.chat.like_message(thread_id, user_id, message_idx)

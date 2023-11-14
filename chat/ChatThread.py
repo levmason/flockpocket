@@ -23,8 +23,10 @@ class ChatThread:
             await user.push_thread(self)
 
     def make_message (self, from_user, text):
+        now = time.time()
+        self.timestamp = now
         return {
-            'timestamp': time.time(),
+            'timestamp': now,
             'user': str(from_user.id),
             'text': text
         }
@@ -35,9 +37,6 @@ class ChatThread:
 
         # send the message to the datastore
         await self.push_to_datastore(message)
-
-        # set the thread timestamp
-        self.timestamp = message['timestamp']
 
         for user in self.user_s:
             await user.push_message(self, message)
@@ -63,15 +62,17 @@ class ChatThread:
         """ push message to the datastore """
 
         await cfg.redis.ds_push({
-            "store_message": {
+            "chat.add_message": {
                 'thread_id': str(self.id),
                 'message': message
             }
         })
 
     async def push_like_to_datastore (self, user, message_idx):
+        """ push a message like/heart to the datastore """
+
         await cfg.redis.ds_push({
-            "like_message": {
+            "chat.like_message": {
                 'thread_id': str(self.id),
                 'user_id': str(user.id),
                 'message_idx': message_idx
@@ -81,9 +82,8 @@ class ChatThread:
     async def read_from_datastore (self):
         """ read message history from datastore """
 
-        query = {
-            'get_thread_history': {
+        return await cfg.redis.ds_query({
+            'chat.get_history': {
                 'thread_id': str(self.id)
             }
-        }
-        return await cfg.redis.ds_query(query)
+        })
