@@ -150,6 +150,26 @@ div#top_menu div#logo img {
     height: 40px;
 }
 
+/* notifications */
+div#top_menu div#notifications {
+    display: inline-block;
+    position: absolute;
+    top: 2px;
+    right: 60px;
+    margin: 5px 10px;
+    background: var(--shade4);
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+div#top_menu div#notifications:hover {
+    background: var(--shade2);
+}
+
+div#top_menu div#notifications img {
+    width: 31px;
+    height: 31px;
+}
 /* user menu */
 div#user_menu {
     float: right;
@@ -773,9 +793,6 @@ body.windows *::-webkit-scrollbar-thumb {
 }
 body.windows .scrolling::-webkit-scrollbar-thumb {
     background: var(--shade4);
-}
-body.windows *::-webkit-scrollbar-thumb:hover {
-  background: var(--shade4);
 }
 body.windows *::-webkit-scrollbar-button {
     display:none;

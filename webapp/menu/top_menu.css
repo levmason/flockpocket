@@ -19,3 +19,23 @@ div#top_menu div#logo img {
     height: 40px;
 }
 
+/* notifications */
+div#top_menu div#notifications {
+    display: inline-block;
+    position: absolute;
+    top: 2px;
+    right: 60px;
+    margin: 5px 10px;
+    background: var(--shade4);
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+div#top_menu div#notifications:hover {
+    background: var(--shade2);
+}
+
+div#top_menu div#notifications img {
+    width: 31px;
+    height: 31px;
+}
