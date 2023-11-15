@@ -9,10 +9,9 @@ from common import logger as log
 from common import utility
 from common import aio
 from common.models import User as User_db
-from common.models import ChatThread as ChatThread_db
 from user.User import User
 from user import utility as user_utility
-from chat.ChatHandler import ChatHandler
+from .chat.ChatHandler import ChatHandler
 
 class FlockConsumer(AsyncWebsocketConsumer):
     async def connect (self):

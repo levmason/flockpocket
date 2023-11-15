@@ -12,8 +12,6 @@ import uuid
 
 from .RedisWrapper import aioRedisWrapper
 from common.models import User as User_db
-#from common.models import ChatThread as ChatThread_db
-from chat.ChatThread import ChatThread
 from user.User import User
 
 from . import linux
@@ -113,26 +111,6 @@ async def get_user (user_id, user_db = None):
         user_d[user_id] = user = User(user_db)
 
     return user
-#
-# Thread
-# async def init_thread_d ():
-#     global thread_d
-
-#     thread_d = {}
-#     async for thread_db in ChatThread_db.objects.all():
-#         thread = ChatThread(thread_db)
-#         await thread.set_users()
-#         thread_d[thread.id] = thread
-
-#     return thread_d
-
-# def get_thread (id, thread_db = None):
-#     if isinstance(id, str):
-#         id = uuid.UUID(id)
-
-#     thread = thread_d.get(id)
-
-#     return thread
 
 # interface to redis
 async def init_redis ():

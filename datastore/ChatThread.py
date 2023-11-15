@@ -87,6 +87,8 @@ class ChatThread:
                 await f.write(data)
 
     async def stop (self):
+        """ elegant shutdown """
+
         await self.write_history()
         timestamp_dt = utility.epoch_to_datetime(self.timestamp)
         if timestamp_dt != self.db_entry.timestamp:

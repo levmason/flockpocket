@@ -779,22 +779,22 @@ div.modal div#widget_popup table#button_wrapper_inner {
     min-width: 60px;
 }
 
-body.windows *::-webkit-scrollbar {
+*::-webkit-scrollbar {
     width: 12px;
 }
-body.windows *::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
     background: transparent;
     margin: 14px 0px;
 }
-body.windows *::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
     background: transparent;
     border-radius: 16px;
     border: 4px solid #fff;
 }
-body.windows .scrolling::-webkit-scrollbar-thumb {
+.scrolling::-webkit-scrollbar-thumb {
     background: var(--shade4);
 }
-body.windows *::-webkit-scrollbar-button {
+*::-webkit-scrollbar-button {
     display:none;
 }
 

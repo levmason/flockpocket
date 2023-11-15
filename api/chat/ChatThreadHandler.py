@@ -2,7 +2,7 @@ import time
 from common import config as cfg
 from common import logger as log
 
-class ChatThread:
+class ChatThreadHandler:
     def __init__(self, user, config):
         self.user = user
         for key, val in config.items():
@@ -23,7 +23,6 @@ class ChatThread:
 
         if self.other_user:
             ret_d['user'] = str(self.other_user.id)
-            ret_d['label'] = f"{self.other_user.first_name} {self.other_user.last_name}"
         else:
             ret_d['user_l'] = [str(x.id) for x in self.user_s]
 

@@ -12,7 +12,7 @@ from django.urls import path
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 
-from webapp.consumers import FlockConsumer
+from api.consumers import FlockConsumer
 
 from common import config as cfg
 from common import logger as log

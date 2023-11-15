@@ -1,7 +1,7 @@
 from common import logger as log
 from common import config as cfg
 
-from .ChatThread import ChatThread
+from .ChatThreadHandler import ChatThreadHandler
 
 class ChatHandler:
 
@@ -14,7 +14,7 @@ class ChatHandler:
         return {x:y.as_dict() for x,y in self.thread_d.items()}
 
     async def add_thread (self, thread_cfg):
-        thread = ChatThread(self.user, thread_cfg)
+        thread = ChatThreadHandler(self.user, thread_cfg)
         await thread.init()
 
         self.thread_d[thread.id] = thread

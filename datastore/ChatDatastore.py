@@ -20,6 +20,8 @@ class ChatDatastore:
             await self.add_thread(thread_db)
 
     async def add_thread (self, thread_db):
+        """ Add a thread to the cache """
+
         thread = ChatThread(thread_db)
         await thread.init()
         self.thread_d[str(thread.id)] = thread
@@ -34,8 +36,6 @@ class ChatDatastore:
         for thread_id, thread in self.thread_d.items():
             await thread.stop()
 
-    #
-    # threads
     async def get_threads_for_user (self, user_id):
         """ get all threads for a specified user """
 
@@ -47,58 +47,8 @@ class ChatDatastore:
 
         return thread_d
 
-    # async def get_thread (self, thread_id, thread_db = None):
-    #     """ Retrieve thread details from the database or cache """
-
-    #     # check the cache
-    #     thread = self.thread_d.get(thread_id)
-    #     if not thread:
-    #         if not thread_db:
-    #             # see if we have one in the database
-    #             try:
-    #                 thread_db = await ChatThread_db.objects.aget(pk=uuid.UUID(thread_id))
-    #             except ObjectDoesNotExist:
-    #                 thread_db = None
-
-    #         # initialize the handler object
-    #         if thread_db:
-    #             thread = ChatThread(thread_db)
-    #             await thread.init()
-    #             self.cache(thread)
-
-    #     return thread
-
-    # async def get_user_thread (self, users, create=False):
-    #     """ Get a user thread """
-
-    #     log.debug("get_user_thread")
-    #     key = '/'.join(sorted(users))
-
-    #     # check the cache
-    #     thread = self.user_thread_d.get(key)
-    #     if not thread:
-    #         log.debug("NOOOOOO")
-    #         users = [uuid.UUID(x) for x in users]
-    #         # see if we have one in the database
-
-    #         # match a user:user thread
-    #         qs = ChatThread_db.objects.filter(type=0)
-    #         # match both users
-    #         qs = qs.filter(members__id=users[0]).filter(members__id=users[1])
-    #         async for thread_db in qs:
-    #             thread = ChatThread(thread_db)
-    #             await thread.init()
-    #             self.cache(thread)
-    #             # there should only be one
-    #             break
-
-    #         # initialize the handler object
-    #         if not thread and create:
-    #             thread = await self.create_thread("", members=users)
-
-    #     return thread.as_dict()
-
     async def create_thread (self, label = "", members = [], type = 0):
+        """ create a new thread """
 
         # make sure there aren't redundant members
         if len(members) > len(set(members)):
@@ -115,8 +65,6 @@ class ChatDatastore:
         thread = await self.add_thread(thread_db)
         return thread.as_dict()
 
-    #
-    # messages
     async def add_message (self, thread_id, message):
         """ add a message to the history cache """
         thread = self.thread_d.get(thread_id)
