@@ -22,8 +22,14 @@ function chat (container, id) {
 
     self.init_handlers = function () {
 
-        fp.api.handlers.new_thread = function (thread) {
+        fp.api.handler_d.new_thread = function (thread) {
             self.add_thread(thread);
+        }
+
+        fp.api.handler_d.message = fp.api.handler_d.like = function (opt) {
+            let thread = fp.thread_d[opt.thread];
+            thread.timestamp = opt.timestamp;
+            self.set_to_recent();
         }
 
         self.el.on("click", "div.thread_label", function () {
@@ -51,7 +57,12 @@ function chat (container, id) {
 
     self.set_to_recent = function () {
         self.results_el.empty();
-        for (var thread_id in fp.thread_d) {
+
+        let sorted_threads = Object.keys(fp.thread_d).sort(function(a, b) {
+            return fp.thread_d[b].timestamp - fp.thread_d[a].timestamp;
+        });
+
+        for (var thread_id of sorted_threads) {
             let thread = fp.thread_d[thread_id];
             self.add_thread(thread);
         }

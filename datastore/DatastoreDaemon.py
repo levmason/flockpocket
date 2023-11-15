@@ -31,6 +31,8 @@ class DatastoreDaemon():
 
         # initialize the chat handler
         self.chat = ChatDatastore()
+        await self.chat.init()
+
         # subscribe to data
         self.sub = await cfg.redis.psubscribe('%s*' % self.name)
         # start the message handler
@@ -71,7 +73,6 @@ class DatastoreDaemon():
         for r in results:
             # if there's an error, raise it
             if isinstance(r, Exception):
-                await self.error(str(r))
                 # debug the error
                 try:
                     raise r

@@ -56,7 +56,7 @@ function chat_thread (container, id) {
     self.init_handlers = function () {
 
         // add handler for incoming thread history
-        fp.api.handlers.thread = function (opt) {
+        fp.api.view_handler_d.thread = function (opt) {
             self.id = opt.id;
             for (let msg of opt.message_l) {
                 self.add_message(msg);
@@ -65,7 +65,7 @@ function chat_thread (container, id) {
 
         // If we don't have a thread ID, we'll want to wait for one
         if (!self.id) {
-            fp.api.handlers.new_thread = function (opt) {
+            fp.api.view_handler_d.new_thread = function (opt) {
                 if (self.user_id == opt.user) {
                     self.id = opt.id
                 }
@@ -73,7 +73,7 @@ function chat_thread (container, id) {
         }
 
         /* message received */
-        fp.api.handlers.message = function (options) {
+        fp.api.view_handler_d.message = function (options) {
             if (options.thread == self.id) {
                 let user_id = options.message.user;
                 // remove the typing indicator
@@ -84,7 +84,7 @@ function chat_thread (container, id) {
         }
 
         /* typing notification received */
-        fp.api.handlers.typing = function (options) {
+        fp.api.view_handler_d.typing = function (options) {
             let user_id = options.user;
             if (options.thread == self.id) {
                 // add or remove typing indicator
@@ -96,8 +96,9 @@ function chat_thread (container, id) {
             }
         }
 
-        fp.api.handlers.like = function (options) {
+        fp.api.view_handler_d.like = function (options) {
             if (options.thread == self.id) {
+                console.log(options)
                 let message = self.message_l[options.message_idx];
                 message.add_like(options);
             }

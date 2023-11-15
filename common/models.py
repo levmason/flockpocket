@@ -1,6 +1,7 @@
 import uuid
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
@@ -60,6 +61,7 @@ thread_type_map = {
 }
 class ChatThread (models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    timestamp = models.DateTimeField(default=timezone.now)
     label = models.TextField()
     members = models.ManyToManyField(User)
     type = models.SmallIntegerField(default=0)

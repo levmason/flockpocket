@@ -18,16 +18,13 @@ from . import logger as log
 #
 # Epoch/Datetime conversions
 #epoch = datetime.datetime.fromtimestamp(0, pytz.UTC)
-def datetime_to_epoch (dt, local=False, as_int=True):
+def datetime_to_epoch (dt, local=False):
     if local:
         ret = time.mktime(dt.timetuple())
     else:
         ret = dt.timestamp()
 
-    if as_int:
-        return int(ret)
-    else:
-        return ret
+    return ret
 
 def epoch_to_datetime (ts, local=False, aware=True):
     if local:

@@ -1,5 +1,3 @@
-from common.models import ChatThread as ChatThread_db
-from chat.ChatThread import ChatThread
 from common import aio
 from common import logger as log
 from common import config as cfg
@@ -31,13 +29,15 @@ class User:
         return ret
 
     async def push (self, msg):
+        """ push messages to all websocket sessions """
+
         task_l = []
         for socket in self.socket_l:
             task_l.append(socket.respond(msg))
 
         await aio.gather(task_l)
 
-    async def add_thread (self, thread, push=True):
+    async def add_thread (self, thread):
         user_id = None
         if thread.db_entry.type == 0:
             for user in thread.user_s:
@@ -54,19 +54,21 @@ class User:
         # add to our dict
         self.thread_d[str(thread.id)] = entry
 
-    def get_threads (self):
-        for id, entry in self.thread_d.items():
-            entry['timestamp'] = cfg.get_thread(id).timestamp;
-
+    async def get_threads (self):
+        self.thread_d = await cfg.redis.ds_query({
+            'chat.get_threads_for_user': {
+                'user_id': str(self.id)
+            }
+        })
         return self.thread_d
 
+    #
+    # Websockets push functions
     async def push_thread (self, thread):
         await self.push({
             "new_thread": self.thread_d[str(thread.id)]
         })
 
-    #
-    # Websockets push functions
     async def push_typing (self, thread, user, clear):
         if user is not self:
             await self.push(
@@ -79,11 +81,12 @@ class User:
                 }
             )
 
-    async def push_like (self, thread, user, message_idx):
+    async def push_like (self, thread, timestamp, user, message_idx):
         await self.push(
             {
                 "like": {
                     "thread": str(thread.id),
+                    "timestamp": timestamp,
                     "user": str(user.id),
                     "message_idx": message_idx,
                 }

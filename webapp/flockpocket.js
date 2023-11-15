@@ -83,7 +83,7 @@ function flockpocket () {
 
     window.onhashchange = function(e) {
         // clear the api handlers
-        self.api.handlers = {};
+        self.api.view_handler_d = {};
 
 	// get the page hash
         self.hash = window.location.hash.substring(1);

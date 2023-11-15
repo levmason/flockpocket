@@ -1,7 +1,8 @@
 function API (fp) {
     var self = this;
 
-    self.handlers = {};
+    self.handler_d = {};
+    self.view_handler_d = {};
     self.sock_url = utility.ws_url('api');
     self.disconnect_timeout = 20000;
 
@@ -14,7 +15,7 @@ function API (fp) {
         // connect the socket
         self.sock = new WebSocket(self.sock_url);
 
-        // set websocket handlers
+        // set websocket handler_d
         self.sock.onmessage = self.sock_rx;
         self.sock.onclose = self.sock_onclose;
         self.sock.onopen = self.sock_onopen;
@@ -73,8 +74,8 @@ function API (fp) {
 
         for (let name in data) {
             let options = data[name];
-            let handler = self[name];
-            let view_handler = self.handlers[name];
+            let handler = self.handler_d[name];
+            let view_handler = self.view_handler_d[name];
 
             if (handler || view_handler) {
                 // run the default handler
@@ -90,10 +91,11 @@ function API (fp) {
     }
 
     /* default handlers */
-    self.ui_config = function (opt) {
+    self.handler_d.ui_config = function (opt) {
 	console.log(opt);
         fp.user_d = opt.user_d || {};
         fp.thread_d = opt.thread_d || {};
+        console.log(fp.thread_d);
 
         // set the picture urls
         for (let id in fp.user_d) {
@@ -116,7 +118,7 @@ function API (fp) {
     }
 
     /* chat */
-    self.message = function (options) {
+    self.handler_d.message = function (options) {
         let message = options.message;
         if (message.user != fp.user.id) {
             let icon = fp.user_d[message.user].pic_url;
@@ -130,7 +132,7 @@ function API (fp) {
     }
 
     /* user update */
-    self.user = function (user) {
+    self.handler_d.user = function (user) {
 	// set the img link
 	user.pic_url = utility.static_url('profile_pics/'+ (user.pic || "avatar.svg"));
 

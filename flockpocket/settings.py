@@ -143,7 +143,7 @@ SESSION_COOKIE_NAME = "%s.sessionid" % cfg.tool_name
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-CSRF_TRUSTED_ORIGINS = ['https://localhost', 'https://192.168.1.57']
+CSRF_TRUSTED_ORIGINS = ['https://localhost', 'https://192.168.1.57', 'https://174.109.30.190']
 
 # LEVY: Debug junk
 #SESSION_COOKIE_SECURE = False
