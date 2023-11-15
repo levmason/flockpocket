@@ -95,7 +95,7 @@ class FlockConsumer(AsyncWebsocketConsumer):
             'ui_config': {
                 'user_id': str(self.user.id),
                 'user_d': {str(x):y.as_dict() for x,y in cfg.user_d.items() if y.is_active},
-                'thread_d': await self.chat.get_threads_for_user(),
+                'thread_d': await self.chat.get_threads(),
             }
         }
 

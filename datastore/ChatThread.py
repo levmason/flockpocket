@@ -39,10 +39,9 @@ class ChatThread:
         self.timestamp = message['timestamp']
         history.append(message)
 
-    async def like_message (self, user_id, message_idx):
+    async def like_message (self, timestamp, user_id, message_idx):
         # update the timestamp
-        self.timestamp = time.time()
-        log.debug(self.timestamp)
+        self.timestamp = timestamp
 
         message = self.message_l[message_idx]
 
@@ -92,7 +91,4 @@ class ChatThread:
         timestamp_dt = utility.epoch_to_datetime(self.timestamp)
         if timestamp_dt != self.db_entry.timestamp:
             self.db_entry.timestamp = timestamp_dt
-            try:
-                await self.db_entry.asave()
-            except Exception as e:
-                log.debug(e)
+            await self.db_entry.asave()

@@ -7,14 +7,22 @@ function chat_thread (container, id) {
     self.typing_timeout = 5000;
     self.typing_timer = null;
     self.typing_d = {};
+    self.handler = {};
 
     if (id.includes("=")) {
-        self.user = fp.user_d[id.split("=")[1]];
+        // it's a user:user thread
+        self.user_id = id.split("=")[1]
+        self.user = fp.user_d[self.user_id];
         self.pic_url = self.user.pic_url;
         self.label = self.user.full_name;
-        self.user_id = self.user.id;
-        self.id = null;
+        self.thread = fp.user_thread_d[self.user_id];
+        if (self.thread) {
+            self.id = self.thread.id;
+        } else {
+            self.id = null;
+        }
     } else {
+        // it's a group thread
         self.thread = fp.thread_d[id];
         if (self.thread.user) {
             let user = fp.user_d[self.thread.user];
@@ -54,63 +62,17 @@ function chat_thread (container, id) {
 
     // initialize event handlers
     self.init_handlers = function () {
-
-        // add handler for incoming thread history
-        fp.api.view_handler_d.thread = function (opt) {
-            self.id = opt.id;
-            for (let msg of opt.message_l) {
-                self.add_message(msg);
-            }
-        }
-
-        // If we don't have a thread ID, we'll want to wait for one
-        if (!self.id) {
-            fp.api.view_handler_d.new_thread = function (opt) {
-                if (self.user_id == opt.user) {
-                    self.id = opt.id
-                }
-            }
-        }
-
-        /* message received */
-        fp.api.view_handler_d.message = function (options) {
-            if (options.thread == self.id) {
-                let user_id = options.message.user;
-                // remove the typing indicator
-                self.remove_typing(user_id);
-                // insert the message to the thread
-                self.add_message(options.message, update=true);
-            }
-        }
-
-        /* typing notification received */
-        fp.api.view_handler_d.typing = function (options) {
-            let user_id = options.user;
-            if (options.thread == self.id) {
-                // add or remove typing indicator
-                if (options.clear) {
-                    self.remove_typing(user_id);
-                } else {
-                    self.add_typing(user_id);
-                }
-            }
-        }
-
-        fp.api.view_handler_d.like = function (options) {
-            if (options.thread == self.id) {
-                console.log(options)
-                let message = self.message_l[options.message_idx];
-                message.add_like(options);
-            }
-        }
+        // register with the api
+        fp.api.register(self);
 
         // get the thread history
-        fp.api.query({
-            'chat.get_thread_history': {
-                thread_id: self.id,
-                user_id: self.user_id
-            }
-        });
+        if (self.id) {
+            fp.api.query({
+                'chat.get_thread_history': {
+                    thread_id: self.id,
+                }
+            });
+        }
 
         /* typing in the input */
         self.el.on("keypress", "div#thread_input", function(e) {
@@ -118,21 +80,19 @@ function chat_thread (container, id) {
                 e.preventDefault();
                 let msg = $(this).text();
                 if (msg) {
-                    let query = {
+                    // send the message over the websocket
+                    fp.api.query({
                         'chat.send_message': {
                             thread_id: self.id,
                             user_id: self.user_id,
                             text: msg,
                         }
-                    }
-
-                    // send the query
-                    fp.api.query(query);
+                    });
 
                     $(this).empty();
                 }
                 return false;
-            } else {
+            } else if (self.id) {
                 // clear typing timeout
                 if (self.typing_timer) {
                     clearTimeout(self.typing_timer);
@@ -234,6 +194,58 @@ function chat_thread (container, id) {
 
     self.scroll_to_end = function () {
         self.thread_el.scrollTop(self.thread_el.prop("scrollHeight"));
+    }
+
+    /*
+     * api handlers
+     */
+
+    /* handler for incoming thread history */
+    self.handler.thread = function (opt) {
+        for (let msg of opt.message_l) {
+            self.add_message(msg);
+        }
+    }
+
+    /* If we don't have a thread ID, we'll want to wait for one */
+    if (!self.id) {
+        self.handler.new_thread = function (thread) {
+            if (self.user_id == thread.user.id) {
+                self.id = thread.id;
+            }
+        }
+    }
+
+    /* message received */
+    self.handler.message = function (opt) {
+        if (opt.thread == self.id) {
+            let user_id = opt.message.user;
+            // remove the typing indicator
+            self.remove_typing(user_id);
+            // insert the message to the thread
+            self.add_message(opt.message, update=true);
+        }
+    }
+
+    /* typing notification received */
+    self.handler.typing = function (opt) {
+        let user_id = opt.user;
+        if (opt.thread == self.id) {
+            // add or remove typing indicator
+            if (opt.clear) {
+                self.remove_typing(user_id);
+            } else {
+                self.add_typing(user_id);
+            }
+        }
+    }
+
+    /* like received */
+    self.handler.like = function (opt) {
+        if (opt.thread == self.id) {
+            let message = self.message_l[opt.message_idx];
+            message.add_like(opt);
+        }
     }
 
     self.init();

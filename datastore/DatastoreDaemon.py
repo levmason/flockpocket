@@ -26,8 +26,9 @@ class DatastoreDaemon():
     async def initialize (self):
         # Levy: delete all the threads in the DB
         #log.debug("removing threads...")
-        #from common.models import ChatThread as ChatThread_db
-        #await ChatThread_db.objects.all().adelete();
+        from common.models import ChatThread as ChatThread_db
+        alexa_user = uuid.UUID('ad9185f4-2772-4213-bd9b-45d6f3b7cd89')
+        await ChatThread_db.objects.filter(members__id=alexa_user).adelete();
 
         # initialize the chat handler
         self.chat = ChatDatastore()
@@ -78,7 +79,7 @@ class DatastoreDaemon():
                     raise r
                 except:
                     log.debug("Error in handler:\n%s" % traceback.format_exc())
-            elif r and not channel.endswith(self.name):
+            elif r is not None and not channel.endswith(self.name):
                 # If there's a response, then send it to the browser
                 await self.respond(channel, r)
 

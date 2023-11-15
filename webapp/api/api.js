@@ -1,8 +1,7 @@
 function API (fp) {
     var self = this;
 
-    self.handler_d = {};
-    self.view_handler_d = {};
+    self.handler_elements = {};
     self.sock_url = utility.ws_url('api');
     self.disconnect_timeout = 20000;
 
@@ -15,7 +14,7 @@ function API (fp) {
         // connect the socket
         self.sock = new WebSocket(self.sock_url);
 
-        // set websocket handler_d
+        // set websocket handlers
         self.sock.onmessage = self.sock_rx;
         self.sock.onclose = self.sock_onclose;
         self.sock.onopen = self.sock_onopen;
@@ -73,74 +72,29 @@ function API (fp) {
         }
 
         for (let name in data) {
-            let options = data[name];
-            let handler = self.handler_d[name];
-            let view_handler = self.view_handler_d[name];
+            let opt = data[name];
+            let handler;
 
-            if (handler || view_handler) {
-                // run the default handler
+            for (let label in self.handler_elements) {
+                let el_handler = self.handler_elements[label];
+                handler = el_handler[name];
                 if (handler) {
-                    handler(options);
-                }
-                // run the view-specific handler
-                if (view_handler) {
-                    view_handler(options);
+                    handler(opt);
                 }
             }
         }
     }
 
-    /* default handlers */
-    self.handler_d.ui_config = function (opt) {
-	console.log(opt);
-        fp.user_d = opt.user_d || {};
-        fp.thread_d = opt.thread_d || {};
-        console.log(fp.thread_d);
-
-        // set the picture urls
-        for (let id in fp.user_d) {
-            let user = fp.user_d[id];
-            user.pic_url = utility.static_url('profile_pics/'+ (user.pic || "avatar.svg"));
-        }
-        fp.user = fp.user_d[opt.user_id];
-
-        // initialize the threads
-        for (let id in fp.thread_d) {
-            let thread = fp.thread_d[id];
-            if (thread.user) {
-                thread.user = fp.user_d[thread.user];
-            }
-        }
-
-        fp.init_ui();
-        window.onhashchange();
-        utility.unblockUI();
-    }
-
-    /* chat */
-    self.handler_d.message = function (options) {
-        let message = options.message;
-        if (message.user != fp.user.id) {
-            let icon = fp.user_d[message.user].pic_url;
-            utility.notify("New Message!", message.text, icon, 'chat');
+    self.register = function (obj, label) {
+        if (obj.handler) {
+            label = label || obj.constructor.name;
+            self.handler_elements[label] = obj.handler;
         }
     }
 
-    /* new thread */
-    self.new_thread = function (options) {
-        fp.thread_d[options.id] = options;
-    }
-
-    /* user update */
-    self.handler_d.user = function (user) {
-	// set the img link
-	user.pic_url = utility.static_url('profile_pics/'+ (user.pic || "avatar.svg"));
-
-	// store in dictionary
-	fp.user_d[user.id] = user;
-	if (user.id == fp.user.id) {
-	    fp.user = user;
-	}
+    self.unregister = function (obj, label) {
+        label = label || obj.constructor.name;
+        delete self.handler_elements[label];
     }
 
     self.open();

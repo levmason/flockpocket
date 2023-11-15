@@ -17,7 +17,6 @@ class ChatThread:
         ret_d = {
             'type': self.type,
             'id': self.id,
-            'user_l': list(self.user_s),
             'label': self.label,
             'timestamp': self.timestamp,
         }
@@ -25,12 +24,14 @@ class ChatThread:
         if self.other_user:
             ret_d['user'] = str(self.other_user.id)
             ret_d['label'] = f"{self.other_user.first_name} {self.other_user.last_name}"
+        else:
+            ret_d['user_l'] = [str(x.id) for x in self.user_s]
 
-    async def alert_users (self):
-        for user in self.user_s:
-            await user.push_thread(self)
+        return ret_d
 
-    def make_message (self, from_user, text):
+    def new_message (self, from_user, text):
+        """ create a new message """
+
         now = time.time()
         self.timestamp = now
         return {
@@ -41,7 +42,7 @@ class ChatThread:
 
     async def send_message (self, from_user, text):
         # create the message object
-        message = self.make_message(from_user, text)
+        message = self.new_message(from_user, text)
 
         # send to other user sessions
         for user in self.user_s:

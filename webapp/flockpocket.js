@@ -3,8 +3,12 @@ function flockpocket () {
     self.connected = true;
     self.user_d = null;
     self.user = null;
+    self.thread_d = {};
+    self.user_thread_d = {};
     self.auth = !location.href.includes("user_activate");
     self.hash = window.location.hash.substring(1);
+    self.content = null;
+    self.handler = {}
 
     self.init = function () {
         if (self.auth) {
@@ -12,6 +16,8 @@ function flockpocket () {
 
             // Add elements
             self.api = new API(self);
+            // register with the api
+            self.api.register(self);
         } else {
             let id = location.href.split("/")[4];
             new top_menu($("#top_menu"), false);
@@ -83,7 +89,9 @@ function flockpocket () {
 
     window.onhashchange = function(e) {
         // clear the api handlers
-        self.api.view_handler_d = {};
+        if (self.content) {
+            self.api.unregister(self.content);
+        }
 
 	// get the page hash
         self.hash = window.location.hash.substring(1);
@@ -98,23 +106,23 @@ function flockpocket () {
         switch(page) {
         case "directory":
 	    if (id) {
-		new profile($('#content'), self.user_d[id]);
+		self.content = new profile($('#content'), self.user_d[id]);
 	    } else {
-		new directory($("#content"));
+		self.content = new directory($("#content"));
 	    }
             break
         case "settings":
-            new settings($("#content"));
+            self.content = new settings($("#content"));
             break
         case "setup":
-            new setup($("#content"));
+            self.content = new setup($("#content"));
             break
         case "invite_user":
-            new invite_user($("#content"));
+            self.content = new invite_user($("#content"));
             break
         case "chat":
             if (id) {
-                new chat_thread($("#content"), id);
+                self.content = new chat_thread($("#content"), id);
             } else {
                 //self.chat = new chat($("#content"));
             }
@@ -125,6 +133,65 @@ function flockpocket () {
         }
     }
 
+    self.add_thread = function (thread) {
+        self.thread_d[thread.id] = thread;
+        if (thread.user) {
+            thread.user = self.user_d[thread.user];
+            self.user_thread_d[thread.user.id] = thread;
+        }
+    }
+
+    /*
+     * api handlers
+     */
+
+    self.handler.ui_config = function (opt) {
+        console.log(opt)
+        self.user_d = opt.user_d || {};
+
+        // set the picture urls
+        for (let id in self.user_d) {
+            let user = self.user_d[id];
+            user.pic_url = utility.static_url('profile_pics/'+ (user.pic || "avatar.svg"));
+        }
+        self.user = self.user_d[opt.user_id];
+
+        // initialize the threads
+        for (let id in opt.thread_d) {
+            let thread = opt.thread_d[id];
+            self.add_thread(thread);
+        }
+
+        self.init_ui();
+        window.onhashchange();
+        utility.unblockUI();
+    }
+
+    /* chat */
+    self.handler.message = function (opt) {
+        let message = opt.message;
+        if (message.user != self.user.id) {
+            let icon = self.user_d[message.user].pic_url;
+            utility.notify("New Message!", message.text, icon, 'chat');
+        }
+    }
+
+    /* new thread */
+    self.handler.new_thread = function (thread) {
+        self.add_thread(thread);
+    }
+
+    /* user update */
+    self.handler.user = function (user) {
+	// set the img link
+	user.pic_url = utility.static_url('profile_pics/'+ (user.pic || "avatar.svg"));
+
+	// store in dictionary
+	self.user_d[user.id] = user;
+	if (user.id == self.user.id) {
+	    self.user = user;
+	}
+    }
 
 }
 

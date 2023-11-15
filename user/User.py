@@ -7,7 +7,6 @@ class User:
 
     def __init__(self, db_entry):
         self.socket_l = []
-        self.thread_d = {}
         self.update(db_entry)
 
     def update (self, db_entry):
@@ -37,36 +36,14 @@ class User:
 
         await aio.gather(task_l)
 
-    async def add_thread (self, thread):
-        user_id = None
-        if thread.db_entry.type == 0:
-            for user in thread.user_s:
-                if user is not self:
-                    user_id = str(user.id)
-                    break
-
-        entry = {
-            "id": str(thread.id),
-            "user": user_id,
-            "label": thread.label,
-        }
-
-        # add to our dict
-        self.thread_d[str(thread.id)] = entry
-
-    async def get_threads (self):
-        self.thread_d = await cfg.redis.ds_query({
-            'chat.get_threads_for_user': {
-                'user_id': str(self.id)
-            }
-        })
-        return self.thread_d
-
     #
     # Websockets push functions
-    async def push_thread (self, thread):
+    async def push_thread (self, thread_cfg):
+        for socket in self.socket_l:
+            thread = await socket.chat.add_thread(thread_cfg)
+
         await self.push({
-            "new_thread": self.thread_d[str(thread.id)]
+            "new_thread": thread.as_dict()
         })
 
     async def push_typing (self, thread, user, clear):

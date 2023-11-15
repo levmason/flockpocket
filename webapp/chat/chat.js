@@ -2,6 +2,8 @@ function chat (container, id) {
     var self = this;
     el.call(self, container);
 
+    self.handler = {};
+
     // initialize the chat
     self.init = function () {
         self.html = `
@@ -21,16 +23,8 @@ function chat (container, id) {
     }
 
     self.init_handlers = function () {
-
-        fp.api.handler_d.new_thread = function (thread) {
-            self.add_thread(thread);
-        }
-
-        fp.api.handler_d.message = fp.api.handler_d.like = function (opt) {
-            let thread = fp.thread_d[opt.thread];
-            thread.timestamp = opt.timestamp;
-            self.set_to_recent();
-        }
+        // register with the api
+        fp.api.register(self);
 
         self.el.on("click", "div.thread_label", function () {
             let thread_id = $(this).attr("id");
@@ -70,6 +64,25 @@ function chat (container, id) {
 
     self.add_thread = function (thread) {
         new chat_badge(self.results_el, thread);
+    }
+
+    /*
+     * api handlers
+     */
+    self.handler.new_thread = function (thread) {
+        self.add_thread(thread);
+    }
+
+    self.handler.like = function (opt) {
+        let thread = fp.thread_d[opt.thread];
+        thread.timestamp = opt.timestamp;
+        self.set_to_recent();
+    }
+
+    self.handler.message = function (opt) {
+        let thread = fp.thread_d[opt.thread];
+        thread.timestamp = opt.message.timestamp;
+        self.set_to_recent();
     }
 
     self.init();
