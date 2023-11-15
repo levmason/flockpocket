@@ -79,6 +79,12 @@ class ChatHandler:
         if thread:
             await thread.send_message(self.user, text)
 
+    async def send_like (self, thread_id = None, message_idx = None):
+
+        thread = self.thread_d.get(thread_id)
+        if thread:
+            await thread.send_like(self.user, message_idx)
+
     async def send_typing (self, thread_id = None, clear = False):
         """ send the typing indicator signal """
 
@@ -86,8 +92,3 @@ class ChatHandler:
         if thread:
             await thread.typing(self.user, clear)
 
-    async def send_like (self, thread_id = None, message_idx = None):
-
-        thread = self.thread_d.get(thread_id)
-        if thread:
-            await thread.send_like(self.user, message_idx)

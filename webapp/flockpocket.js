@@ -7,6 +7,8 @@ function flockpocket () {
     self.user_thread_d = {};
     self.auth = !location.href.includes("user_activate");
     self.hash = window.location.hash.substring(1);
+    self.active = false;
+    self.activeTimeout = null;
     self.content = null;
     self.handler = {}
 
@@ -16,6 +18,7 @@ function flockpocket () {
 
             // Add elements
             self.api = new API(self);
+
             // register with the api
             self.api.register(self);
         } else {
@@ -25,10 +28,48 @@ function flockpocket () {
         }
     }
 
+    self.init_handlers = function () {
+        $(document).on("click input", function(e) {
+            self.set_active();
+        })
+    }
+
+    self.set_active = function () {
+        if (!self.active) {
+            fp.api.query({
+                'send_active': {
+                    user_id: self.user.id,
+                    active: true,
+                }
+            })
+        }
+        self.active = true;
+        if (self.active_timeout) {
+            clearTimeout(self.active_timeout);
+        }
+        self.active_timeout = setTimeout(() => {
+            self.unset_active();
+            self.active_timeout = null;
+        }, 60000);
+    }
+
+    self.unset_active = function () {
+        self.active = false;
+        fp.api.query({
+            'send_active': {
+                user_id: self.user.id,
+                active: false,
+            }
+        })
+    }
+
     self.init_ui = function () {
         self.menu = new menu($("#leftbar"));
         self.top_menu = new top_menu($("#top_menu"));
         self.chat = new chat($("#rightbar"));
+
+        self.set_active();
+        self.init_handlers();
     }
 
     self.filter_users = function(search, include_me, gender) {
@@ -88,6 +129,8 @@ function flockpocket () {
     }
 
     window.onhashchange = function(e) {
+        self.set_active();
+
         // clear the api handlers
         if (self.content) {
             self.api.unregister(self.content);

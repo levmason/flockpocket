@@ -8,10 +8,11 @@
     --font: "EB Garamond";
 }
 body.light {
+    --blue: #698eb5;
+    --green: #69b58e;
     --text_color: #222;
     --text_color_light: var(--shade5);
-    --text_color_form: #698eb5;
-    --green: #69b58e;
+    --text_color_form: var(--blue);
     --background: #fff;
     --shade1: #f8f7f7;
     --shade2: #ede9e9;
@@ -911,6 +912,24 @@ div.badge.thread {
     color: var(--text_color);
     padding: 4px;
 }
+div.badge.thread svg.active {
+    fill: var(--green);
+    position: absolute;
+    left: 44px;
+    bottom: 8px;
+}
+div.badge.thread:not(.active) svg.active {
+    display: none;
+}
+
+div.badge.thread svg.unread {
+    fill: var(--shade5);
+    position: relative;
+    left: 10px;
+}
+div.badge.thread:not(.unread) svg.unread {
+    display: none;
+}
 div.badge.thread:hover {
     background: var(--shade2);
 }
@@ -918,6 +937,9 @@ div.badge.thread img.pic {
     padding: 3px 10px;
     width: 40px;
     height: 40px;
+}
+div.badge.thread.unread span.name {
+    font-weight: bold;
 }
 div#directory {
     text-align: center;

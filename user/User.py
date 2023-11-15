@@ -8,6 +8,7 @@ class User:
     def __init__(self, db_entry):
         self.socket_l = []
         self.update(db_entry)
+        self.active = False;
 
     def update (self, db_entry):
         self.db_entry = db_entry
@@ -23,6 +24,7 @@ class User:
             "first_name": self.first_name,
             "last_name": self.last_name,
             "full_name": f"{self.first_name} {self.last_name}",
+            "active": self.active,
         }
         ret.update(self.details)
         return ret
@@ -84,5 +86,15 @@ class User:
         await self.push(
             {
                 "user": user
+            }
+        )
+
+    async def push_active (self, user_id, active):
+        await self.push(
+            {
+                "active": {
+                    'user_id': user_id,
+                    "active": active
+                }
             }
         )

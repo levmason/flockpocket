@@ -98,3 +98,14 @@ class FlockConsumer(AsyncWebsocketConsumer):
             }
         }
 
+    async def send_active (self, user_id = None, active = False):
+        """ send the active indicator signal """
+
+        self.user.active = active
+
+        task_l = []
+        for user in cfg.user_d.values():
+            if user is not self.user:
+                task_l.append(user.push_active(user_id, active = active))
+
+        await aio.gather(task_l)

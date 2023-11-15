@@ -8,10 +8,11 @@
     --font: "EB Garamond";
 }
 body.light {
+    --blue: #698eb5;
+    --green: #69b58e;
     --text_color: #222;
     --text_color_light: var(--shade5);
-    --text_color_form: #698eb5;
-    --green: #69b58e;
+    --text_color_form: var(--blue);
     --background: #fff;
     --shade1: #f8f7f7;
     --shade2: #ede9e9;

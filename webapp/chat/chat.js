@@ -85,5 +85,11 @@ function chat (container, id) {
         self.set_to_recent();
     }
 
+    self.handler.active = function (opt) {
+        let user = fp.user_d[opt.user_id];
+        user.active = opt.active;
+        self.set_to_recent();
+    }
+
     self.init();
 }
