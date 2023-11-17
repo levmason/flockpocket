@@ -41,7 +41,6 @@ function flockpocket () {
             }
             fp.api.query({
                 'send_active': {
-                    user_id: self.user.id,
                     active: true,
                 }
             })
@@ -60,7 +59,6 @@ function flockpocket () {
         self.active = false;
         fp.api.query({
             'send_active': {
-                user_id: self.user.id,
                 active: false,
             }
         })

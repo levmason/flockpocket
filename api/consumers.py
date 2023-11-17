@@ -24,9 +24,14 @@ class FlockConsumer(AsyncWebsocketConsumer):
             self.user = await cfg.get_user(user_db.id, user_db = user_db)
             self.user.socket_l.append(self)
             self.chat = ChatHandler(self.user)
+            self.active = True
 
     async def disconnect (self, close_code):
         """ What to run when a connection is lost """
+
+        # log that this connection is inactive
+        await self.send_active(active = False)
+        # remove this connection
         self.user.socket_l.remove(self)
 
     async def respond (self, data):
@@ -98,14 +103,18 @@ class FlockConsumer(AsyncWebsocketConsumer):
             }
         }
 
-    async def send_active (self, user_id = None, active = False):
+    async def send_active (self, active = False):
         """ send the active indicator signal """
 
-        self.user.active = active
+        self.active = active
+        user_active = self.user.check_active()
 
-        task_l = []
-        for user in cfg.user_d.values():
-            if user is not self.user:
-                task_l.append(user.push_active(user_id, active = active))
+        # if it changed, then we'll push to the users
+        if self.user.active != user_active:
+            self.user.active = user_active
+            task_l = []
+            for user in cfg.user_d.values():
+                if user is not self.user:
+                    task_l.append(user.push_active(str(self.user.id), active = self.user.active))
 
-        await aio.gather(task_l)
+            await aio.gather(task_l)

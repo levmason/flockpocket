@@ -109,7 +109,7 @@ function chat (container, id) {
     self.handler.active = function (opt) {
         let user = fp.user_d[opt.user_id];
         user.active = opt.active;
-        $(`div.badge.thread#${user.id}`).toggleClass('active', opt.active);
+        $(`div#${user.id}.badge.thread`).toggleClass('active', opt.active);
     }
 
     self.handler.seen = function (opt) {

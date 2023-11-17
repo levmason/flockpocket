@@ -29,6 +29,9 @@ class User:
         ret.update(self.details)
         return ret
 
+    def check_active (self):
+        return any([x.active for x in self.socket_l])
+
     async def push (self, msg):
         """ push messages to all websocket sessions """
 
