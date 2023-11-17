@@ -63,8 +63,10 @@ class ChatThread (models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     timestamp = models.DateTimeField(default=timezone.now)
     label = models.TextField()
-    members = models.ManyToManyField(User)
     type = models.SmallIntegerField(default=0)
+    members = models.ManyToManyField(User)
+    seen = models.JSONField(default=dict)
+    length = models.PositiveIntegerField(default=0)
 
     def __unicode__(self):
         return self.label

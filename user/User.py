@@ -72,6 +72,18 @@ class User:
             }
         )
 
+    async def push_seen (self, thread, user, message_idx):
+        if user is not self:
+            await self.push(
+                {
+                    "seen": {
+                        "thread": str(thread.id),
+                        "user": str(user.id),
+                        "message_idx": message_idx,
+                    }
+                }
+            )
+
     async def push_message (self, thread, message):
         await self.push(
             {

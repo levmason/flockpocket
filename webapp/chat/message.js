@@ -33,6 +33,7 @@ function message (container, thread, config, idx, nest = false) {
         self.add_to_page();
 
         self.heart_el = self.el.find('div.heart');
+        self.seen_el = self.el.find('div.seen');
         self.img_el = self.el.find('div.heart img');
 
         self.update_like();
@@ -41,13 +42,16 @@ function message (container, thread, config, idx, nest = false) {
 
     self.get_text_html = function (text) {
         return `
+          <div class="message_sub_wrapper">
             <div class="message">
               ${self.text}
               <div class="timestamp">${self.timestamp}</div>
               <div class="heart ${self.me ? "noclick":""}">
                 <img src="${self.heart_img}" />
               </div>
-            </div>`;
+            </div>
+          <div class="seen"></div>
+          </div>`;
     }
 
     self.update_like = function () {
@@ -73,6 +77,16 @@ function message (container, thread, config, idx, nest = false) {
             self.like_l.push(opt.user);
         }
         self.update_like();
+    }
+
+    self.add_seen = function (user_id) {
+        let user = fp.user_d[user_id];
+        let img_url = user.pic_url;
+        let name = user.full_name;
+        self.seen_el.append(`<div class="seen_bubble">`+
+                            `<img id="${user_id}" src="${img_url}">`+
+                            `<span>Seen by ${name}</span>`+
+                            `</div>`);
     }
 
     self.init_handlers = function () {

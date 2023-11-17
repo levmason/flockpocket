@@ -40,7 +40,6 @@ class ChatDatastore:
         """ get all threads for a specified user """
 
         thread_d = {}
-        log.debug(user_id)
         for thread_id, thread in self.thread_d.items():
             if user_id in thread.user_s:
                 thread_d[thread_id] = thread.as_dict()
@@ -69,6 +68,11 @@ class ChatDatastore:
         """ add a message to the history cache """
         thread = self.thread_d.get(thread_id)
         await thread.add_message(message)
+
+    async def seen_message (self, thread_id, user_id, message_idx):
+        """ track when a user seees a message """
+        thread = self.thread_d.get(thread_id)
+        await thread.seen_message(user_id, message_idx)
 
     async def like_message (self, thread_id, timestamp, user_id, message_idx):
         """ like a message """

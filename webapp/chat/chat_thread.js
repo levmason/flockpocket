@@ -57,6 +57,7 @@ function chat_thread (container, id) {
         self.add_to_page();
         self.thread_el = self.el.find("div#thread");
         self.input_el = self.el.find("div#thread_input");
+        self.input_el.focus();
         self.init_handlers();
     }
 
@@ -196,6 +197,34 @@ function chat_thread (container, id) {
         self.thread_el.scrollTop(self.thread_el.prop("scrollHeight"));
     }
 
+    self.seen = function () {
+        if (fp.active && self.thread.seen[fp.user.id] < self.message_l.length-1) {
+            fp.api.query({
+                'chat.send_seen': {
+                    thread_id: self.id,
+                    message_idx: self.message_l.length-1
+                }
+            });
+        }
+    }
+
+    self.update_seen = function () {
+        // clear the seen
+        self.el.find('.seen').empty();
+
+        for (var uid in self.thread.seen) {
+            if (uid != fp.user.id) {
+                let seen_idx = self.thread.seen[uid];
+                let message = self.message_l[seen_idx];
+                message.add_seen(uid);
+            }
+        }
+    }
+
+    self.on_active = function () {
+        self.seen();
+    }
+
     /*
      * api handlers
      */
@@ -205,6 +234,8 @@ function chat_thread (container, id) {
         for (let msg of opt.message_l) {
             self.add_message(msg);
         }
+        self.seen();
+        self.update_seen();
     }
 
     /* If we don't have a thread ID, we'll want to wait for one */
@@ -224,6 +255,11 @@ function chat_thread (container, id) {
             self.remove_typing(user_id);
             // insert the message to the thread
             self.add_message(opt.message, update=true);
+
+            // send the message seen notification
+            self.seen();
+            self.thread.seen[user_id] = self.message_l.length-1;
+            self.update_seen();
         }
     }
 
@@ -245,6 +281,15 @@ function chat_thread (container, id) {
         if (opt.thread == self.id) {
             let message = self.message_l[opt.message_idx];
             message.add_like(opt);
+        }
+    }
+
+    /* seen received */
+    self.handler.seen = function (opt) {
+        if (opt.thread == self.id) {
+            let message = self.message_l[opt.message_idx];
+            self.el.find(`img#${opt.user}`).remove();
+            message.add_seen(opt.user);
         }
     }
 

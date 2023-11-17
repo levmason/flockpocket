@@ -19,6 +19,8 @@ class ChatThreadHandler:
             'id': self.id,
             'label': self.label,
             'timestamp': self.timestamp,
+            'seen': self.seen,
+            'length': self.length,
         }
 
         if self.other_user:
@@ -68,6 +70,20 @@ class ChatThreadHandler:
             "chat.like_message": {
                 'thread_id': self.id,
                 'timestamp': self.timestamp,
+                'user_id': str(from_user.id),
+                'message_idx': message_idx
+            }
+        })
+
+    async def send_seen (self, from_user, message_idx):
+        # send to other user sessions
+        for user in self.user_s:
+            await user.push_seen(self, from_user, message_idx)
+
+        # send the message to the datastore
+        await cfg.redis.ds_push({
+            "chat.seen_message": {
+                'thread_id': self.id,
                 'user_id': str(from_user.id),
                 'message_idx': message_idx
             }

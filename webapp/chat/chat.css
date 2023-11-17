@@ -29,7 +29,7 @@ div#content div#thread div#thread {
     width: calc(100% - 28px);
     border: 1px solid var(--shade2);
     border-radius: 20px;
-    padding: 20px;
+    padding: 10px 20px;
     padding-right: 8px;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -98,7 +98,6 @@ div#content div#thread div.message_wrapper {
     width: calc(100% - 30px);
     position: relative;
     padding: 10px;
-    border-radius: 20px;
     margin: 0px 20px;
     right: 20px;
 }
@@ -109,7 +108,7 @@ div#content div#thread div.message_wrapper div.me_bar {
     top: 28px;
     left: -4px;
     border-radius: 50%;
-    background: var(--shade3);
+    background: var(--blue);
 }
 
 div#content div#thread div.message_wrapper div.message {
@@ -136,8 +135,6 @@ div#content div#thread div.message_wrapper div.message div.heart {
     font-family: sans-serif;
     font-size: 12px;
     color: var(--text_color_light);
-    display: inline-block;
-    text-align: right;
     position: absolute;
     right: 8px;
     top: 2px;
@@ -172,9 +169,42 @@ div#content div#thread div.message_wrapper div.message div.timestamp {
     right: 0;
     top: -20px;
     display: none;
+    pointer-events: none;
 }
 div#content div#thread div.message_wrapper div.message:hover div.timestamp {
     display: inline-block;
+}
+
+/* seen bubble */
+div#content div#thread div.message_sub_wrapper div.seen {
+    display: inline-block;
+    padding: 0px 6px;
+    width: 100%;
+    text-align: center;
+}
+div#content div#thread div.message_sub_wrapper div.seen img {
+    padding: 14px 1px;
+    width: 16px;
+}
+div#content div#thread div.message_sub_wrapper div.seen div.seen_bubble {
+    position: relative;
+    width: fit-content;
+    display: inline-block;
+}
+div#content div#thread div.message_sub_wrapper div.seen div.seen_bubble span {
+    position: absolute;
+    visibility: hidden;
+    left: 50%;
+    top: -14px;
+    font-size: 14px;
+    background: var(--shade1);
+    transform: translate(-50%);
+    padding: 2px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+}
+div#content div#thread div.message_sub_wrapper div.seen div.seen_bubble:hover span {
+    visibility: visible;
 }
 
 

@@ -11,9 +11,14 @@ function chat_badge (container, thread, user = null) {
         self.thread_id = thread.id;
     }
 
+    self.unread = !thread.in_view() && thread.seen[fp.user.id] < thread.length-1;
+
     self.init = function () {
+        let unread_class = self.unread ? "unread":"";
+        let active_class = self.user.active ? "active":"";
+
         self.html = `
-            <div class="badge thread ${self.user.active ? "active":""}">
+            <div class="badge thread ${active_class} ${unread_class}" id="${self.user.id}">
               <img class="pic" src="${self.pic_url}">
               <svg class="active" height="10" width="10">
                 <circle cx="5" cy="5" r="5"/>
@@ -31,8 +36,8 @@ function chat_badge (container, thread, user = null) {
     }
 
     self.init_handlers = function () {
-
         self.el.on("click", function () {
+            self.el.removeClass("unread");
             document.location.hash = "chat/" + self.thread_id;
         });
     }

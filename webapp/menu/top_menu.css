@@ -23,11 +23,11 @@ div#top_menu div#logo img {
 div#top_menu div#notifications {
     display: inline-block;
     position: absolute;
-    top: 2px;
-    right: 60px;
-    margin: 5px 10px;
+    top: 0px;
+    right: 54px;
+    margin: 8px 10px;
     background: var(--shade4);
-    padding: 8px;
+    padding: 10px;
     border-radius: 50%;
     cursor: pointer;
 }
@@ -36,6 +36,6 @@ div#top_menu div#notifications:hover {
 }
 
 div#top_menu div#notifications img {
-    width: 31px;
-    height: 31px;
+    width: 24px;
+    height: 24px;
 }

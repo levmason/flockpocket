@@ -36,6 +36,9 @@ function flockpocket () {
 
     self.set_active = function () {
         if (!self.active) {
+            if (self.content && self.content.on_active) {
+                self.content.on_active();
+            }
             fp.api.query({
                 'send_active': {
                     user_id: self.user.id,
@@ -68,7 +71,6 @@ function flockpocket () {
         self.top_menu = new top_menu($("#top_menu"));
         self.chat = new chat($("#rightbar"));
 
-        self.set_active();
         self.init_handlers();
     }
 
@@ -129,8 +131,6 @@ function flockpocket () {
     }
 
     window.onhashchange = function(e) {
-        self.set_active();
-
         // clear the api handlers
         if (self.content) {
             self.api.unregister(self.content);
@@ -174,6 +174,8 @@ function flockpocket () {
             window.location.href = "/logout";
             break;
         }
+
+        self.set_active();
     }
 
     self.add_thread = function (thread) {
@@ -181,6 +183,11 @@ function flockpocket () {
         if (thread.user) {
             thread.user = self.user_d[thread.user];
             self.user_thread_d[thread.user.id] = thread;
+        }
+        thread.in_view = function () {
+            return Boolean(fp.content &&
+                           fp.content.constructor.name == "chat_thread" &&
+                           fp.content.id == thread.id);
         }
     }
 
@@ -235,7 +242,6 @@ function flockpocket () {
 	    self.user = user;
 	}
     }
-
 }
 
 $(document).ready(function(){

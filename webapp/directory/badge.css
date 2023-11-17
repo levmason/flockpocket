@@ -110,12 +110,15 @@ div.badge.family img.pic {
 div.badge.thread {
     color: var(--text_color);
     padding: 4px;
+    position: relative;
 }
 div.badge.thread svg.active {
-    fill: var(--green);
+    fill: var(--active_green);
     position: absolute;
     left: 44px;
     bottom: 8px;
+    //border: 1px solid var(--shade1);
+    //border-radius: 50%;
 }
 div.badge.thread:not(.active) svg.active {
     display: none;

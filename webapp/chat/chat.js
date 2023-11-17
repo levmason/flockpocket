@@ -2,6 +2,8 @@ function chat (container, id) {
     var self = this;
     el.call(self, container);
 
+    self.badge_d = {};
+    self.first = null;
     self.handler = {};
 
     // initialize the chat
@@ -50,6 +52,7 @@ function chat (container, id) {
     }
 
     self.set_to_recent = function () {
+        self.first = null;
         self.results_el.empty();
 
         let sorted_threads = Object.keys(fp.thread_d).sort(function(a, b) {
@@ -62,8 +65,20 @@ function chat (container, id) {
         }
     }
 
+    self.set_most_recent = function (thread) {
+        let badge = self.badge_d[thread.id];
+        if (self.first != badge) {
+            badge.el.insertBefore(self.first.el);
+            self.first = badge;
+        }
+    }
+
     self.add_thread = function (thread) {
-        new chat_badge(self.results_el, thread);
+        let badge = new chat_badge(self.results_el, thread);
+        self.badge_d[thread.id] = badge;
+        if (!self.first) {
+            self.first = badge;
+        }
     }
 
     /*
@@ -76,19 +91,31 @@ function chat (container, id) {
     self.handler.like = function (opt) {
         let thread = fp.thread_d[opt.thread];
         thread.timestamp = opt.timestamp;
-        self.set_to_recent();
+        self.set_most_recent(thread);
     }
 
     self.handler.message = function (opt) {
         let thread = fp.thread_d[opt.thread];
+        thread.length++;
         thread.timestamp = opt.message.timestamp;
-        self.set_to_recent();
+        // move to the top
+        self.set_most_recent(thread);
+        if (!thread.in_view()) {
+            let badge = self.badge_d[thread.id];
+            badge.el.addClass('unread');
+        }
     }
 
     self.handler.active = function (opt) {
         let user = fp.user_d[opt.user_id];
         user.active = opt.active;
-        self.set_to_recent();
+        $(`div.badge.thread#${user.id}`).toggleClass('active', opt.active);
+    }
+
+    self.handler.seen = function (opt) {
+        let uid = opt.user;
+        let thread = fp.thread_d[opt.thread];
+        thread.seen[uid] = opt.message_idx;
     }
 
     self.init();

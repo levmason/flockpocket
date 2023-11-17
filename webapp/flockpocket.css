@@ -10,6 +10,7 @@
 body.light {
     --blue: #698eb5;
     --green: #69b58e;
+    --active_green: #69C57B;
     --text_color: #222;
     --text_color_light: var(--shade5);
     --text_color_form: var(--blue);

@@ -11,6 +11,8 @@ class ChatThread:
         self.id = str(db_entry.id)
         self.type = db_entry.type
         self.label = db_entry.label
+        self.length = db_entry.length
+        self.seen = db_entry.seen
         self.timestamp = utility.datetime_to_epoch(db_entry.timestamp)
         self.user_s = set()
         self.key = None
@@ -23,6 +25,8 @@ class ChatThread:
             'user_l': list(self.user_s),
             'label': self.label,
             'timestamp': self.timestamp,
+            'length': self.length,
+            'seen': self.seen,
         }
 
     async def init (self):
@@ -38,6 +42,10 @@ class ChatThread:
         history = await self.get_history()
         self.timestamp = message['timestamp']
         history.append(message)
+        # increase the thread length
+        self.length += 1
+        # auto see
+        await self.seen_message(message['user'], self.length)
 
     async def like_message (self, timestamp, user_id, message_idx):
         # update the timestamp
@@ -53,11 +61,17 @@ class ChatThread:
         else:
             message['like_l'].append(user_id);
 
+    async def seen_message (self, user_id, message_idx):
+        self.seen[user_id] = message_idx
+
     async def get_history (self):
         """ get the chat history (disk or cache) """
 
         if self.message_l is None:
             self.message_l = await self.read_history()
+
+        # set the length
+        self.length = len(self.message_l)
 
         return self.message_l
 
@@ -90,7 +104,10 @@ class ChatThread:
         """ elegant shutdown """
 
         await self.write_history()
+
+        self.db_entry.length = self.length
         timestamp_dt = utility.epoch_to_datetime(self.timestamp)
         if timestamp_dt != self.db_entry.timestamp:
             self.db_entry.timestamp = timestamp_dt
-            await self.db_entry.asave()
+
+        await self.db_entry.asave()
