@@ -8,6 +8,10 @@ from . import logger as log
 
 async def send (to, subject, message="", attachments=[]):
 
+    neededVars = [cfg.email_host, cfg.email_port, cfg.email_user, cfg.email_from, cfg.email_password]
+    if any(v is None for v in neededVars):
+        raise Exception("Please supply all email variables")
+
     mailfrom = f"{cfg.tool_name} <{cfg.email_from}>"
 
     # prepare the email
