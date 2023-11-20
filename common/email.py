@@ -1,6 +1,7 @@
 import smtplib
-from email.message import EmailMessage
+import ssl
 import mimetypes
+from email.message import EmailMessage
 
 from . import config as cfg
 from . import logger as log
@@ -35,6 +36,6 @@ async def send (to, subject, message="", attachments=[]):
             return
 
     # send the email
-    with smtplib.SMTP('localhost') as s:
-        s.send_message(msg)
-
+    with smtplib.SMTP_SSL(cfg.email_host, cfg.email_port, context=ssl.create_default_context()) as server:
+        server.login(cfg.email_host, cfg.email_password)
+        server.sendmail(cfg.email_host, to, message)
