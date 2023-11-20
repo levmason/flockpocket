@@ -30,6 +30,13 @@ opts = {
     'redis_port': 6379,
     'redis_username': None,
     'redis_password': None,
+    # email
+    'email_host': None,
+    'email_port': None,
+    'email_user': None,
+    'email_password': None,
+    'email_from': None,
+    # misc
     'sub_url': '',
     'timezone': linux.get_system_timezone()
 }
