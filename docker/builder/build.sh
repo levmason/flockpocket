@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # set the default config file
-config_file=./flockpocket.conf
+config_file=../env/flockpocket.env
 
 # read the options
 while test $# -gt 0; do
@@ -25,7 +25,7 @@ while test $# -gt 0; do
 done
 
 # copy in the config file
-cp $config_file .flockpocket.conf
+cp $config_file .flockpocket.env
 
 # read the config file (all options will be exposed as bash variables)
 eval $(sed -e 's/FLOCKPOCKET_//g' $config_file)
