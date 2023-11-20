@@ -41,7 +41,6 @@ async def send (to, subject, message="", attachments=[]):
 
     message = '\n'.join([f"From: {mailfrom}", f"Subject: {subject}", message])
     # send the email
-    with smtplib.SMTP_SSL(cfg.email_host, cfg.email_port, context=ssl.create_default_context()) as server:
-        server.connect(f"{cfg.email_host}:{cfg.email_port}")
+    with smtplib.SMTP_SSL(cfg.email_host, int(cfg.email_port), context=ssl.create_default_context()) as server:
         server.login(cfg.email_user, cfg.email_password)
         server.sendmail(mailfrom, to, message)
