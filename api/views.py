@@ -70,7 +70,6 @@ async def invite_user (request):
         # create or get the user
         try:
             user = await User.objects.aget(email=email)
-            user.is_active = False
             if user.is_active:
                 # this user is already here!
                 return HttpResponse(status=400)
