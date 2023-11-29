@@ -68,4 +68,4 @@ db.sqlite3-journal
 # Flockpocket
 .*.conf
 static/profile_pics/*.jpg
-*/storage/*
+storage/*

@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED 1
 
 RUN mkdir -p /opt/flockpocket
 WORKDIR /opt/flockpocket
-COPY . /opt/flockpocket/
+COPY . /opt/flockpocket
 
 # create the user
 RUN useradd -m -s /bin/bash flockpocket
