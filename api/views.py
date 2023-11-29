@@ -9,6 +9,7 @@ import json
 import aiofiles
 from asgiref.sync import sync_to_async
 
+from common.email import send
 from common.http import json_response
 from common.models import User
 from common import config as cfg
@@ -90,6 +91,7 @@ async def invite_user (request):
             )
 
         # LEVY: send the email
+        await send(email, "Welcome to FlockPocket!", f"flockpocket.com/user_activate/{user.id}")
         log.debug(user.id)
         return HttpResponse(status=201)
 
