@@ -528,3 +528,12 @@ utility.placeCursorAtEnd = function (el) {
         textRange.select();
     }
 }
+utility.elInView  = function (el) {
+    var docViewTop = $(window).scrollTop();
+    var docViewBottom = docViewTop + $(window).height();
+
+    var elTop = $(el).offset().top;
+    var elBottom = elTop + $(el).height();
+
+    return ((elBottom <= docViewBottom) && (elTop >= docViewTop));
+}

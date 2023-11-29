@@ -46,6 +46,9 @@ function chat_thread (container, id) {
             </div>
             <div id="thread"></div>
             <div id="thread_input_wrapper">
+              <div id="thread_input_btn">
+                ${svg.plus}
+              </div>
               <div id="thread_input" class="textarea" contenteditable>
               </div>
               <div id="emoji">
@@ -149,6 +152,15 @@ function chat_thread (container, id) {
 
         /* autohide the scroll bar */
         scroll_autohide(self, self.thread_el);
+
+        self.thread_el.on("scroll", function(e) {
+            console.log(utility.elInView(self.message_l.last().el));
+            return
+            for (let msg of self.message_l)  {
+                let el = msg.el;
+                console.log(utility.elInView(el));
+            }
+        });
     }
 
     // add a typing indicator

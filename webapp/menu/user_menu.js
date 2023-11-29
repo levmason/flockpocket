@@ -46,6 +46,5 @@ function user_menu (container, append = false) {
             let id = $(this).attr("id")
             document.location.hash = id;
         })
-
     }
 }

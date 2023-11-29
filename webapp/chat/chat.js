@@ -11,12 +11,16 @@ function chat (container, id) {
         self.html = `
           <div id="chat">
             <div class="header">Chat</div>
+            <div id="create_thread_btn">
+              ${svg.plus}
+            </div>
             <input type="search" placeholder="Search..."></input>
             <div id="results"></div>
           </div>`;
 
         self.add_to_page();
 
+        self.creat_btn = self.el.find('div#create_thread_btn');
         self.search_el = self.el.find('input');
         self.results_el = self.el.find('div#results');
 
