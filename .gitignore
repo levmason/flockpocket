@@ -66,6 +66,7 @@ db.sqlite3-journal
 .DS_Store
 
 # Flockpocket
-.*.conf
+.*.env
+*.bkp
 static/profile_pics/*.jpg
 storage/*

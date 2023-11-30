@@ -145,9 +145,5 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = ['https://localhost', 'https://192.168.1.57', 'https://174.109.30.190']
 
-# LEVY: Debug junk
-#SESSION_COOKIE_SECURE = False
-#CSRF_COOKIE_SECURE = False
-
 # Set the default id field type for postgres tables
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'

@@ -18,6 +18,7 @@ services:
       - redis
 
   db:
+    container_name: flockpocket_db
     image: postgres
     restart: always
     volumes:
@@ -26,10 +27,11 @@ services:
       - ./env/postgres.env
 
   redis:
+    container_name: flockpocket_redis
     image: redis
 
   nginx:
-    container_name: nginx
+    container_name: flockpocket_nginx
     image: nginx
     command: >
       sh -c "

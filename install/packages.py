@@ -2,7 +2,7 @@
 from __future__ import division, print_function
 import sys, os
 import argparse
-from subprocess import getstatusoutput, run, PIPE
+from subprocess import getstatusoutput
 sys.path.append("/opt/flockpocket/")
 from common import linux
 from common import textIO
