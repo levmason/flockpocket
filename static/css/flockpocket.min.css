@@ -97,11 +97,13 @@ div#content {
     text-align: left;
     position: absolute;
     width: calc(70vw - 90px);
+    height: calc(100vh - 100px);
     min-width: 460px;
     left: 50%;
-    top: 40px;
+    top: 60px;
     transform: translate(-50%);
-    padding: 40px 20px 20px;
+    padding: 20px;
+    overflow-y: auto;
 }
 
 @media only screen and (max-width: 1000px) {

@@ -32,6 +32,8 @@ function flockpocket () {
         $(document).on("click input", function(e) {
             self.set_active();
         })
+
+        scroll_autohide(self, $('#content'));
     }
 
     self.set_active = function () {
