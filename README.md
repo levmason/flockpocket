@@ -1,8 +1,9 @@
 # flockpocket
-A social platform for church flocks.
+A platform for church flocks.
 
 # Running with Docker
 ~~~
 cd docker/
+./configure.py
 docker-compose up -d
 ~~~
