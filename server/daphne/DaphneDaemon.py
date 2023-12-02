@@ -14,13 +14,9 @@ class DaphneDaemon():
         self.pidfile_timeout = 1
         self.interrupt = False
         self.app_name = "%s.asgi:application" % cfg.tool_name
-        self.sockfile = cfg.daphne_socket or cfg.get_sockfile('daphne')
         self.port = cfg.daphne_port
 
-        if self.port:
-            bind = " -b 0.0.0.0 -p %s" % self.port
-        else:
-            bind = " -u %s" % self.sockfile
+        bind = " -b 0.0.0.0 -p %s" % self.port
 
         self.app_args = (
             ''

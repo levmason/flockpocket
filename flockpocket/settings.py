@@ -85,11 +85,11 @@ AUTHENTICATION_BACKENDS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': cfg.db_name,
-        'USER': cfg.db_username,
-        'PASSWORD': cfg.db_password,
-        'HOST': cfg.db_host,
-        'PORT': cfg.db_port,
+        'NAME': cfg.postgres_name,
+        'USER': cfg.postgres_username,
+        'PASSWORD': cfg.postgres_password,
+        'HOST': cfg.postgres_host,
+        'PORT': cfg.postgres_port,
     }
 }
 
