@@ -37,6 +37,7 @@ if not os.path.exists(chat_dir):
     os.makedirs(chat_dir)
 
 services = [
+    'builder',
     'daphne',
     'datastore',
 ]
