@@ -38,6 +38,16 @@ class UserManager (BaseUserManager):
 
         return self._create_user(email, password, **extra_fields)
 
+class Invite (models.Model):
+    """User model."""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    timestamp = models.DateTimeField(default=timezone.now)
+    details = models.JSONField(default=dict)
+
+    class Meta:
+        db_table = 'fp_invite'
+
 class User (AbstractUser):
     """User model."""
 

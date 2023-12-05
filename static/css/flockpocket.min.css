@@ -49,6 +49,7 @@ body {
 a {
     color: var(--link_color);
     font-size: inherit;
+    font-family: monospace;
 }
 
 h1 {
@@ -450,6 +451,10 @@ div.form div.form.divider span {
     background: var(--background);
     font-weight: bold;
     padding: 0 8px;
+}
+div#invite_sent {
+    text-align: center;
+    padding: 20px;
 }
 /*
  * Chat Thread

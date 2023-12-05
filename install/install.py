@@ -2,7 +2,7 @@
 import os
 import sys
 import argparse
-from subprocess import getstatusoutput, run
+from subprocess import run
 sys.path.append("/opt/flockpocket/")
 
 # parse the script arguments
