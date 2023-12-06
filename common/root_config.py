@@ -6,6 +6,7 @@ proj_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 # Root Config Options
 opts = {
+    'domain_name': '',
     # django
     'django_secret_key': '',
     'postgres_name': 'flockpocket',

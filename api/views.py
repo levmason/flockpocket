@@ -91,7 +91,7 @@ async def invite_user (request):
             )
 
         # LEVY: send the email
-        await send(email, "Welcome to FlockPocket!", f"flockpocket.com/user_activate/{user.id}")
+        await send(email, "Welcome to FlockPocket!", f"{cfg.domain_name}/user_activate/{user.id}")
         log.debug(user.id)
         return HttpResponse(status=201)
 
