@@ -27,9 +27,6 @@ opts = {
     'email_user': None,
     'email_password': None,
     'email_from': None,
-    # misc
-    'sub_url': '',
-    'timezone': linux.get_system_timezone()
 }
 
 # string conversion map
