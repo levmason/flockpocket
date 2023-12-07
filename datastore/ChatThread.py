@@ -57,9 +57,9 @@ class ChatThread:
             message['like_l'] = []
 
         if user_id in message['like_l']:
-            message['like_l'].remove(user_id);
+            message['like_l'].remove(user_id)
         else:
-            message['like_l'].append(user_id);
+            message['like_l'].append(user_id)
 
     async def seen_message (self, user_id, message_idx):
         self.seen[user_id] = message_idx

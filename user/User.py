@@ -8,7 +8,7 @@ class User:
     def __init__(self, db_entry):
         self.socket_l = []
         self.update(db_entry)
-        self.active = False;
+        self.active = False
 
     def update (self, db_entry):
         self.db_entry = db_entry

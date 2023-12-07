@@ -65,7 +65,7 @@ async def invite_user (request):
     """
     if request.method == "POST":
         # extract the user parameters
-        data = json.loads(request.POST.dict()['data']);
+        data = json.loads(request.POST.dict()['data'])
         email = data.get("email")
 
         # create or get the user
@@ -103,7 +103,7 @@ async def update_user (request, user_id):
             user = await User.objects.aget(pk=user_id)
 
             # extract the user parameters
-            data = json.loads(request.POST.dict()['details']);
+            data = json.loads(request.POST.dict()['details'])
 
             # set the user to active
             user.is_active = True
