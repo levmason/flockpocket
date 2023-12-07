@@ -57,21 +57,16 @@ async def invite_user (request):
     Invite a new user to the flock
     """
     if request.method == "POST":
+        # find the user who created the invite
+        user_id = await get_user_from_request(request)
         # extract the user parameters
         data = json.loads(request.POST.dict()['data']);
-        email = data.get("email")
-
-        # create or get the user
-        try:
-            user = await User.objects.aget(email=email)
-            # this user is already here!
-            return HttpResponse(status=409)
-        except ObjectDoesNotExist: pass
-
-        invite = await Invite.objects.acreate()
+        # create a new invite entry
+        invite = await Invite.objects.acreate(created_by_id=user_id, details=data)
 
         # LEVY: send the email
         try:
+            email = data.get("email")
             await send(email, "Welcome to FlockPocket!", f"flockpocket.com/user_activate/{invite.id}")
         except: pass
 
@@ -96,6 +91,13 @@ async def create_user (request, invite_id):
             user = await sync_to_async(User.objects.create_user)(email)
         except IntegrityError:
             return HttpResponse("A user already exists with this email address!", status=409)
+
+        # handle invite household link
+        family = invite.details.get('family')
+        if family:
+            # LEVY: handling all the family linking can get complicated, so I'm waiting
+            # until I've had a chance to plan carefully.
+            log.debug(family)
 
         # remove the invite (it's been used now)
         await invite.adelete()

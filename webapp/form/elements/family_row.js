@@ -18,45 +18,6 @@ function family_row (container, config = {}, index, taken,  append = true) {
     self.index = index;
     self.value = config.value || "";
 
-    self.rel_d = {
-        'Husband': {
-            gender: "Male",
-            required_gender: "Female",
-            unique: true,
-        },
-        'Wife': {
-            gender: "Female",
-            required_gender: "Male",
-            unique: true,
-        },
-        'Son': {
-            gender: "Male",
-        },
-        'Daughter': {
-            gender: "Female",
-        },
-        'Brother': {
-            gender: "Male",
-        },
-        'Sister': {
-            gender: "Female",
-        },
-        'Mother': {
-            gender: "Female",
-            unique: true,
-        },
-        'Father': {
-            gender: "Male",
-            unique: true,
-        },
-        'Grandmother': {
-            gender: "Female",
-        },
-        'Grandfather': {
-            gender: "Male",
-        }
-    }
-
     // initialize the element
     self.init = function () {
         self.html = `
@@ -101,25 +62,25 @@ function family_row (container, config = {}, index, taken,  append = true) {
         let my_gender = fp.user.gender;
 
         rel_l = [''];
-        for (var rel_type in self.rel_d) {
-            let rel_type_details = self.rel_d[rel_type];
+        for (var type_label in cfg.relationship_types) {
+            let type_details = cfg.relationship_types[type_label];
             // make sure we're the right gender
-            if (rel_type_details.required_gender && fp.user.gender != rel_type_details.required_gender) {
+            if (type_details.required_gender && fp.user.gender != type_details.required_gender) {
                 continue;
             }
 
             // make sure this isn't a unique relationship that's already set
-            if (self.type != rel_type && rel_type_details.unique && self.taken.has(rel_type)) {
+            if (self.type != type_label && type_details.unique && self.taken.has(type_label)) {
                 continue;
             }
 
             if (self.user) {
                 // make sure the type has the right gender
-                if (rel_type_details.gender && self.user.gender != rel_type_details.gender) {
+                if (type_details.gender && self.user.gender != type_details.gender) {
                     continue;
                 }
             }
-            rel_l.push(rel_type);
+            rel_l.push(type_label);
         }
 
         return rel_l;

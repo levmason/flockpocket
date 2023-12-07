@@ -38,16 +38,6 @@ class UserManager (BaseUserManager):
 
         return self._create_user(email, password, **extra_fields)
 
-class Invite (models.Model):
-    """User model."""
-
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    timestamp = models.DateTimeField(default=timezone.now)
-    details = models.JSONField(default=dict)
-
-    class Meta:
-        db_table = 'fp_invite'
-
 class User (AbstractUser):
     """User model."""
 
@@ -63,6 +53,17 @@ class User (AbstractUser):
 
     class Meta:
         db_table = 'fp_user'
+
+class Invite (models.Model):
+    """An invite to the platform"""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(default=timezone.now)
+    details = models.JSONField(default=dict)
+
+    class Meta:
+        db_table = 'fp_invite'
 
 thread_type_map = {
     0: 'user',

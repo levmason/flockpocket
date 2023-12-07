@@ -29,15 +29,17 @@ function invite_user (container, append = false) {
             },
             {
                 type: "input",
-                label: "(optional) Email",
-                //placeholder: "Optional",
+                label: "Email",
                 width: "60%",
             },
             {
-                type: "select",
-                label: "(optional) Household Link",
-                //placeholder: "Optional",
-                options: ['Male', 'Female'],
+                type: "help",
+                message: "You can automatically link the new member into your household.",
+            },
+            {
+                type: "family_invite",
+                label: "Household Link",
+                id: 'family',
                 width: "60%",
             },
         ]
