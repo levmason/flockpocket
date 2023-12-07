@@ -27,31 +27,6 @@ def user_login (request, username, password):
     user = authenticate(username=username, password=password)
     login(request, user)
 
-async def get_user_d ():
-    fields = ['id', 'email', 'first_name', 'last_name', 'is_active', 'details']
-    user_d = {}
-    async for user in User.objects.values(*fields):
-        if user['is_active']:
-            user['id'] = str(user['id'])
-            user.update(user.pop('details') or {})
-            user_d[user['id']] = user
-            user['full_name'] = f"{user['first_name']} {user['last_name']}"
-
-    return user_d
-
-async def ui_config (request):
-    user_id = await get_user_from_request(request)
-
-    ret_d = {}
-    ret_d['user_d'] = await get_user_d()
-    ret_d['user_id'] = str(user_id)
-
-    return json_response(ret_d)
-
-async def users (request):
-    user_d = await get_user_d()
-    return json_response(user_d)
-
 async def invite_user (request):
     """
     Invite a new user to the flock
