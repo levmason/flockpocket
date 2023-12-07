@@ -1,7 +1,7 @@
 function API (fp) {
     var self = this;
 
-    self.handler_elements = {};
+    self.handler_objects = {};
     self.sock_url = utility.ws_url('api');
     self.disconnect_timeout = 20000;
 
@@ -75,8 +75,8 @@ function API (fp) {
             let opt = data[name];
             let handler;
 
-            for (let label in self.handler_elements) {
-                let el_handler = self.handler_elements[label];
+            for (let label in self.handler_objects) {
+                let el_handler = self.handler_objects[label];
                 handler = el_handler[name];
                 if (handler) {
                     handler(opt);
@@ -88,13 +88,13 @@ function API (fp) {
     self.register = function (obj, label) {
         if (obj.handler) {
             label = label || obj.constructor.name;
-            self.handler_elements[label] = obj.handler;
+            self.handler_objects[label] = obj.handler;
         }
     }
 
     self.unregister = function (obj, label) {
         label = label || obj.constructor.name;
-        delete self.handler_elements[label];
+        delete self.handler_objects[label];
     }
 
     self.open();

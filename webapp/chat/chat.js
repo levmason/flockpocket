@@ -4,7 +4,6 @@ function chat (container, id) {
 
     self.badge_d = {};
     self.first = null;
-    self.handler = {};
 
     // initialize the chat
     self.init = function () {
@@ -86,40 +85,47 @@ function chat (container, id) {
     }
 
     /*
-     * api handlers
+     * websocket handlers
      */
-    self.handler.new_thread = function (thread) {
-        self.add_thread(thread);
-    }
+    self.handler = {
+        /* A thread was created */
+        new_thread: function (thread) {
+            self.add_thread(thread);
+        },
 
-    self.handler.like = function (opt) {
-        let thread = fp.thread_d[opt.thread];
-        thread.timestamp = opt.timestamp;
-        self.set_most_recent(thread);
-    }
+        /* somebody liked a message */
+        like: function (opt) {
+            let thread = fp.thread_d[opt.thread];
+            thread.timestamp = opt.timestamp;
+            self.set_most_recent(thread);
+        },
 
-    self.handler.message = function (opt) {
-        let thread = fp.thread_d[opt.thread];
-        thread.length++;
-        thread.timestamp = opt.message.timestamp;
-        // move to the top
-        self.set_most_recent(thread);
-        if (!thread.in_view()) {
-            let badge = self.badge_d[thread.id];
-            badge.el.addClass('unread');
+        /* Somebody sent a message */
+        message: function (opt) {
+            let thread = fp.thread_d[opt.thread];
+            thread.length++;
+            thread.timestamp = opt.message.timestamp;
+            // move to the top
+            self.set_most_recent(thread);
+            if (!thread.in_view()) {
+                let badge = self.badge_d[thread.id];
+                badge.el.addClass('unread');
+            }
+        },
+
+        /* Somebody became active */
+        active: function (opt) {
+            let user = fp.user_d[opt.user_id];
+            user.active = opt.active;
+            $(`div#${user.id}.badge.thread`).toggleClass('active', opt.active);
+        },
+
+        /* Somebody saw our message */
+        seen: function (opt) {
+            let uid = opt.user;
+            let thread = fp.thread_d[opt.thread];
+            thread.seen[uid] = opt.message_idx;
         }
-    }
-
-    self.handler.active = function (opt) {
-        let user = fp.user_d[opt.user_id];
-        user.active = opt.active;
-        $(`div#${user.id}.badge.thread`).toggleClass('active', opt.active);
-    }
-
-    self.handler.seen = function (opt) {
-        let uid = opt.user;
-        let thread = fp.thread_d[opt.thread];
-        thread.seen[uid] = opt.message_idx;
     }
 
     self.init();

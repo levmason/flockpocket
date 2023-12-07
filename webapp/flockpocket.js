@@ -10,7 +10,6 @@ function flockpocket () {
     self.active = false;
     self.activeTimeout = null;
     self.content = null;
-    self.handler = {}
 
     self.init = function () {
         if (self.auth) {
@@ -192,55 +191,57 @@ function flockpocket () {
     }
 
     /*
-     * api handlers
+     * websocket handlers
      */
+    self.handler = {
+        /* The initial configuration is received */
+        ui_config:  function (opt) {
+            console.log(opt)
+            self.user_d = opt.user_d || {};
 
-    self.handler.ui_config = function (opt) {
-        console.log(opt)
-        self.user_d = opt.user_d || {};
+            // initialize the user objects
+            for (let id in self.user_d) {
+                let user_cfg = self.user_d[id];
+                self.user_d[id] = new user(user_cfg);
+            }
+            self.user = self.user_d[opt.user_id];
 
-        // initialize the user objects
-        for (let id in self.user_d) {
-            let user_cfg = self.user_d[id];
-            self.user_d[id] = new user(user_cfg);
-        }
-        self.user = self.user_d[opt.user_id];
+            // initialize the threads
+            for (let id in opt.thread_d) {
+                let thread = opt.thread_d[id];
+                self.add_thread(thread);
+            }
 
-        // initialize the threads
-        for (let id in opt.thread_d) {
-            let thread = opt.thread_d[id];
+            self.init_ui();
+            window.onhashchange();
+            utility.unblockUI();
+        },
+
+        /* somebody sent a message */
+        message: function (opt) {
+            let message = opt.message;
+            if (message.user != self.user.id) {
+                let icon = self.user_d[message.user].pic_url;
+                utility.notify("New Message!", message.text, icon, 'chat');
+            }
+        },
+
+        /* A thread was created */
+        new_thread: function (thread) {
             self.add_thread(thread);
+        },
+
+        /* a user was updated */
+        user: function (user) {
+	    // set the img link
+	    user.pic_url = utility.static_url('profile_pics/'+ (user.pic || "avatar.svg"));
+
+	    // store in dictionary
+	    self.user_d[user.id] = user;
+	    if (user.id == self.user.id) {
+	        self.user = user;
+	    }
         }
-
-        self.init_ui();
-        window.onhashchange();
-        utility.unblockUI();
-    }
-
-    /* chat */
-    self.handler.message = function (opt) {
-        let message = opt.message;
-        if (message.user != self.user.id) {
-            let icon = self.user_d[message.user].pic_url;
-            utility.notify("New Message!", message.text, icon, 'chat');
-        }
-    }
-
-    /* new thread */
-    self.handler.new_thread = function (thread) {
-        self.add_thread(thread);
-    }
-
-    /* user update */
-    self.handler.user = function (user) {
-	// set the img link
-	user.pic_url = utility.static_url('profile_pics/'+ (user.pic || "avatar.svg"));
-
-	// store in dictionary
-	self.user_d[user.id] = user;
-	if (user.id == self.user.id) {
-	    self.user = user;
-	}
     }
 }
 

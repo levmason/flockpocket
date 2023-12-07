@@ -7,7 +7,6 @@ function chat_thread (container, id) {
     self.typing_timeout = 5000;
     self.typing_timer = null;
     self.typing_d = {};
-    self.handler = {};
 
     if (id.includes("=")) {
         // it's a user:user thread
@@ -237,70 +236,75 @@ function chat_thread (container, id) {
     }
 
     /*
-     * api handlers
+     * websocket handlers
      */
+    self.handler = {
+        /* thread history was received */
+        thread: function (opt) {
+            for (let msg of opt.message_l) {
+                self.add_message(msg);
+            }
+            self.seen();
+            self.update_seen();
+        },
 
-    /* handler for incoming thread history */
-    self.handler.thread = function (opt) {
-        for (let msg of opt.message_l) {
-            self.add_message(msg);
+        /* somebody sent us a message */
+        message: function (opt) {
+            // make sure it's for this thread
+            if (opt.thread == self.id) {
+                let user_id = opt.message.user;
+                // remove the typing indicator
+                self.remove_typing(user_id);
+                // insert the message to the thread
+                self.add_message(opt.message, update=true);
+
+                // send the message seen notification
+                self.seen();
+                self.thread.seen[user_id] = self.message_l.length-1;
+                self.update_seen();
+            }
+        },
+
+        /* typing notification received */
+        typing: function (opt) {
+            let user_id = opt.user;
+            if (opt.thread == self.id) {
+                // add or remove typing indicator
+                if (opt.clear) {
+                    self.remove_typing(user_id);
+                } else {
+                    self.add_typing(user_id);
+                }
+            }
+        },
+
+        /* somebody liked a message */
+        like: function (opt) {
+            if (opt.thread == self.id) {
+                let message = self.message_l[opt.message_idx];
+                message.add_like(opt);
+            }
+        },
+
+        /* somebody saw a message */
+        seen: function (opt) {
+            if (opt.thread == self.id) {
+                let message = self.message_l[opt.message_idx];
+                self.el.find(`img#${opt.user}`).remove();
+                message.add_seen(opt.user);
+            }
         }
-        self.seen();
-        self.update_seen();
     }
 
-    /* If we don't have a thread ID, we'll want to wait for one */
+    /*
+      If we don't have a thread ID (this is an unused 1:1 thread),
+      we'll wait for the thread to be created and assign the thread id
+    */
     if (!self.id) {
         self.handler.new_thread = function (thread) {
             if (self.user_id == thread.user.id) {
                 self.id = thread.id;
             }
-        }
-    }
-
-    /* message received */
-    self.handler.message = function (opt) {
-        if (opt.thread == self.id) {
-            let user_id = opt.message.user;
-            // remove the typing indicator
-            self.remove_typing(user_id);
-            // insert the message to the thread
-            self.add_message(opt.message, update=true);
-
-            // send the message seen notification
-            self.seen();
-            self.thread.seen[user_id] = self.message_l.length-1;
-            self.update_seen();
-        }
-    }
-
-    /* typing notification received */
-    self.handler.typing = function (opt) {
-        let user_id = opt.user;
-        if (opt.thread == self.id) {
-            // add or remove typing indicator
-            if (opt.clear) {
-                self.remove_typing(user_id);
-            } else {
-                self.add_typing(user_id);
-            }
-        }
-    }
-
-    /* like received */
-    self.handler.like = function (opt) {
-        if (opt.thread == self.id) {
-            let message = self.message_l[opt.message_idx];
-            message.add_like(opt);
-        }
-    }
-
-    /* seen received */
-    self.handler.seen = function (opt) {
-        if (opt.thread == self.id) {
-            let message = self.message_l[opt.message_idx];
-            self.el.find(`img#${opt.user}`).remove();
-            message.add_seen(opt.user);
         }
     }
 
