@@ -158,7 +158,7 @@ function flockpocket () {
             self.content = new settings($("#content"));
             break
         case "setup":
-            self.content = new setup($("#content"));
+            self.content = new initial_setup($("#content"));
             break
         case "invite_user":
             self.content = new invite_user($("#content"));
@@ -199,10 +199,10 @@ function flockpocket () {
         console.log(opt)
         self.user_d = opt.user_d || {};
 
-        // set the picture urls
+        // initialize the user objects
         for (let id in self.user_d) {
-            let user = self.user_d[id];
-            user.pic_url = utility.static_url('profile_pics/'+ (user.pic || "avatar.svg"));
+            let user_cfg = self.user_d[id];
+            self.user_d[id] = new user(user_cfg);
         }
         self.user = self.user_d[opt.user_id];
 

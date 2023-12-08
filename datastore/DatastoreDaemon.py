@@ -5,6 +5,7 @@ from common import config as cfg
 from common import logger as log
 from common import aio
 from .ChatDatastore import ChatDatastore
+from .UserManager import UserManager
 
 class DatastoreDaemon():
     def __init__(self):
@@ -27,7 +28,9 @@ class DatastoreDaemon():
         # Levy: delete all the threads in the DB
         #log.debug("removing threads...")
         #from common.models import ChatThread as ChatThread_db
-        #await ChatThread_db.objects.all().adelete()
+        #await ChatThread_db.objects.all().adelete();
+        self.user_manager = UserManager()
+        await self.user_manager.start()
 
         # initialize the chat handler
         self.chat = ChatDatastore()
@@ -39,6 +42,8 @@ class DatastoreDaemon():
         await self.handler()
         # gracefully stop the chat handlers
         await self.chat.stop()
+        # stop the user manager
+        await self.user_manager.stop()
 
     async def handler (self):
         while not self.interrupt:

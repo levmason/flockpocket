@@ -37,6 +37,7 @@ if not os.path.exists(chat_dir):
     os.makedirs(chat_dir)
 
 services = [
+    'builder',
     'daphne',
     'datastore',
 ]
@@ -44,13 +45,13 @@ services = [
 # Globals
 initialized = False
 redis = None
-db = None
 distro = linux.distro()
 release = linux.release()[0]
 config = {}
 user_d = {}
-#thread_d = {}
 log_dir = "/var/log/flockpocket/"
+# invite hold time (days)
+invite_timeout = 2
 
 def init_config ():
     # init root globals
@@ -66,7 +67,6 @@ async def init ():
 
         try:
             user_d = await init_user_d()
-            #thread_d = await init_thread_d()
         except Exception as e:
             log.debug(traceback.format_exc())
 
@@ -75,15 +75,10 @@ async def init ():
 async def init_user_d ():
     global user_d
 
-    t1 = time.time()
     user_d = {}
     async for user_db in User_db.objects.all():
         user = User(user_db)
         user_d[user_db.id] = user
-
-    t2 = time.time()
-    if (t2-t1) > 1:
-        log.debug("WS Users took: %s" % (t2-t1))
 
     return user_d
 

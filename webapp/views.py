@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 
-from common.models import User
+from common.models import Invite
 from common import config as cfg
 from common import utility
 from common import logger as log
@@ -25,11 +25,10 @@ def index (request):
 
     return render(request, 'index.html')
 
-async def user_activate (request, user_id):
+async def user_activate (request, invite_id):
     try:
-        user = await User.objects.aget(pk=user_id)
-        if not user.is_active:
-            return render(request, 'index.html')
+        invite = await Invite.objects.aget(pk=invite_id)
+        return render(request, 'index.html')
     except: pass
 
     return HttpResponse(status=404)

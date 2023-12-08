@@ -1,4 +1,4 @@
-function setup (container, append = false) {
+function initial_setup (container, append = false) {
     var self = this;
     el.call(self, container, append);
 

@@ -365,6 +365,7 @@ def daemon_handler (action = None, service = None):
 def start_daemon (service):
     from server.daphne.DaphneDaemon import DaphneDaemon
     from datastore.DatastoreDaemon import DatastoreDaemon
+    from webapp.BuilderDaemon import BuilderDaemon
 
     # find FDs to preserve into the daemon
     files_preserve = []

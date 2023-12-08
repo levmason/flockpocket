@@ -2,7 +2,7 @@ function new_user (container, id, append = false) {
     var self = this;
     el.call(self, container, append);
 
-    self.user_id = id;
+    self.invite_id = id;
     self.form = null;
     self.form_cfg = {
         title: "Account Setup",
@@ -16,7 +16,7 @@ function new_user (container, id, append = false) {
             fd.append("profile_picture", pic);
             fd.append("details", JSON.stringify(value));
 
-            let url = utility.api_url("update_user", self.user_id);
+            let url = utility.api_url("create_user", self.invite_id);
             $.ajax({
                 url: url,
                 data: fd,
@@ -25,6 +25,10 @@ function new_user (container, id, append = false) {
                 type: 'POST',
                 success: function(data){
                     window.location.href = "/#setup";
+                },
+                error: function (request, status, error) {
+                    $.unblockUI();
+                    modal.alert(request.responseText);
                 }
             });
         },

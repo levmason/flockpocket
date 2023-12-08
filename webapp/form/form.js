@@ -8,17 +8,6 @@ function form (container, config, append = false) {
     self.btn_label = config.btn_label || "Submit";
     self.page = 1;
     self.page_count = 1;
-    self.map = {
-        'input': input,
-        'select': select,
-        'password': password,
-        'text': text,
-        'phone': phone,
-        'birthday': birthday,
-        'button': button,
-        'family': family,
-        'profile_pic_uploader': profile_pic_uploader,
-    }
     self.wait_text = config.wait_text || "Please wait...";
     self.valid = false;
     self.form_l = [];
@@ -52,7 +41,8 @@ function form (container, config, append = false) {
                 self.page_count++;
                 break;
             default:
-                var el = new self.map[x.type](self.el, x, true);
+                var el_constructor = (eval(x.type));
+                var el = new el_constructor(self.el, x, true);
                 el.init();
                 self.form_l.push(el);
             }
