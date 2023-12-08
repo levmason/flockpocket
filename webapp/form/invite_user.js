@@ -4,9 +4,9 @@ function invite_user (container, append = false) {
 
     self.form = null;
     self.form_cfg = {
-        title: "Invite a New User",
-        btn_label: "Send",
+        title: "Create an invite link",
         message: "Invite sent!",
+        btn_label: "Create Invite",
         handler: function (callback) {
             let value = self.form.value();
             let data = {data: JSON.stringify(value)};
@@ -18,27 +18,29 @@ function invite_user (container, append = false) {
                     modal.alert("User already exists!");
                 })
                 .done(function(response, status) {
-                    callback();
+                    self.link = window.location.origin + root + response.link;
+                    self.done();
                 })
         },
         inputs: [
             {
+                type: "help",
+                message: "Provide an email address if you'd like to send an invite email.",
+            },
+            {
                 type: "input",
                 label: "Email",
                 width: "60%",
-                required: true,
             },
             {
-                type: "input",
-                label: "First Name",
-                width: "60%",
-                required: true,
+                type: "help",
+                message: "You can automatically link the new member into your household.",
             },
             {
-                type: "input",
-                label: "Last Name",
+                type: "family_invite",
+                label: "Household Link",
+                id: 'family',
                 width: "60%",
-                required: true,
             },
         ]
     }
@@ -46,6 +48,13 @@ function invite_user (container, append = false) {
     // initialize
     self.init = function () {
         self.form = new form (self.container, self.form_cfg);
+    }
+
+    self.done = function () {
+        let html = `<div class="form_submitted">Invite sent!</div>
+                    <div id="invite_sent">Share this link...<br><a href="${self.link}">${self.link}</a></div>`;
+        $('#content').html(html);
+        $.unblockUI();
     }
 
     self.init();

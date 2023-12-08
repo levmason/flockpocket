@@ -26,6 +26,10 @@ function user_settings (container, id, append = false) {
                 type: 'POST',
                 success: function(data){
                     callback();
+                },
+                error: function (request, status, error) {
+                    $.unblockUI();
+                    modal.alert(request.responseText);
                 }
             });
         },

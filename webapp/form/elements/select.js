@@ -3,7 +3,12 @@ function select (container, config = {}, append = true) {
     form_el.call(self, container, config, append);
 
     // initialize config
-    self.options = config.options;
+    if (typeof config.options === 'function') {
+        self.options = config.options();
+    } else {
+        self.options = config.options;
+    }
+
     if (!(self.value && self.required)) {
         self.options.unshift("");
     }

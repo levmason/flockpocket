@@ -49,6 +49,7 @@ body {
 a {
     color: var(--link_color);
     font-size: inherit;
+    font-family: monospace;
 }
 
 h1 {
