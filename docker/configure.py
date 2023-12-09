@@ -15,7 +15,7 @@ django_secret_key = ''.join(secrets.choice(chars) for i in range(50))
 postgres_password = ''.join(secrets.choice(chars) for i in range(16))
 
 config = {
-    'DOMAIN': input('Domain name: '),
+    'DOMAIN_NAME': input('Domain name: '),
     'DEBUG': True if input('Debug (y/N): ') in ['y', 'yes'] else False,
     'DJANGO_SECRET_KEY': django_secret_key,
     'POSTGRES_PASSWORD': postgres_password,
