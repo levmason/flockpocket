@@ -83,7 +83,7 @@ async def create_user (request, invite_id):
 async def update_user (request, user_id):
     if request.method == "POST":
         # extract the user parameters
-        data = json.loads(request.POST.dict()['details']);
+        data = json.loads(request.POST.dict()['details'])
 
         user_id = uuid.UUID(user_id)
         user = await User.objects.aget(pk=user_id)
