@@ -95,11 +95,17 @@ class FlockConsumer(AsyncWebsocketConsumer):
                 await self.respond(r)
 
     async def ui_config (self):
+        # find the csrf token
+        for header in self.scope['headers']:
+            if header[0] == b'cookie':
+                token = header[1].decode().split("=")[1].split(";")[0]
+
         return {
             'ui_config': {
                 'user_id': str(self.user.id),
                 'user_d': {str(x):y.as_dict() for x,y in cfg.user_d.items() if y.is_active},
                 'thread_d': await self.chat.get_threads(),
+                'csrf_token': token,
             }
         }
 
