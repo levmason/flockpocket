@@ -10,7 +10,7 @@
     border-radius: 16px;
     border: 4px solid #fff;
 }
-.scrolling::-webkit-scrollbar-thumb {
+.show_scrollbar::-webkit-scrollbar-thumb {
     background: var(--shade4);
 }
 *::-webkit-scrollbar-button {

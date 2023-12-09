@@ -48,7 +48,7 @@ function form (container, config, append = false) {
             }
         }
 
-        self.el.append("<br>");
+        self.el.append("<div></div>");
 
         /* add buttons */
         let buttons = [];
@@ -80,7 +80,7 @@ function form (container, config, append = false) {
         }
 
         // focus on the first element
-        self.form_l[0].el.find("input").focus();
+        self.el.find("input, select").first().focus();
     }
 
     // initialize handlers
@@ -122,7 +122,7 @@ function form (container, config, append = false) {
             }
         }
 
-        $('button#submit, button#next').prop("disabled", !self.valid);
+        self.el.find('button#submit, button#next').prop("disabled", !self.valid);
     }
 
     // get the form value as an object

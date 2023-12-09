@@ -14,7 +14,7 @@ function select_users (container, config, append = true) {
               <input type="search" placeholder="Search users..."></input>
               <div id="results_wrapper"></div>
             </label>
-            <div id="selected"></div>
+            <div id="selected" class="show_scrollbar" hidden></div>
           </div>`;
 
         self.add_to_page();
@@ -85,7 +85,7 @@ function select_users (container, config, append = true) {
             delete self.selected_d[user_id];
             // remove user from the form value
             self.temp_value.remove(user.id);
-            self.validate();
+            self.update();
         })
     }
 
@@ -95,18 +95,20 @@ function select_users (container, config, append = true) {
         // add the user id to the form value
         if (!init) {
             self.temp_value.push(user.id);
-            self.validate();
+            self.update();
         }
         // add the visual element (and remember it)
         self.selected_d[user.id] = new badge (self.selected_el, user, "selected", append = true);
     }
 
-    // validate the input
-    self.validate = function () {
+    // update the input
+    self.update = function () {
         if (self.temp_value.length > 1) {
             self.value = self.temp_value.slice(1);
+            self.selected_el.show();
         } else {
             self.value = null;
+            self.selected_el.hide();
         }
         self.el.trigger("input");
     }

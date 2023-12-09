@@ -451,24 +451,21 @@ div.form div.form.divider span {
     font-weight: bold;
     padding: 0 8px;
 }
-div.form label.select_users div#results_wrapper {
+div.form div.select_users_wrapper div#results_wrapper {
     position: relative;
     z-index: 10;
 }
-div.form label.select_users div#results {
+div.form div.select_users_wrapper div#results {
     position: absolute;
     border: 1px solid var(--shade3);
 }
-div.form label.select_users input[type=search] {
+div.form div.select_users_wrapper input[type=search] {
     border: 1px solid var(--shade3);
     padding: 4px 8px;
     margin-top: 4px;
     border-radius: 6px;
 }
-div.form label.select_users div#selected::-webkit-scrollbar-thumb {
-    background: var(--shade4);
-}
-div.form label.select_users div#selected {
+div.form div.select_users_wrapper div#selected {
     max-height: 220px;
     overflow-y: auto;
     text-align: center;
@@ -886,7 +883,7 @@ div.modal div#widget_popup table#button_wrapper_inner {
     border-radius: 16px;
     border: 4px solid #fff;
 }
-.scrolling::-webkit-scrollbar-thumb {
+.show_scrollbar::-webkit-scrollbar-thumb {
     background: var(--shade4);
 }
 *::-webkit-scrollbar-button {

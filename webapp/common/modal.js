@@ -7,7 +7,7 @@ function Modal (options) {
         var html = "";
 
         // add the overlay
-        html += '<div class="modal" id="modal'+self.index+'" hidden>'+
+        html += '<div class="modal show_scrollbar" id="modal'+self.index+'" hidden>'+
             self.content+
             '</div>'+
             '<div class="modal-overlay" id="modal'+self.index+'">'+

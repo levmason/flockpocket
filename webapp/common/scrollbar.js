@@ -5,9 +5,9 @@ scroll_autohide = function (obj, el) {
             clearTimeout(obj.scroll_timeout);
         }
 
-        el.addClass("scrolling", 1000);
+        el.addClass("show_scrollbar", 1000);
         obj.scroll_timeout = setTimeout(function() {
-            el.removeClass("scrolling", 1000);
+            el.removeClass("show_scrollbar", 1000);
         }, 1000);
     }, 100));
 }

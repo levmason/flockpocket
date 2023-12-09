@@ -1,7 +1,8 @@
 function create_thread () {
     var self = this;
     // create the modal container
-    modal.open(`<div id="create_thread"></div>`);
+    modal.open(`<div id="create_thread"></div>`,
+               {overflow: "auto"});
     let container = $(`div#create_thread`);
 
     el.call(self, container, true);
