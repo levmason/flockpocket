@@ -12,9 +12,8 @@ function family (container, config = {}, append = true) {
 
         self.html = `
           <table id="family_members" class="form ${self.hidden}" page="${self.page}">
-            <thead><tr><th>Name</th><th>Relationship</th></tr></thead>`;
-
-        self.html += '</table>';
+            <thead><tr><th>Name</th><th>Relationship</th></tr></thead>
+          </table>`;
 
         self.add_to_page();
         self.init_handlers();

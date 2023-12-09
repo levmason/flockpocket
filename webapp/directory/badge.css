@@ -106,6 +106,60 @@ div.badge.family img.pic {
     height: 40px;
 }
 
+/* select */
+div.badge.select {
+    padding: 4px;
+}
+div.badge.select div.details {
+    padding: 10px;
+    font-size: 18px;
+}
+div.badge.select:hover {
+    background: var(--shade2);
+}
+div.badge.select img.pic {
+    padding: 3px;
+    width: 38px;
+    height: 38px;
+}
+
+/* selected */
+div.badge.selected {
+    background: inherit;
+    height: fit-content;
+    text-align: center;
+    border-radius: 20px;
+    display: inline-block;
+    padding: 20px 5px 0px;
+    position: relative;
+}
+div.badge.selected img.pic {
+    padding: 0 12px 6px;
+    width: 60px;
+    height: 60px;
+}
+div.badge.selected span.name {
+    font-size: 18px;
+    padding: 10px;
+}
+div.badge.selected span.remove {
+    font-family: sans-serif;
+    visibility: hidden;
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: var(--shade4);
+}
+div.badge.selected span.remove:hover {
+    color: var(--shade5);
+}
+div.badge.selected:hover span.remove {
+    visibility: visible;
+}
+
 /* thread */
 div.badge.thread {
     color: var(--text_color);

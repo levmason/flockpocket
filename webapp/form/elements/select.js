@@ -9,10 +9,6 @@ function select (container, config = {}, append = true) {
         self.options = config.options;
     }
 
-    if (!(self.value && self.required)) {
-        self.options.unshift("");
-    }
-
     // initialize the badge
     self.init = function () {
         self.html = `
@@ -35,7 +31,7 @@ function select (container, config = {}, append = true) {
 
     // initialize handlers
     self.init_handlers = function () {
-        /* save volume */
+        /* save value */
         self.el.on("input", function (e) {
             self.value = self.el.find('select').val();
         })

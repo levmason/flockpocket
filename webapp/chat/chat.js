@@ -19,7 +19,7 @@ function chat (container, id) {
 
         self.add_to_page();
 
-        self.creat_btn = self.el.find('div#create_thread_btn');
+        self.create_btn = self.el.find('div#create_thread_btn');
         self.search_el = self.el.find('input');
         self.results_el = self.el.find('div#results');
 
@@ -31,11 +31,13 @@ function chat (container, id) {
         // register with the api
         fp.api.register(self);
 
+        // a thread is selected
         self.el.on("click", "div.thread_label", function () {
             let thread_id = $(this).attr("id");
             fp.set_hash("chat/" + thread_id);
         });
 
+        // show search results when searching
         self.search_el.on("input", function(e) {
             let filter = $(this).val();
             if (filter) {
@@ -45,12 +47,18 @@ function chat (container, id) {
             }
         })
 
+        // select a search result
         self.el.on("click", "div.badge.thread", function () {
             let search = self.search_el.val();
             if (search) {
                 self.search_el.val("");
                 self.set_to_recent();
             }
+        });
+
+        // plus clicked, show create thread popup
+        self.create_btn.on("click", function() {
+            new create_thread();
         });
     }
 

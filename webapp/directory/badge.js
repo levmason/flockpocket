@@ -2,8 +2,8 @@ function badge (container, user, type, append = false, label = null) {
     var self = this;
     el.call(self, container, append);
 
-    self.link = Boolean(user.id && !["profile", "family"].includes(type));
-    self.link_class = Boolean(user.id && !["profile"].includes(type)) ? "" : "nolink";
+    self.link = Boolean(user.id && !["profile", "family", "select", "selected"].includes(type));
+    self.link_class = Boolean(user.id && !["profile", "selected"].includes(type)) ? "" : "nolink";
     self.chat_icon = utility.static_url('img/chat.svg');
 
     // initialize the badge
@@ -34,6 +34,19 @@ function badge (container, user, type, append = false, label = null) {
                 <div class="details">
                   <span class="name">${user.full_name}</span> | <span class="email">${user.email}</span>
                 </div>`;
+            break;
+        case "select":
+            self.html += `
+                <img class="pic" src="${user.pic_url}">
+                <div class="details">
+                  <span class="name">${user.full_name}</span> | <span class="email">${user.email}</span>
+                </div>`;
+            break;
+        case "selected":
+            self.html += `
+                <img class="pic" src="${user.pic_url}"><br>
+                <span class="name">${user.full_name}</span>
+                <span class="remove">X</span>`;
             break;
         case "profile":
             self.html += `

@@ -4,11 +4,12 @@ function directory (container) {
 
     // initialize
     self.init = function () {
-        self.html += '<div id="directory">'+
-            '<h1>Directory</h1>'+
-            '<input type="search" placeholder="Search..."></input>'+
-            '<div id="results"></div>'+
-            '</div>';
+        self.html = `
+          <div id="directory">
+            <h1>Directory</h1>
+            <input type="search" placeholder="Search..."></input>
+            <div id="results"></div>
+          </div>`;
 
         self.add_to_page();
         self.search_el = self.container.find('input')

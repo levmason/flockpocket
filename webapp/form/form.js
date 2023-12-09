@@ -74,9 +74,13 @@ function form (container, config, append = false) {
             hidden: self.page_count > 1 ? "hidden" : ""
         });
 
+        // add the buttons to the page
         for (let btn of buttons) {
             new button (self.el, btn, true);
         }
+
+        // focus on the first element
+        self.form_l[0].el.find("input").focus();
     }
 
     // initialize handlers
