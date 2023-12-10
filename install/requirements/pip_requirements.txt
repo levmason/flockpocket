@@ -10,3 +10,4 @@ pyyaml
 pytz
 typing_extensions
 urllib3
+watchdog
