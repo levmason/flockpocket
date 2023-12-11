@@ -22,7 +22,7 @@ config = {
     'EMAIL_HOST': input('Email host (smtp.example.net): '),
     'EMAIL_PORT': input('Email port (465): '),
     'EMAIL_USER': input('Email user (to login): '),
-    'EMAIL_PASSWORD': input('Email password (to login): '),
+    'EMAIL_PASSWORD': input('Email password (to log in): '),
     'EMAIL_FROM': input('Email from (can be different from user, but must be valid for your account): '),
 }
 
