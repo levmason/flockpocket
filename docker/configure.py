@@ -15,14 +15,15 @@ django_secret_key = ''.join(secrets.choice(chars) for i in range(50))
 postgres_password = ''.join(secrets.choice(chars) for i in range(16))
 
 config = {
-    'DEBUG': False,
+    'DOMAIN_NAME': input('Domain name: '),
+    'DEBUG': True if input('Debug (y/N): ') in ['y', 'yes'] else False,
     'DJANGO_SECRET_KEY': django_secret_key,
     'POSTGRES_PASSWORD': postgres_password,
-    'EMAIL_HOST': '',
-    'EMAIL_PORT': '',
-    'EMAIL_USER': '',
-    'EMAIL_PASSWORD': '',
-    'EMAIL_FROM': '',
+    'EMAIL_HOST': input('Email host (smtp.example.net): '),
+    'EMAIL_PORT': input('Email port (465): '),
+    'EMAIL_USER': input('Email user (to log in): '),
+    'EMAIL_PASSWORD': input('Email password (to log in): '),
+    'EMAIL_FROM': input('Email from (can be different from user, but must be valid for your account): '),
 }
 
 # write the config file

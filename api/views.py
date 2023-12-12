@@ -42,7 +42,7 @@ async def invite_user (request):
         # LEVY: send the email
         try:
             email = data.get("email")
-            await send(email, "Welcome to FlockPocket!", f"flockpocket.com/user_activate/{invite.id}")
+            await send(email, "Welcome to FlockPocket!", f"{cfg.domain_name}/user_activate/{invite.id}")
         except: pass
 
         return json_response({

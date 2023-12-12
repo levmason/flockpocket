@@ -6,6 +6,7 @@ proj_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 # Root Config Options
 opts = {
+    'domain_name': '',
     # django
     'django_secret_key': '',
     'postgres_name': 'flockpocket',
@@ -26,9 +27,6 @@ opts = {
     'email_user': None,
     'email_password': None,
     'email_from': None,
-    # misc
-    'sub_url': '',
-    'timezone': linux.get_system_timezone()
 }
 
 # string conversion map
