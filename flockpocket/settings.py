@@ -128,12 +128,7 @@ USE_L10N = True
 USE_X_FORWARDED_HOST = True
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
-SUB_URL = cfg.sub_url
-if SUB_URL:
-    ROOT_URL = '/%s/' % SUB_URL
-else:
-    ROOT_URL = '/'
-
+ROOT_URL = '/'
 STATIC_URL = '%sstatic/' % ROOT_URL
 LOGIN_URL = '%slogin' % ROOT_URL
 LOGIN_REDIRECT_URl = ROOT_URL
