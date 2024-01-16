@@ -21,10 +21,10 @@ if args.full:
 code = run(command.split()).returncode
 
 # Package Install
-print("installing packages...")
-command = "%s/packages.py" % curr_dir
-if args.full:
-    command += ' -f'
-code = run(command.split()).returncode
-if (code):
-    sys.exit(code)
+# print("installing packages...")
+# command = "%s/packages.py" % curr_dir
+# if args.full:
+#     command += ' -f'
+# code = run(command.split()).returncode
+# if (code):
+#     sys.exit(code)
