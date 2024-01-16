@@ -46,7 +46,6 @@ class FlockConsumer(AsyncWebsocketConsumer):
 
     async def error (self, message):
         """What to do when there is an error"""
-        log.debug(f"Error: {message}")
         await self.respond({
             "error": message
         })
