@@ -18,6 +18,7 @@ class FlockConsumer(AsyncWebsocketConsumer):
         """ What to run when a new connection is received """
 
         user_db = self.scope['user']
+        log.debug(user_db)
 
         if user_db.is_authenticated:
             await self.accept()
@@ -46,6 +47,7 @@ class FlockConsumer(AsyncWebsocketConsumer):
 
     async def error (self, message):
         """What to do when there is an error"""
+        log.debug(f"Error: {message}")
         await self.respond({
             "error": message
         })
@@ -54,6 +56,8 @@ class FlockConsumer(AsyncWebsocketConsumer):
         """ What do do when we receive a message """
         # Formats the message
         message = json.loads(text_data)
+        # log.debug(message)
+        log.debug(self.scope['user'])
         if isinstance(message, str):
             message = {message: {}}
 
@@ -124,3 +128,7 @@ class FlockConsumer(AsyncWebsocketConsumer):
                     task_l.append(user.push_active(str(self.user.id), active = self.user.active))
 
             await aio.gather(task_l)
+
+    async def register_for_push_notifications_ios(self, token):
+        """ register a user's iPhone to receive push notifications"""
+        self.user.ios_push_notification_token = token

@@ -92,6 +92,11 @@ class User:
             )
 
     async def push_message (self, thread, message):
+        if self.user.ios_push_notification_token != "":
+            pass
+            # somehow send push notification.
+            # I have my eyes on https://github.com/capcom6/pyapns_client,
+            # but I haven't implimented it yet.
         await self.push(
             {
                 "message": {
