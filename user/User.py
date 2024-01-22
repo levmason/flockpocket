@@ -3,7 +3,7 @@ from common import logger as log
 from common import config as cfg
 
 class User:
-    fields = ['id', 'email', 'first_name', 'last_name', 'is_active', 'details']
+    fields = ['id', 'email', 'first_name', 'last_name', 'is_active', 'details', 'ios_push_notification_token']
 
     def __init__(self, db_entry):
         self.socket_l = []
