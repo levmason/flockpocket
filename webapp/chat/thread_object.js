@@ -9,9 +9,7 @@ function thread_object (thread_cfg) {
     /*
      * initialize/build the picture html code (either profile picture or chat icon)
      */
-    if (self.user) {
-        self.pic_html = `<img class="pic" src="${self.user.pic_url}">`;
-    } else {
+    if (!self.user) {
         // Get the initials
         let words = self.label.split(" ")
         let initials = "";
@@ -24,10 +22,10 @@ function thread_object (thread_cfg) {
         let color = Math.floor(Math.random()*16777215).toString(16);
 
         // set the html
-        self.pic_html = `<svg class="pic">
-                               <circle cx="20" cy="20" r="20" fill="#${color}"/>
-                               <text x="50%" y="54%" fill="white">${initials}</text>
-                             </svg>`;
+        self.pic_svg = `<svg class="pic">
+                         <circle cx="20" cy="20" r="20" fill="#${color}"/>
+                         <text x="50%" y="54%" fill="white">${initials}</text>
+                       </svg>`;
     }
 
     /*
