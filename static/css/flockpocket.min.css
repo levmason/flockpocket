@@ -695,7 +695,8 @@ div#content div#thread div#label span {
     position: absolute;
     top: -9px;
 }
-div#content div#thread div#label span img{
+div#content div#thread div#label span img,
+div#content div#thread div#label span svg {
     width: 40px;
     height: 40px;
     position: absolute;
@@ -777,6 +778,12 @@ div#content div.thread_label {
     margin: 4px;
     border-radius: 5px;
     background: var(--shade1);
+}
+svg text{
+  text-anchor: middle;
+  dominant-baseline: middle;
+  font-family: sans-serif;
+  font-size: 16px;
 }
 div.modal {
     width: auto;
@@ -1081,7 +1088,7 @@ div.badge.thread:not(.unread) svg.unread {
 div.badge.thread:hover {
     background: var(--shade2);
 }
-div.badge.thread img.pic {
+div.badge.thread .pic {
     padding: 3px 10px;
     width: 40px;
     height: 40px;

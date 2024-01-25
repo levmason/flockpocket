@@ -104,7 +104,7 @@ function select_users (container, config, append = true) {
     // update the input
     self.update = function () {
         if (self.temp_value.length > 1) {
-            self.value = self.temp_value.slice(1);
+            self.value = self.temp_value;
             self.selected_el.show();
         } else {
             self.value = null;

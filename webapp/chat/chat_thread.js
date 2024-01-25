@@ -39,7 +39,7 @@ function chat_thread (container, id) {
           <div id="thread">
             <div id="label">
               <span>
-                <img class="pic" src="${self.pic_url}">
+                ${self.thread.pic_html}
                 ${self.label}
               </span>
             </div>

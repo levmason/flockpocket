@@ -23,7 +23,7 @@ class ChatThreadHandler:
             'length': self.length,
         }
 
-        if self.other_user:
+        if self.type == 0:
             ret_d['user'] = str(self.other_user.id)
         else:
             ret_d['user_l'] = [str(x.id) for x in self.user_s]

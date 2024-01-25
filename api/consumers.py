@@ -11,7 +11,6 @@ from common import aio
 from common.models import User as User_db
 from user.User import User
 from user import utility as user_utility
-from .chat.ChatHandler import ChatHandler
 
 class FlockConsumer(AsyncWebsocketConsumer):
     async def connect (self):
@@ -23,7 +22,7 @@ class FlockConsumer(AsyncWebsocketConsumer):
             await self.accept()
             self.user = await cfg.get_user(user_db.id, user_db = user_db)
             self.user.socket_l.append(self)
-            self.chat = ChatHandler(self.user)
+            self.chat = self.user.chat
             self.active = True
 
     async def disconnect (self, close_code):

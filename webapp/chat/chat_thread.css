@@ -212,7 +212,8 @@ div#content div#thread div#label span {
     position: absolute;
     top: -9px;
 }
-div#content div#thread div#label span img{
+div#content div#thread div#label span img,
+div#content div#thread div#label span svg {
     width: 40px;
     height: 40px;
     position: absolute;

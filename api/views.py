@@ -27,6 +27,14 @@ def user_login (request, username, password):
     user = authenticate(username=username, password=password)
     login(request, user)
 
+async def csrf_token (request):
+    # find the csrf token
+    for header in self.scope['headers']:
+        if header[0] == b'cookie':
+            token = header[1].decode().split("=")[1].split(";")[0]
+
+    return token
+
 async def invite_user (request):
     """
     Invite a new user to the flock
@@ -145,3 +153,31 @@ async def update_user (request, user_id):
         await cfg.update_user(user)
 
         return HttpResponse(status=201)
+
+async def create_thread (request):
+    log.debug("create_thread")
+    try:
+        user_id = await get_user_from_request(request)
+        request_user = cfg.user_d[user_id]
+
+        data = json.loads(request.POST.dict()['data']);
+        label = data['label']
+        user_l = data['members']
+
+        # automatically create a user thread
+        thread_cfg = await cfg.redis.ds_query({
+            'chat.create_thread': {
+                'label': label,
+                'members': user_l,
+                'type': 1,
+            }
+        })
+        thread = await request_user.chat.add_thread(thread_cfg)
+
+        # send the new thread to user sessions
+        for user in thread.user_s:
+            await user.push_thread(thread_cfg)
+    except Exception as e:
+        log.debug(e)
+
+    return json_response(thread_cfg)

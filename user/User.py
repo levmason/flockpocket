@@ -1,6 +1,7 @@
 from common import aio
 from common import logger as log
 from common import config as cfg
+from api.chat.ChatHandler import ChatHandler
 
 class User:
     fields = ['id', 'email', 'first_name', 'last_name', 'is_active', 'details']
@@ -9,6 +10,7 @@ class User:
         self.socket_l = []
         self.update(db_entry)
         self.active = False
+        self.chat = ChatHandler(self)
 
     def update (self, db_entry):
         self.db_entry = db_entry

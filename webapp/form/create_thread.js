@@ -14,7 +14,7 @@ function create_thread () {
             let value = self.form.value();
             let data = {data: JSON.stringify(value)};
             let url = utility.api_url("create_thread");
-
+            modal.close();
             $.post(url, data)
                 .fail(function(response, status) {
                     $.unblockUI();
@@ -28,6 +28,7 @@ function create_thread () {
             {
                 type: "input",
                 label: "Thread Label",
+                id: "label",
                 placeholder: "Give a label to describe this thread",
                 required: true,
                 width: "100%",
@@ -36,6 +37,7 @@ function create_thread () {
                 type: "select_users",
                 required: true,
                 label: "Thread Members",
+                id: "members",
                 width: "100%",
             },
         ]
@@ -46,8 +48,9 @@ function create_thread () {
         self.form = new form (self.container, self.form_cfg);
     }
 
-    self.done = function () {
+    self.done = function (response) {
         console.log(response);
+        fp.set_hash("chat/" + response.id);
         $.unblockUI();
     }
 
