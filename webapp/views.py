@@ -11,12 +11,17 @@ from common import logger as log
 import time
 
 def index (request):
+    t1 = time.time()
     if not request.user.is_authenticated:
         user = authenticate(request, cookies=request.COOKIES)
         if user is not None and user.is_active:
             login(request, user)
         else:
             return redirect(login_view)
+
+    t2 = time.time()
+    if (t2-t1) > 1:
+        print("index took: %s" % (t2-t1))
 
     return render(request, 'index.html')
 
