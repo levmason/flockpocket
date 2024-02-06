@@ -15,7 +15,6 @@ async def pushiOSMessage(push_token: str, message: dict, thread: str):
     ) as client:
         try:
             # Create the payload for the notification
-            # log.debug(message)
             payload = IOSPayload(alert=message['text'], sound='bleat.wav', thread_id=thread.id)
 
             # Create the notification object with the payload and other optional parameters
