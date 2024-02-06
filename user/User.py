@@ -2,6 +2,8 @@ from common import aio
 from common import logger as log
 from common import config as cfg
 
+from common.apns_push_notifications import pushiOSMessage
+
 class User:
     fields = ['id', 'email', 'first_name', 'last_name', 'is_active', 'details', 'ios_push_notification_token']
 
@@ -92,11 +94,13 @@ class User:
             )
 
     async def push_message (self, thread, message):
-        if self.user.ios_push_notification_token != "":
-            pass
-            # somehow send push notification.
-            # I have my eyes on https://github.com/capcom6/pyapns_client,
-            # but I haven't implimented it yet.
+        if self.ios_push_notification_token != "":
+            pushiOSMessage(
+                push_token=self.ios_push_notification_token,
+                message=message,
+                thread=thread
+            )
+
         await self.push(
             {
                 "message": {

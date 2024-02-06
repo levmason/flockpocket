@@ -11,3 +11,4 @@ pytz
 typing_extensions
 urllib3
 watchdog
+pyapns_client3

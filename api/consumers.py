@@ -119,6 +119,9 @@ class FlockConsumer(AsyncWebsocketConsumer):
 
             await aio.gather(task_l)
 
-    async def register_for_push_notifications_ios(self, token):
-        """ register a user's iPhone to receive push notifications"""
-        self.user.ios_push_notification_token = token
+    async def register_for_push_notifications_ios(self, token, deviceId):
+        """ register a user's iPhone to receive push notifications """
+        ## TODO: save the deviceId and impliment sending notifications to multiple devices
+        user = await User_db.objects.aget(pk=self.user.id)
+        user.ios_push_notification_token = token
+        await user.asave()
