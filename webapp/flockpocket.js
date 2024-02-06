@@ -177,19 +177,6 @@ function flockpocket () {
         self.set_active();
     }
 
-    self.add_thread = function (thread) {
-        self.thread_d[thread.id] = thread;
-        if (thread.user) {
-            thread.user = self.user_d[thread.user];
-            self.user_thread_d[thread.user.id] = thread;
-        }
-        thread.in_view = function () {
-            return Boolean(fp.content &&
-                           fp.content.constructor.name == "chat_thread" &&
-                           fp.content.id == thread.id);
-        }
-    }
-
     /*
      * websocket handlers
      */
@@ -202,14 +189,18 @@ function flockpocket () {
             // initialize the user objects
             for (let id in self.user_d) {
                 let user_cfg = self.user_d[id];
-                self.user_d[id] = new user(user_cfg);
+                self.user_d[id] = new user_object(user_cfg);
             }
             self.user = self.user_d[opt.user_id];
 
             // initialize the threads
             for (let id in opt.thread_d) {
-                let thread = opt.thread_d[id];
-                self.add_thread(thread);
+                let thread_cfg = opt.thread_d[id];
+                let thread = new thread_object (thread_cfg);
+                self.thread_d[id] = thread;
+                if (thread.user) {
+                    self.user_thread_d[thread.user.id] = thread
+                }
             }
 
             self.init_ui();

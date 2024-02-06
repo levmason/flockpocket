@@ -189,7 +189,7 @@ div.badge.thread:not(.unread) svg.unread {
 div.badge.thread:hover {
     background: var(--shade2);
 }
-div.badge.thread img.pic {
+div.badge.thread .pic {
     padding: 3px 10px;
     width: 40px;
     height: 40px;

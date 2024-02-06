@@ -18,7 +18,7 @@ class ChatHandler:
         await thread.init()
 
         self.thread_d[thread.id] = thread
-        if thread.other_user:
+        if thread.type == 0:
             self.user_thread_d[str(thread.other_user.id)] = thread
 
         return thread

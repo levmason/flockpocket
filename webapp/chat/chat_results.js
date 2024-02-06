@@ -11,17 +11,23 @@ function chat_results (container, search) {
 
         let filtered_user_d = fp.filter_users(self.search, false);
         let filtered_thread_d = fp.filter_threads(self.search);
+
+        // remove users already having threads
         for (let id in filtered_thread_d) {
             let thread = filtered_thread_d[id];
             if (thread.user) {
-                filtered_thread_d[thread.user.id] = thread.user;
-                delete filtered_thread_d[id];
+                delete filtered_user_d[thread.user.id];
             }
         }
 
-        let thread_d = utility.merge(filtered_thread_d, filtered_user_d);
-        for (let id in thread_d) {
-            let user = thread_d[id];
+        // add existing threads
+        for (let id in filtered_thread_d) {
+            let thread = filtered_thread_d[id];
+            new chat_badge (self.el, thread);
+        }
+        // add other users
+        for (let id in filtered_user_d) {
+            let user = filtered_user_d[id];
             new chat_badge (self.el, null,  user);
         }
     }

@@ -732,9 +732,13 @@ div#rightbar {
     background: var(--bar_color);
     z-index: 100;
 }
-
-div#rightbar div{
-    white-space: nowrap;
+div#content div#thread div#label span img,
+div#content div#thread div#label span svg {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 20px;
+    top: -1px;
 }
 
 div#top_menu {
@@ -797,6 +801,12 @@ div#top_menu div#notifications img {
     display:none;
 }
 
+svg text{
+  text-anchor: middle;
+  dominant-baseline: middle;
+  font-family: sans-serif;
+  font-size: 16px;
+}
 div.modal {
     width: auto;
     max-width: 90vw;
@@ -1105,7 +1115,7 @@ div.badge.thread:not(.unread) svg.unread {
 div.badge.thread:hover {
     background: var(--shade2);
 }
-div.badge.thread img.pic {
+div.badge.thread .pic {
     padding: 3px 10px;
     width: 40px;
     height: 40px;

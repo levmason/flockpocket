@@ -12,8 +12,8 @@ function chat_thread (container, id) {
         // it's a user:user thread
         self.user_id = id.split("=")[1]
         self.user = fp.user_d[self.user_id];
-        self.pic_url = self.user.pic_url;
         self.label = self.user.full_name;
+        self.pic_html = `<img class="pic" src="${self.user.pic_url}">`;
         self.thread = fp.user_thread_d[self.user_id];
         if (self.thread) {
             self.id = self.thread.id;
@@ -29,6 +29,7 @@ function chat_thread (container, id) {
         } else {
             self.label = self.thread.label;
         }
+        self.pic_html = self.thread.pic_svg;
         self.user_id = null;
         self.id = id;
     }
@@ -39,7 +40,7 @@ function chat_thread (container, id) {
           <div id="thread">
             <div id="label">
               <span>
-                <img class="pic" src="${self.pic_url}">
+                ${self.pic_html}
                 ${self.label}
               </span>
             </div>

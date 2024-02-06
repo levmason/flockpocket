@@ -1,4 +1,4 @@
-function user (config) {
+function user_object (config) {
     var self = utility.merge(this, config);
 
     // initialize attributes
