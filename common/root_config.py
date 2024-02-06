@@ -27,6 +27,9 @@ opts = {
     'email_user': None,
     'email_password': None,
     'email_from': None,
+    # APNS 
+    'APNS_AUTH_KEY_ID': None,
+    'APNS_TEAM_ID': None,
 }
 
 # string conversion map

@@ -124,3 +124,4 @@ class FlockConsumer(AsyncWebsocketConsumer):
         user = await User_db.objects.aget(pk=self.user.id)
         user.ios_push_notification_token = token
         await user.asave()
+        # log.debug(f"received token: {user.ios_push_notification_token}\nfrom deivce: {deviceId}")
