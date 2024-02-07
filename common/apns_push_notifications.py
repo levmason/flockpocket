@@ -3,8 +3,9 @@ from pyapns_client import AsyncAPNSClient, TokenBasedAuth, IOSPayload, IOSNotifi
 from pyapns_client import UnregisteredException, APNSDeviceException, APNSServerException, APNSProgrammingException
 
 from common import config as cfg
+from api.chat.ChatThreadHandler import ChatThreadHandler
 
-async def pushiOSMessage(push_token: str, message: dict, thread: str):
+async def pushiOSMessage(push_token: str, message: dict, thread: ChatThreadHandler):
     async with AsyncAPNSClient(
         mode=AsyncAPNSClient.MODE_DEV,
         authentificator=TokenBasedAuth(
