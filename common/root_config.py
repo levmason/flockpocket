@@ -28,8 +28,10 @@ opts = {
     'email_password': None,
     'email_from': None,
     # APNS 
-    'APNS_AUTH_KEY_ID': None,
-    'APNS_TEAM_ID': None,
+    'apns_auth_key_id': None,
+    'apns_team_id': None,
+    # iOS app Bundle ID
+    'ios_bundle_id': None,
 }
 
 # string conversion map

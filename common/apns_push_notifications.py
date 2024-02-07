@@ -8,9 +8,9 @@ async def pushiOSMessage(push_token: str, message: dict, thread: str):
     async with AsyncAPNSClient(
         mode=AsyncAPNSClient.MODE_DEV,
         authentificator=TokenBasedAuth(
-            auth_key_path=f'/opt/flockpocket/AuthKey_{cfg.APNS_AUTH_KEY_ID}.p8',
-            auth_key_id=cfg.APNS_AUTH_KEY_ID,
-            team_id=cfg.APNS_TEAM_ID
+            auth_key_path=f'/opt/flockpocket/AuthKey_{cfg.apns_auth_key_id}.p8',
+            auth_key_id=cfg.apns_auth_key_id,
+            team_id=cfg.apns_team_id
         )
     ) as client:
         try:
@@ -19,7 +19,7 @@ async def pushiOSMessage(push_token: str, message: dict, thread: str):
 
             # Create the notification object with the payload and other optional parameters
             # the 'topic' value is the iOS Bundle ID
-            notification = IOSNotification(payload=payload, priority=10, topic="net.snowskeleton.FlockPocket")
+            notification = IOSNotification(payload=payload, priority=10, topic=cfg.ios_bundle_id)
 
             # Send the notification asynchronously to one or more device tokens
             await client.push(notification=notification, device_token=push_token)
