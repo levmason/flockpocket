@@ -1,5 +1,5 @@
 # Import necessary classes and modules
-from pyapns_client import AsyncAPNSClient, TokenBasedAuth, IOSPayload, IOSNotification
+from pyapns_client import AsyncAPNSClient, TokenBasedAuth, IOSPayload, IOSNotification, IOSPayloadAlert
 from pyapns_client import UnregisteredException, APNSDeviceException, APNSServerException, APNSProgrammingException
 
 from common import config as cfg
@@ -16,7 +16,8 @@ async def pushiOSMessage(push_token: str, message: dict, thread: ChatThreadHandl
     ) as client:
         try:
             # Create the payload for the notification
-            payload = IOSPayload(alert=message['text'], sound='bleat.wav', thread_id=thread.id)
+            alert = IOSPayloadAlert(title=message['user'], subtitle=thread.id, body=message['text'])
+            payload = IOSPayload(alert=alert, sound='bleat.wav', thread_id=thread.id)
 
             # Create the notification object with the payload and other optional parameters
             # the 'topic' value is the iOS Bundle ID
