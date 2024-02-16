@@ -2,7 +2,6 @@
 """
 This file handles all CLI inputs
 """
-import time
 import os, sys
 # initialize django
 import django
@@ -11,7 +10,6 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "flockpocket.settings")
 os.environ["PYTHON_EGG_CACHE"] = "/tmp/.python-eggs/"
 django.setup()
 from django.db import connection
-from django.contrib.auth.models import User
 import shutil, traceback
 import time
 from datetime import datetime
@@ -19,8 +17,6 @@ import argparse
 import subprocess
 from subprocess import getstatusoutput, Popen, PIPE
 import re
-import json
-import yaml
 
 import lockfile
 import signal

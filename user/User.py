@@ -1,6 +1,4 @@
 from common import aio
-from common import logger as log
-from common import config as cfg
 from api.chat.ChatHandler import ChatHandler
 
 class User:

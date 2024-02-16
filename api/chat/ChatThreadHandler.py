@@ -1,6 +1,5 @@
 import time
 from common import config as cfg
-from common import logger as log
 
 class ChatThreadHandler:
     def __init__(self, user, config):

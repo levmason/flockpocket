@@ -1,10 +1,9 @@
 import smtplib
 import ssl
-import mimetypes
-from email.message import EmailMessage
+# import mimetypes
+# from email.message import EmailMessage
 
 from . import config as cfg
-from . import logger as log
 
 async def send (to, subject, message="", attachments=[]):
 

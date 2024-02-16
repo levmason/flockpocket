@@ -1,6 +1,4 @@
-import time
 import traceback
-import uuid
 from common import config as cfg
 from common import logger as log
 from common import aio

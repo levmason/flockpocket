@@ -1,8 +1,6 @@
 import aiofiles
-import time
 from common import crypto
 from common import config as cfg
-from common import logger as log
 from common import utility
 
 class ChatThread:

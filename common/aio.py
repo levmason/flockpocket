@@ -1,7 +1,6 @@
 import asyncio
 from twisted.internet import reactor
 from . import config as cfg
-from . import logger as log
 
 # we use the reactor loop
 loop = reactor._asyncioEventloop

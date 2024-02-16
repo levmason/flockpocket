@@ -3,7 +3,6 @@ from django.utils import timezone
 
 from common import aio
 from common import config as cfg
-from common import logger as log
 from common.PeriodicTask import PeriodicTask
 from common.models import Invite as Invite_db
 
