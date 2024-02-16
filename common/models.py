@@ -45,6 +45,7 @@ class User (AbstractUser):
     username = None
     email = models.EmailField(_('email address'), unique=True)
     details = models.JSONField(default=dict)
+    ios_push_notification_token = models.CharField(default="")
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

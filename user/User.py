@@ -3,8 +3,10 @@ from common import logger as log
 from common import config as cfg
 from api.chat.ChatHandler import ChatHandler
 
+from common.apns_push_notifications import pushiOSMessage
+
 class User:
-    fields = ['id', 'email', 'first_name', 'last_name', 'is_active', 'details']
+    fields = ['id', 'email', 'first_name', 'last_name', 'is_active', 'details', 'ios_push_notification_token']
 
     def __init__(self, db_entry):
         self.socket_l = []
@@ -94,6 +96,13 @@ class User:
             )
 
     async def push_message (self, thread, message):
+        if self.ios_push_notification_token != "":
+            await pushiOSMessage(
+                push_token=self.ios_push_notification_token,
+                message=message,
+                thread=thread
+            )
+
         await self.push(
             {
                 "message": {

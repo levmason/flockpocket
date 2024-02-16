@@ -94,17 +94,11 @@ class FlockConsumer(AsyncWebsocketConsumer):
                 await self.respond(r)
 
     async def ui_config (self):
-        # find the csrf token
-        for header in self.scope['headers']:
-            if header[0] == b'cookie':
-                token = header[1].decode().split("=")[1].split(";")[0]
-
         return {
             'ui_config': {
                 'user_id': str(self.user.id),
                 'user_d': {str(x):y.as_dict() for x,y in cfg.user_d.items() if y.is_active},
                 'thread_d': await self.chat.get_threads(),
-                'csrf_token': token,
             }
         }
 
@@ -123,3 +117,11 @@ class FlockConsumer(AsyncWebsocketConsumer):
                     task_l.append(user.push_active(str(self.user.id), active = self.user.active))
 
             await aio.gather(task_l)
+
+    async def register_for_push_notifications_ios(self, token, deviceId):
+        """ register a user's iPhone to receive push notifications """
+        ## TODO: save the deviceId and impliment sending notifications to multiple devices
+        user = await User_db.objects.aget(pk=self.user.id)
+        user.ios_push_notification_token = token
+        await user.asave()
+        # log.debug(f"received token: {user.ios_push_notification_token}\nfrom deivce: {deviceId}")

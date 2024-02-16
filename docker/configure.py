@@ -24,6 +24,9 @@ config = {
     'EMAIL_USER': input('Email user (to log in): '),
     'EMAIL_PASSWORD': input('Email password (to log in): '),
     'EMAIL_FROM': input('Email from (can be different from user, but must be valid for your account): '),
+    'APNS_AUTH_KEY_ID': input('APNS key id (found at https://developer.apple.com/account/resources/authkeys): '),
+    'APNS_TEAM_ID': input('Apple Developer team id (found at https://developer.apple.com/account#MembershipDetailsCard): '),
+    'IOS_BUNDLE_ID': input('Bundle ID of your iOS application: '),
 }
 
 # write the config file
