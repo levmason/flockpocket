@@ -6,8 +6,7 @@ The config class is meant to handle the overall configuration and variables
 shared between the different modules.
 """
 
-import sys, os, time, re, traceback
-from django.conf import settings
+import os, traceback
 import uuid
 
 from .RedisWrapper import aioRedisWrapper
@@ -17,7 +16,6 @@ from user.User import User
 from . import linux
 from . import root_config as root
 from . import logger as log
-from . import utility
 from . import aio
 
 # Globals (from root)

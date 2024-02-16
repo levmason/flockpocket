@@ -1,6 +1,5 @@
 import time
 import asyncio
-import traceback
 from . import logger as log
 
 class PeriodicTask(object):

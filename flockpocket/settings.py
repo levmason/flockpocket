@@ -9,9 +9,6 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
 import os
-import sys
-import yaml
-from datetime import timedelta
 from common import root_config as cfg
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)

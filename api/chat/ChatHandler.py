@@ -1,4 +1,3 @@
-from common import logger as log
 from common import config as cfg
 
 from .ChatThreadHandler import ChatThreadHandler

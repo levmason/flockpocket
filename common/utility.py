@@ -8,12 +8,10 @@ import time
 import datetime
 import pytz
 from django.utils import timezone
-import json
 from subprocess import getstatusoutput
 
 
 from . import config as cfg
-from . import logger as log
 
 #
 # Epoch/Datetime conversions

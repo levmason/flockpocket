@@ -1,11 +1,5 @@
-import uuid
-import aiofiles
 
-from django.core.exceptions import ObjectDoesNotExist
 
-from common import config as cfg
-from common import logger as log
-from common import crypto
 from common.models import ChatThread as ChatThread_db
 from .ChatThread import ChatThread
 

@@ -1,5 +1,4 @@
 import os
-from common import linux
 
 tool_name = "flockpocket"
 proj_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))

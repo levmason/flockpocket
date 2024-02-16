@@ -1,16 +1,10 @@
-import time
 import json
-import uuid
 import traceback
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 from common import config as cfg
 from common import logger as log
-from common import utility
 from common import aio
-from common.models import User as User_db
-from user.User import User
-from user import utility as user_utility
 
 class FlockConsumer(AsyncWebsocketConsumer):
     async def connect (self):

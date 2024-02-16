@@ -1,8 +1,6 @@
 import time
 import aioredis
 from . import config as cfg
-from . import logger as log
-from . import utility
 from . import crypto
 
 def pfx (x):
