@@ -16,8 +16,8 @@ async def pushiOSMessage(push_token: str, message: dict, thread: ChatThreadHandl
     ) as client:
         try:
             # Create the payload for the notification
-            alert = IOSPayloadAlert(title=message['user'], subtitle=thread.id, body=message['text'])
-            payload = IOSPayload(alert=alert, sound='bleat.wav', thread_id=thread.id)
+            alert = IOSPayloadAlert(title=message['user'], body=message['text'])
+            payload = IOSPayload(alert=alert, sound='bleat.wav', thread_id=thread.id, mutable_content=True)
 
             # Create the notification object with the payload and other optional parameters
             # the 'topic' value is the iOS Bundle ID
