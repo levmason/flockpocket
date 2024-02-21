@@ -97,11 +97,12 @@ class User:
 
     async def push_message (self, thread, message):
         if self.ios_push_notification_token != "":
-            await pushiOSMessage(
-                push_token=self.ios_push_notification_token,
-                message=message,
-                thread=thread
-            )
+            if message['user'] != str(self.id):
+                await pushiOSMessage(
+                    push_token=self.ios_push_notification_token,
+                    message=message,
+                    thread=thread
+                )
 
         await self.push(
             {
